@@ -84,26 +84,16 @@ function requireAuth(req, res, next) {
 }
 
 // ============================ SITIO PUBLICO ============================
+// Landing de Proshop (estilo claro/minimal). Con ?editar=1 se abre el modo
+// edicion, pero solo para el admin con sesion.
 app.get('/', async (req, res, next) => {
-  try {
-    const [planes, paquetes] = await Promise.all([
-      prisma.plan.findMany({ where: { activo: true }, orderBy: { orden: 'asc' } }),
-      prisma.paquete.findMany({ where: { activo: true }, orderBy: { cantidad: 'asc' } }),
-    ]);
-    res.render('index', { title: `${site.name} - ${site.tagline}`, planes, paquetes });
-  } catch (err) { next(err); }
-});
-
-// Landing nueva (estilo claro/minimal). Convive con "/" para poder compararlas.
-// Con ?editar=1 se abre el modo edicion, pero solo para el admin con sesion.
-app.get('/nueva', async (req, res, next) => {
   try {
     const quiereEditar = req.query.editar === '1';
     const esAdmin = !!(req.session && req.session.authed);
 
     // Si pide editar sin sesion, lo mandamos a loguearse y volvemos aca.
     if (quiereEditar && !esAdmin) {
-      return res.redirect('/admin/login?volver=' + encodeURIComponent('/nueva?editar=1'));
+      return res.redirect('/admin/login?volver=' + encodeURIComponent('/?editar=1'));
     }
 
     const editando = quiereEditar && esAdmin;

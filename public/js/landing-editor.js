@@ -1,5 +1,5 @@
 /**
- * Modo edicion de la landing (/nueva?editar=1).
+ * Modo edicion de la landing (/?editar=1).
  * Solo se carga cuando el admin tiene sesion abierta.
  *
  * Como funciona:
