@@ -1,0 +1,43 @@
+<header class="site-header" id="top">
+  <div class="container nav">
+    <a href="#top" class="brand" aria-label="<%= site.name %> inicio">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30" fill="none">
+          <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#bg)" />
+          <path d="M11 22V10h5.2c2.7 0 4.4 1.6 4.4 4s-1.7 4-4.4 4H14v4h-3zm3-6.6h2c1 0 1.6-.5 1.6-1.4s-.6-1.4-1.6-1.4h-2v2.8z" fill="#2fe3a6"/>
+          <defs>
+            <linearGradient id="bg" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#9333ea"/><stop offset="1" stop-color="#6d28d9"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      <span class="brand-text"><%= site.name %></span>
+    </a>
+
+    <nav class="nav-links" aria-label="Navegacion principal">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#planes">Planes</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="/ingresar">Ingresar</a>
+      <a class="btn btn-primary" href="/registro">Crear cuenta</a>
+    </div>
+
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="mobile-menu" hidden>
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#beneficios">Beneficios</a>
+    <a href="#planes">Planes</a>
+    <a href="#contacto">Contacto</a>
+    <a href="/ingresar">Ingresar</a>
+    <a class="btn btn-primary" href="/registro">Crear cuenta</a>
+  </div>
+</header>

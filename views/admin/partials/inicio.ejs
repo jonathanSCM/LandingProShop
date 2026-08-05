@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('../../partials/head') %>
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin">
+<div class="admin-shell">
+
+  <!-- ===== Menu lateral ===== -->
+  <aside class="sidebar" id="sidebar">
+    <a href="/admin" class="sidebar-brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="30" height="30" fill="none">
+          <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#sb)" />
+          <path d="M11 22V10h5.2c2.7 0 4.4 1.6 4.4 4s-1.7 4-4.4 4H14v4h-3zm3-6.6h2c1 0 1.6-.5 1.6-1.4s-.6-1.4-1.6-1.4h-2v2.8z" fill="#2fe3a6"/>
+          <defs><linearGradient id="sb" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#9333ea"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs>
+        </svg>
+      </span>
+      <span class="sidebar-brand-text">Proshop <span class="admin-tag">Admin</span></span>
+    </a>
+
+    <nav class="sidebar-nav" aria-label="Menu de administracion">
+      <span class="sidebar-section">General</span>
+      <a href="/admin" class="<%= activo === 'resumen' ? 'is-active' : '' %>">
+        <span class="si">📊</span> Resumen
+      </a>
+      <a href="/admin/mensajes" class="<%= activo === 'mensajes' ? 'is-active' : '' %>">
+        <span class="si">✉️</span> Mensajes
+        <% if (typeof badgeMensajes !== 'undefined' && badgeMensajes > 0) { %>
+          <span class="nav-badge"><%= badgeMensajes %></span>
+        <% } %>
+      </a>
+
+      <span class="sidebar-section">Clientes</span>
+      <a href="/admin/registrados" class="<%= activo === 'registrados' ? 'is-active' : '' %>">
+        <span class="si">🏢</span> Registrados
+      </a>
+      <a href="/admin/usuarios" class="<%= activo === 'usuarios' ? 'is-active' : '' %>">
+        <span class="si">👥</span> Usuarios y planes
+      </a>
+      <a href="/admin/seguimiento" class="<%= activo === 'seguimiento' ? 'is-active' : '' %>">
+        <span class="si">📊</span> Seguimiento mensajes
+      </a>
+      <a href="/admin/activos" class="<%= activo === 'activos' ? 'is-active' : '' %>">
+        <span class="si">✅</span> Activos
+      </a>
+      <a href="/admin/agentes" class="<%= activo === 'agentes' ? 'is-active' : '' %>">
+        <span class="si">🤖</span> Agentes
+      </a>
+      <a href="/admin/conexiones" class="<%= activo === 'conexiones' ? 'is-active' : '' %>">
+        <span class="si">📱</span> Conexiones WhatsApp
+      </a>
+
+      <span class="sidebar-section">Comercial</span>
+      <a href="/admin/compras" class="<%= activo === 'compras' ? 'is-active' : '' %>">
+        <span class="si">🧾</span> Registro de paquetes
+      </a>
+      <a href="/admin/planes" class="<%= activo === 'planes' ? 'is-active' : '' %>">
+        <span class="si">📦</span> Planes
+      </a>
+      <a href="/admin/paquetes" class="<%= activo === 'paquetes' ? 'is-active' : '' %>">
+        <span class="si">➕</span> Paquetes
+      </a>
+      <a href="/admin/pagos" class="<%= activo === 'pagos' ? 'is-active' : '' %>">
+        <span class="si">💳</span> Pagos
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <a href="/" target="_blank" rel="noopener">Ver sitio ↗</a>
+      <form method="POST" action="/admin/logout"><button type="submit">Cerrar sesión</button></form>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" hidden></div>
+
+  <!-- ===== Contenido ===== -->
+  <div class="admin-body">
+    <header class="admin-topbar">
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+      <h1 class="topbar-title"><%= tituloPagina %></h1>
+      <span class="topbar-user">Hola, <strong><%= usuario %></strong></span>
+    </header>
+
+    <main class="admin-main">

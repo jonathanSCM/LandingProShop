@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('partials/head') %>
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-login">
+  <main class="login-wrap">
+    <form class="login-card login-card-wide" method="POST" action="/registro">
+      <div class="login-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="38" height="38" fill="none">
+            <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#rb)" />
+            <path d="M11 22V10h5.2c2.7 0 4.4 1.6 4.4 4s-1.7 4-4.4 4H14v4h-3zm3-6.6h2c1 0 1.6-.5 1.6-1.4s-.6-1.4-1.6-1.4h-2v2.8z" fill="#2fe3a6"/>
+            <defs><linearGradient id="rb" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#9333ea"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs>
+          </svg>
+        </span>
+        <div>
+          <strong>Crear cuenta</strong>
+          <span>Empieza con tu agente de ventas</span>
+        </div>
+      </div>
+
+      <% if (error) { %><p class="login-error"><%= error %></p><% } %>
+
+      <div class="field">
+        <label for="empresa">Nombre de tu negocio *</label>
+        <input id="empresa" name="empresa" type="text" required maxlength="120"
+               value="<%= datos.empresa || '' %>" placeholder="Ej: Zapatería El Paso" />
+      </div>
+      <div class="field">
+        <label for="nombre">Tu nombre *</label>
+        <input id="nombre" name="nombre" type="text" required maxlength="120"
+               value="<%= datos.nombre || '' %>" placeholder="Nombre y apellido" />
+      </div>
+      <div class="field">
+        <label for="email">Correo *</label>
+        <input id="email" name="email" type="email" required autocomplete="email"
+               value="<%= datos.email || '' %>" placeholder="tu@correo.com" />
+      </div>
+      <div class="field">
+        <label for="password">Contraseña * <span class="muted">(mínimo 8 caracteres)</span></label>
+        <input id="password" name="password" type="password" required minlength="8" autocomplete="new-password" />
+      </div>
+      <div class="field">
+        <label for="planId">Plan *</label>
+        <select id="planId" name="planId" required>
+          <% planes.forEach(function (p) { %>
+            <option value="<%= p.id %>" <%= String(datos.planId) === String(p.id) ? 'selected' : '' %>>
+              <%= p.nombre %> — <%= Number(p.mensualidadBs) === 0 ? 'Gratis' : 'Bs ' + Number(p.mensualidadBs).toLocaleString('es-BO') + '/mes' %>
+              (<%= p.convIncluidas.toLocaleString('es-BO') %> conv.)
+            </option>
+          <% }); %>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Crear mi cuenta</button>
+      <p class="login-back">¿Ya tienes cuenta? <a href="/ingresar" style="color:var(--primary-2)">Ingresar</a></p>
+      <a class="login-back" href="/">← Volver al sitio</a>
+    </form>
+  </main>
+</body>
+</html>

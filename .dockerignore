@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log*
+.env
+.git
+.gitignore
+lib/generated/prisma
+data/leads.json
+*.log
+.DS_Store

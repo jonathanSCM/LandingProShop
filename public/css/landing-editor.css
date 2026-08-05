@@ -1,0 +1,134 @@
+/* =============================================================
+   Modo edicion — solo se carga en /nueva?editar=1
+   Nada de esto llega al visitante normal.
+   ============================================================= */
+
+/* Deja sitio arriba para la barra fija */
+body.modo-edicion { padding-top: 52px; }
+body.modo-edicion .nav { top: 52px; }
+
+.ed-barra {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 16px;
+  background: #14140f;
+  color: #f4f3ef;
+  border-bottom: 1px solid #000;
+}
+
+.ed-marca {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #6d28d9;
+  white-space: nowrap;
+}
+
+.ed-pista { font-size: 13px; opacity: .65; }
+
+.ed-estado {
+  margin-left: auto;
+  font-size: 13px;
+  opacity: .8;
+  white-space: nowrap;
+}
+.ed-estado.es-ok    { color: #2fe3a6; opacity: 1; }
+.ed-estado.es-error { color: #ff8a75; opacity: 1; }
+.ed-estado.es-aviso { color: #ffcc66; opacity: 1; }
+
+.ed-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 16px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+}
+.ed-btn:disabled { opacity: .5; cursor: default; }
+.ed-btn-1 { background: #2fe3a6; color: #14140f; }
+.ed-btn-1:hover:not(:disabled) { background: #4bf0b8; }
+.ed-btn-2 { background: transparent; color: #f4f3ef; border-color: rgba(244,243,239,.3); }
+.ed-btn-2:hover:not(:disabled) { border-color: #f4f3ef; }
+
+@media (max-width: 720px) {
+  .ed-pista { display: none; }
+  .ed-barra { gap: 8px; padding: 0 10px; }
+  .ed-btn { padding: 8px 12px; font-size: 12px; }
+}
+
+/* ---------- Campos editables ---------- */
+.ed-campo {
+  outline: 1px dashed rgba(109, 40, 217, .35);
+  outline-offset: 3px;
+  border-radius: 2px;
+  transition: outline-color .15s ease, background .15s ease;
+  cursor: text;
+}
+.ed-campo:hover {
+  outline-style: solid;
+  outline-color: rgba(109, 40, 217, .6);
+  background: rgba(109, 40, 217, .05);
+}
+.ed-campo:focus {
+  outline: 2px solid #6d28d9;
+  outline-offset: 3px;
+  background: rgba(109, 40, 217, .07);
+}
+
+/* ---------- Cabecera de edicion de cada proyecto ---------- */
+.ed-proy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: -8px 0 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px dashed rgba(109, 40, 217, .35);
+}
+.ed-proy-id {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8b8a82;
+}
+.ed-proy .ed-btn-2 {
+  color: #14140f;
+  border-color: rgba(20, 20, 15, .25);
+  padding: 7px 13px;
+  font-size: 12px;
+}
+.ed-proy .ed-btn-2:hover { border-color: #14140f; }
+
+/* ---------- Proyecto marcado como oculto ---------- */
+.proj-panel.esta-oculto,
+.proj-tab.esta-oculto {
+  opacity: .45;
+}
+.proj-panel.esta-oculto { border-style: dashed; }
+.proj-tab.esta-oculto .proj-tab-name { text-decoration: line-through; }
+
+.proj-panel.esta-oculto::before {
+  content: "No se muestra en la web";
+  display: block;
+  margin-bottom: 12px;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6d28d9;
+}

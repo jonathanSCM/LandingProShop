@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <%- include('../partials/head') %>
+  <link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-login">
+  <main class="login-wrap">
+    <form class="login-card" method="POST" action="/admin/login">
+      <div class="login-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="38" height="38" fill="none">
+            <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#lb)" />
+            <path d="M11 22V10h5.2c2.7 0 4.4 1.6 4.4 4s-1.7 4-4.4 4H14v4h-3zm3-6.6h2c1 0 1.6-.5 1.6-1.4s-.6-1.4-1.6-1.4h-2v2.8z" fill="#2fe3a6"/>
+            <defs><linearGradient id="lb" x1="2" y1="2" x2="30" y2="30" gradientUnits="userSpaceOnUse"><stop stop-color="#9333ea"/><stop offset="1" stop-color="#6d28d9"/></linearGradient></defs>
+          </svg>
+        </span>
+        <div>
+          <strong><%= site.name %></strong>
+          <span>Panel de administración</span>
+        </div>
+      </div>
+
+      <% if (error) { %>
+        <p class="login-error"><%= error %></p>
+      <% } %>
+
+      <div class="field">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" name="usuario" type="text" autocomplete="username" required autofocus />
+      </div>
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresar</button>
+      <a class="login-back" href="/">← Volver al sitio</a>
+    </form>
+  </main>
+</body>
+</html>

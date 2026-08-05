@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Proshop desarrolla software a medida en Bolivia: plataformas web, apps moviles, paneles administrativos y agentes de IA. Lo que tu negocio necesite, te lo construimos." />
+  <meta name="theme-color" content="#f4f3ef" />
+  <title><%= title %></title>
+
+  <meta property="og:title" content="<%= site.name %> — Software a medida" />
+  <meta property="og:description" content="Plataformas web, apps moviles, paneles y agentes de IA. Construidos desde cero para tu negocio." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/landing.css" />
+  <% if (editando) { %><link rel="stylesheet" href="/css/landing-editor.css" /><% } %>
+</head>
+<body class="<%= editando ? 'modo-edicion' : '' %>">
+
+<% if (editando) { %>
+  <div class="ed-barra" id="edBarra">
+    <span class="ed-marca">Modo edicion</span>
+    <span class="ed-pista">Toca cualquier texto y escribi encima</span>
+    <span class="ed-estado" id="edEstado" role="status" aria-live="polite"></span>
+    <button type="button" class="ed-btn ed-btn-2" id="edRestablecer">Restablecer todo</button>
+    <a class="ed-btn ed-btn-2" href="/nueva">Salir</a>
+    <button type="button" class="ed-btn ed-btn-1" id="edGuardar">Guardar</button>
+  </div>
+<% } %>
+
+<!-- Reticula de fondo: 12 columnas visibles -->
+<div class="grid-lines" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<header class="nav">
+  <div class="shell nav-inner">
+    <a class="brand" href="/nueva">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name"><%= site.name %></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#servicios">Que hacemos</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#proceso">Como trabajamos</a>
+      <a href="#agente">Agente IA</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a class="btn btn-solid" href="#contacto" data-edit="nav.cta"><%- t('nav.cta', 'Cuentanos tu idea') %></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================================================
+       HERO
+  ============================================================= -->
+  <section class="hero">
+    <div class="shell">
+      <p class="tag">
+        <span class="tag-dot" aria-hidden="true"></span>
+        <span data-edit="hero.tag"><%- t('hero.tag', 'Desarrollo de software a medida · Bolivia') %></span>
+      </p>
+
+      <h1 class="hero-title" data-edit="hero.titulo">
+        <%- t('hero.titulo', 'Lo que tu negocio<br />\nnecesite, <em>te lo construimos</em>.') %>
+      </h1>
+
+      <div class="hero-foot">
+        <p class="hero-lead" data-edit="hero.lead">
+          <%- t('hero.lead', 'No vendemos plantillas ni sistemas enlatados. Escuchamos como funciona tu negocio de verdad y te construimos el software que le falta: <strong>plataformas web, apps moviles, paneles de control y agentes de inteligencia artificial</strong>. Desde cero, y funcionando.') %>
+        </p>
+
+        <div class="hero-cta">
+          <a class="btn btn-solid btn-lg" href="#contacto" data-edit="hero.cta1"><%- t('hero.cta1', 'Cuentanos tu idea') %></a>
+          <a class="btn btn-line btn-lg" href="#proyectos" data-edit="hero.cta2"><%- t('hero.cta2', 'Ver lo que hicimos') %></a>
+          <p class="cta-note" data-edit="hero.nota"><%- t('hero.nota', 'La primera reunion es gratis y sin compromiso.') %></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ficha tecnica -->
+    <div class="shell">
+      <dl class="specs">
+        <div class="spec">
+          <dt data-edit="spec1.et"><%- t('spec1.et', 'Como trabajamos') %></dt>
+          <dd data-edit="spec1.valor"><%- t('spec1.valor', 'A medida') %></dd>
+          <p data-edit="spec1.nota"><%- t('spec1.nota', 'Cada sistema se disena para un negocio, no para todos') %></p>
+        </div>
+        <div class="spec">
+          <dt data-edit="spec2.et"><%- t('spec2.et', 'Que construimos') %></dt>
+          <dd data-edit="spec2.valor"><%- t('spec2.valor', 'Web · Movil · IA') %></dd>
+          <p data-edit="spec2.nota"><%- t('spec2.nota', 'Lo que el proyecto pida, no lo que nos quede comodo') %></p>
+        </div>
+        <div class="spec">
+          <dt data-edit="spec3.et"><%- t('spec3.et', 'Donde estamos') %></dt>
+          <dd data-edit="spec3.valor"><%- t('spec3.valor', 'Bolivia') %></dd>
+          <p data-edit="spec3.nota"><%- t('spec3.nota', 'Proyectos en La Paz, Santa Cruz, Cochabamba, Tarija y Sucre') %></p>
+        </div>
+        <div class="spec">
+          <dt data-edit="spec4.et"><%- t('spec4.et', 'Nuestro trabajo') %></dt>
+          <dd data-edit="spec4.valor"><%- t('spec4.valor', 'En produccion') %></dd>
+          <p data-edit="spec4.nota"><%- t('spec4.nota', 'Sistemas que ya estan operando todos los dias') %></p>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       01 — QUE HACEMOS
+  ============================================================= -->
+  <section id="servicios" class="section section-tint">
+    <div class="shell">
+      <header class="head">
+        <span class="idx">01</span>
+        <h2 data-edit="sec1.titulo"><%- t('sec1.titulo', 'Si se puede programar, se puede construir.') %></h2>
+        <p data-edit="sec1.lead"><%- t('sec1.lead', 'Estas son las formas que suele tomar un proyecto. Si lo tuyo no entra en ninguna, igual conversemos.') %></p>
+      </header>
+
+      <div class="feats">
+        <article class="feat">
+          <span class="feat-n">A</span>
+          <h3 data-edit="feat1.titulo"><%- t('feat1.titulo', 'Plataformas web') %></h3>
+          <p data-edit="feat1.texto"><%- t('feat1.texto', 'Sistemas completos que corren en el navegador: reservas, pedidos, gestion interna, lo que tu operacion necesite.') %></p>
+        </article>
+        <article class="feat">
+          <span class="feat-n">B</span>
+          <h3 data-edit="feat2.titulo"><%- t('feat2.titulo', 'Aplicaciones moviles') %></h3>
+          <p data-edit="feat2.texto"><%- t('feat2.texto', 'Apps para Android y iOS con su propia API. Como la app de conductores que hicimos para AloTaxi.') %></p>
+        </article>
+        <article class="feat">
+          <span class="feat-n">C</span>
+          <h3 data-edit="feat3.titulo"><%- t('feat3.titulo', 'Paneles de control') %></h3>
+          <p data-edit="feat3.texto"><%- t('feat3.texto', 'El tablero desde donde manejas todo: usuarios, ventas, inventario, reportes y permisos por rol.') %></p>
+        </article>
+        <article class="feat">
+          <span class="feat-n">D</span>
+          <h3 data-edit="feat4.titulo"><%- t('feat4.titulo', 'Agentes y bots con IA') %></h3>
+          <p data-edit="feat4.texto"><%- t('feat4.texto', 'Atencion automatica por WhatsApp que entiende lo que le escriben. Es nuestro producto propio.') %></p>
+        </article>
+        <article class="feat">
+          <span class="feat-n">E</span>
+          <h3 data-edit="feat5.titulo"><%- t('feat5.titulo', 'Integraciones') %></h3>
+          <p data-edit="feat5.texto"><%- t('feat5.texto', 'Conectamos tu sistema con WhatsApp, pasarelas de pago, mapas o el software que ya usas.') %></p>
+        </article>
+        <article class="feat">
+          <span class="feat-n">F</span>
+          <h3 data-edit="feat6.titulo"><%- t('feat6.titulo', 'Rescate de proyectos') %></h3>
+          <p data-edit="feat6.texto"><%- t('feat6.texto', 'Tienes un sistema a medio hacer o que nadie mantiene? Lo revisamos, lo arreglamos y lo terminamos.') %></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       02 — PROYECTOS (paneles interactivos)
+  ============================================================= -->
+  <section id="proyectos" class="section">
+    <div class="shell">
+      <header class="head">
+        <span class="idx">02</span>
+        <h2 data-edit="sec2.titulo"><%- t('sec2.titulo', 'Proyectos realizados.') %></h2>
+        <p data-edit="sec2.lead"><%- t('sec2.lead', 'Sistemas nuestros que hoy estan funcionando. Elegi uno de la lista para ver de que se trata, que hace por dentro y con que esta construido.') %></p>
+      </header>
+
+      <div class="proj">
+        <!-- Lista de proyectos -->
+        <div class="proj-tabs" role="tablist" aria-orientation="vertical" aria-label="Proyectos" data-tabs="panel">
+          <% proyectos.forEach(function (p, i) { %>
+            <button
+              class="proj-tab <%= i === 0 ? 'is-active' : '' %> <%= p.oculto ? 'esta-oculto' : '' %>"
+              role="tab"
+              id="tab-<%= p.id %>"
+              aria-controls="panel-<%= p.id %>"
+              aria-selected="<%= i === 0 ? 'true' : 'false' %>"
+              tabindex="<%= i === 0 ? '0' : '-1' %>"
+              data-target="<%= p.id %>">
+              <span class="proj-n"><%= String(i + 1).padStart(2, '0') %></span>
+              <span class="proj-tab-body">
+                <span class="proj-tab-name"><%= p.nombre %></span>
+                <span class="proj-tab-type"><%= p.tipo %></span>
+              </span>
+              <span class="proj-arrow" aria-hidden="true">→</span>
+            </button>
+          <% }); %>
+        </div>
+
+        <!-- Paneles -->
+        <div class="proj-panels">
+          <% proyectos.forEach(function (p, i) { %>
+            <article
+              class="proj-panel <%= i === 0 ? 'is-active' : '' %> <%= p.oculto ? 'esta-oculto' : '' %>"
+              role="tabpanel"
+              id="panel-<%= p.id %>"
+              aria-labelledby="tab-<%= p.id %>"
+              data-proyecto="<%= p.id %>"
+              tabindex="0"
+              <%= i === 0 ? '' : 'hidden' %>>
+
+              <% if (editando) { %>
+                <div class="ed-proy">
+                  <span class="ed-proy-id">proyecto: <%= p.id %></span>
+                  <button type="button" class="ed-btn ed-btn-2 ed-toggle" data-proyecto="<%= p.id %>">
+                    <%= p.oculto ? 'Restaurar' : 'Quitar de la web' %>
+                  </button>
+                </div>
+              <% } %>
+
+              <div class="pp-head">
+                <div>
+                  <h3 data-campo="nombre"><%= p.nombre %></h3>
+                  <p class="pp-type">
+                    <span data-campo="tipo"><%= p.tipo %></span><%
+                      %><% if (p.lugar) { %> · <span data-campo="lugar"><%= p.lugar %></span><% } %>
+                  </p>
+                </div>
+                <span class="pp-state pp-state-<%= p.estado %>">
+                  <%= p.estado === 'produccion' ? 'En produccion' : 'En desarrollo' %>
+                </span>
+              </div>
+
+              <p class="pp-resumen" data-campo="resumen"><%= p.resumen %></p>
+
+              <% if (p.boceto) { %>
+                <figure class="pp-boceto">
+                  <%- include('partials/boceto', { id: p.id }) %>
+                  <figcaption data-campo="boceto"><%= p.boceto %></figcaption>
+                </figure>
+              <% } %>
+
+              <dl class="pp-metrics">
+                <% p.metricas.forEach(function (m) { %>
+                  <div>
+                    <dd><%= m.valor %></dd>
+                    <dt><%= m.etiqueta %></dt>
+                  </div>
+                <% }); %>
+              </dl>
+
+              <div class="pp-cols">
+                <div class="pp-col">
+                  <h4>Que hace</h4>
+                  <ul class="pp-feats">
+                    <% p.features.forEach(function (f) { %>
+                      <li><%= f %></li>
+                    <% }); %>
+                  </ul>
+                </div>
+                <div class="pp-col">
+                  <div class="pp-cta">
+                    <h4 data-edit="cta.titulo"><%- t('cta.titulo', 'Queres algo asi?') %></h4>
+                    <p data-edit="cta.texto"><%- t('cta.texto', 'Te construimos uno pensado para tu negocio. Contanos la idea y te decimos plazo y precio.') %></p>
+
+                    <a class="btn btn-solid btn-block btn-wa"
+                       href="https://wa.me/<%= site.whatsapp %>?text=<%= encodeURIComponent('Hola ' + site.name + ', vi ' + p.nombre + ' en su web y quiero un proyecto asi para mi negocio.') %>"
+                       target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-wa">
+                        <path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.95L2 22l5.2-1.5A9.9 9.9 0 1 0 12.04 2Zm0 1.8a8.1 8.1 0 1 1-4.1 15.08l-.3-.17-3.08.89.9-3-.2-.31A8.1 8.1 0 0 1 12.04 3.8Zm-3.2 4.1c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.2.87 2.35.99 2.51.12.16 1.7 2.7 4.19 3.68 2.07.82 2.5.66 2.95.62.45-.04 1.44-.59 1.65-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.74-1.8-.19-.46-.39-.4-.54-.41h-.46Z"/>
+                      </svg>
+                      <span data-edit="cta.boton"><%- t('cta.boton', 'Crear proyecto') %></span>
+                    </a>
+
+                    <%
+                      // El proyecto "agentes" es nuestra propia plataforma: si esta
+                      // publicada, su enlace va primero.
+                      var enlaces = (p.enlaces || []).slice();
+                      if (p.id === 'agentes' && site.plataforma) {
+                        enlaces.unshift({ texto: 'Ir a la plataforma', href: site.plataforma, externo: true });
+                      }
+                    %>
+                    <% if (enlaces.length) { %>
+                      <div class="pp-links">
+                        <% enlaces.forEach(function (e) { %>
+                          <a class="btn btn-line <%= e.externo ? 'btn-ext' : '' %>"
+                             href="<%= e.href %>"
+                             <% if (e.externo) { %>target="_blank" rel="noopener"<% } %>>
+                            <%= e.texto %>
+                            <% if (e.externo) { %>
+                              <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-ext">
+                                <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+                              </svg>
+                            <% } %>
+                          </a>
+                        <% }); %>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </article>
+          <% }); %>
+        </div>
+      </div>
+
+      <p class="proj-foot" data-edit="proj.pie">
+        <%- t('proj.pie', 'Y el tuyo? <a href="#contacto">Contanos que necesitas</a> y te decimos si se puede — con plazo y precio, no con promesas.') %>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       03 — COMO TRABAJAMOS
+  ============================================================= -->
+  <section id="proceso" class="section section-tint">
+    <div class="shell">
+      <header class="head">
+        <span class="idx">03</span>
+        <h2 data-edit="sec3.titulo"><%- t('sec3.titulo', 'Sabes cuanto cuesta antes de empezar.') %></h2>
+        <p data-edit="sec3.lead"><%- t('sec3.lead', 'Nada de "vamos viendo". Se define el alcance, se acuerda el precio y se entrega por partes.') %></p>
+      </header>
+
+      <ol class="steps">
+        <li class="step">
+          <span class="step-n">01</span>
+          <h3 data-edit="paso1.titulo"><%- t('paso1.titulo', 'Conversamos') %></h3>
+          <p data-edit="paso1.texto"><%- t('paso1.texto', 'Nos cuentas como trabajas hoy y que te esta costando tiempo o plata. Sin tecnicismos.') %></p>
+        </li>
+        <li class="step">
+          <span class="step-n">02</span>
+          <h3 data-edit="paso2.titulo"><%- t('paso2.titulo', 'Te pasamos la propuesta') %></h3>
+          <p data-edit="paso2.texto"><%- t('paso2.texto', 'Que se va a construir, en cuanto tiempo y cuanto sale. Por escrito y cerrado.') %></p>
+        </li>
+        <li class="step">
+          <span class="step-n">03</span>
+          <h3 data-edit="paso3.titulo"><%- t('paso3.titulo', 'Construimos por partes') %></h3>
+          <p data-edit="paso3.texto"><%- t('paso3.texto', 'Cada pocas semanas ves algo funcionando y lo pruebas. Corregimos sobre la marcha.') %></p>
+        </li>
+        <li class="step">
+          <span class="step-n">04</span>
+          <h3 data-edit="paso4.titulo"><%- t('paso4.titulo', 'Entregamos y acompanamos') %></h3>
+          <p data-edit="paso4.texto"><%- t('paso4.texto', 'Lo dejamos publicado y andando, capacitamos a tu gente y seguimos dando soporte.') %></p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       04 — PRODUCTO PROPIO: AGENTE IA + PLANES
+  ============================================================= -->
+  <section id="agente" class="section">
+    <div class="shell">
+      <header class="head">
+        <span class="idx">04</span>
+        <h2 data-edit="sec4.titulo"><%- t('sec4.titulo', 'Ademas, tenemos algo listo para usar hoy.') %></h2>
+        <p data-edit="sec4.lead"><%- t('sec4.lead', '<b>Agentes de venta con IA por WhatsApp</b>: nuestro producto propio, ya construido. Si lo tuyo es vender por WhatsApp y no necesitas nada a medida, arrancas manana. Se cobra por <b>conversacion</b>, no por mensaje.') %></p>
+      </header>
+
+      <div class="agente-intro">
+        <div class="ai-copy">
+          <p data-edit="ai.texto"><%- t('ai.texto', 'Un agente de inteligencia artificial contesta el WhatsApp de tu negocio las 24 horas: responde preguntas, muestra tus productos con precio y stock, y deja el pedido anotado en tu panel. Se conecta al numero que ya usas.') %></p>
+          <a class="btn btn-line" href="#planes-tabla" data-edit="ai.cta"><%- t('ai.cta', 'Ver los planes') %></a>
+        </div>
+
+        <div class="transcript">
+          <div class="transcript-head">
+            <span>WhatsApp · tu negocio</span>
+            <span class="live"><i aria-hidden="true"></i> en linea</span>
+          </div>
+          <div class="line line-them">
+            <span class="who">Cliente</span>
+            <p>Buenas, tienen zapatillas para correr talla 42?</p>
+          </div>
+          <div class="line line-us">
+            <span class="who">Agente</span>
+            <p>
+              Si! En talla 42 me quedan dos:<br />
+              <b>Runner Pro</b> — Bs 450 · 3 en stock<br />
+              <b>AirLite</b> — Bs 380 · 1 en stock
+            </p>
+          </div>
+          <div class="line line-them">
+            <span class="who">Cliente</span>
+            <p>La AirLite, la llevo</p>
+          </div>
+          <div class="line line-us">
+            <span class="who">Agente</span>
+            <p>Listo. Pedido anotado: AirLite talla 42, Bs 380. A que direccion la enviamos?</p>
+          </div>
+          <div class="transcript-foot">
+            <span class="stamp">Pedido registrado</span>
+            <span class="stamp">Stock actualizado</span>
+            <span class="stamp">Cliente guardado</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- La plataforma ---------- -->
+      <div class="plat-wrap">
+        <header class="plat-head">
+          <div>
+            <span class="eyebrow">La plataforma</span>
+            <h3 data-edit="plat.titulo"><%- t('plat.titulo', 'Todo lo que vende el agente, lo ves aca adentro.') %></h3>
+            <p data-edit="plat.lead"><%- t('plat.lead', 'Cada cuenta trae su propio panel. Elegi una seccion para ver de que se trata.') %></p>
+          </div>
+          <div class="plat-cta">
+            <% if (site.plataforma) { %>
+              <a class="btn btn-solid btn-ext" href="<%= site.plataforma %>" target="_blank" rel="noopener">
+                <span data-edit="plat.boton"><%- t('plat.boton', 'Ir a la plataforma') %></span>
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-ext">
+                  <path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" />
+                </svg>
+              </a>
+            <% } %>
+          </div>
+        </header>
+
+        <div class="plat">
+          <nav class="plat-side" role="tablist" aria-orientation="vertical" aria-label="Secciones del panel" data-tabs="plat">
+            <span class="plat-brand">
+              <span class="brand-mark" aria-hidden="true"></span>
+              <b><%= site.name %></b>
+            </span>
+
+            <span class="plat-group">Operacion</span>
+            <button role="tab" class="plat-item is-active" id="pt-inicio" data-target="inicio"
+                    aria-controls="plat-inicio" aria-selected="true" tabindex="0">
+              <span class="si" aria-hidden="true">🏠</span> Inicio
+            </button>
+            <button role="tab" class="plat-item" id="pt-conversaciones" data-target="conversaciones"
+                    aria-controls="plat-conversaciones" aria-selected="false" tabindex="-1">
+              <span class="si" aria-hidden="true">💬</span> Conversaciones
+            </button>
+            <button role="tab" class="plat-item" id="pt-pedidos" data-target="pedidos"
+                    aria-controls="plat-pedidos" aria-selected="false" tabindex="-1">
+              <span class="si" aria-hidden="true">🛒</span> Pedidos
+            </button>
+            <button role="tab" class="plat-item" id="pt-productos" data-target="productos"
+                    aria-controls="plat-productos" aria-selected="false" tabindex="-1">
+              <span class="si" aria-hidden="true">📦</span> Productos
+            </button>
+            <button role="tab" class="plat-item" id="pt-agente" data-target="agente"
+                    aria-controls="plat-agente" aria-selected="false" tabindex="-1">
+              <span class="si" aria-hidden="true">🤖</span> Agente IA
+            </button>
+            <button role="tab" class="plat-item" id="pt-reportes" data-target="reportes"
+                    aria-controls="plat-reportes" aria-selected="false" tabindex="-1">
+              <span class="si" aria-hidden="true">📈</span> Reportes
+            </button>
+
+            <span class="plat-group">Plan y facturacion</span>
+            <button role="tab" class="plat-item" id="pt-consumo" data-target="consumo"
+                    aria-controls="plat-consumo" aria-selected="false" tabindex="-1">
+              <span class="si" aria-hidden="true">🎫</span> Mi consumo
+            </button>
+
+            <span class="plat-more">
+              Ademas: Clientes, Inventario, WhatsApp, Configuracion,
+              Comprar paquete y Mis compras.
+            </span>
+          </nav>
+
+          <div class="plat-view">
+            <section class="plat-panel is-active" role="tabpanel" id="plat-inicio" aria-labelledby="pt-inicio" tabindex="0">
+              <h4>Inicio</h4>
+              <p class="plat-desc">Como va el dia, apenas entras. Sin buscar nada.</p>
+              <div class="kpis">
+                <div><b>18</b><span>clientes escribieron hoy</span></div>
+                <div><b>7</b><span>pedidos hoy</span></div>
+                <div><b>Bs 2.640</b><span>vendido hoy</span></div>
+                <div><b>86%</b><span>resuelto por la IA</span></div>
+              </div>
+              <p class="plat-note">Tambien te avisa que conversaciones necesitan que respondas vos y que productos se estan por acabar.</p>
+            </section>
+
+            <section class="plat-panel" role="tabpanel" id="plat-conversaciones" aria-labelledby="pt-conversaciones" tabindex="0" hidden>
+              <h4>Conversaciones</h4>
+              <p class="plat-desc">Todos los chats de tu WhatsApp, con quien los atendio.</p>
+              <ul class="rows">
+                <li><span class="r-main">Maria Quispe</span><span class="r-sub">"tienen la talla 38?"</span><span class="chip chip-ok">IA</span></li>
+                <li><span class="r-main">Carlos Mamani</span><span class="r-sub">"quiero devolver un producto"</span><span class="chip chip-warn">Te necesita</span></li>
+                <li><span class="r-main">Ana Rojas</span><span class="r-sub">"me lo envian a Cotoca?"</span><span class="chip chip-ok">IA</span></li>
+              </ul>
+            </section>
+
+            <section class="plat-panel" role="tabpanel" id="plat-pedidos" aria-labelledby="pt-pedidos" tabindex="0" hidden>
+              <h4>Pedidos</h4>
+              <p class="plat-desc">Lo que el agente cerro solo, listo para que despaches.</p>
+              <ul class="rows">
+                <li><span class="r-main">#1042 · Ana Rojas</span><span class="r-sub">AirLite talla 42</span><span class="chip">Bs 380</span></li>
+                <li><span class="r-main">#1041 · Luis Vaca</span><span class="r-sub">Runner Pro talla 40</span><span class="chip">Bs 450</span></li>
+                <li><span class="r-main">#1040 · Maria Quispe</span><span class="r-sub">Mochila urbana</span><span class="chip">Bs 220</span></li>
+              </ul>
+            </section>
+
+            <section class="plat-panel" role="tabpanel" id="plat-productos" aria-labelledby="pt-productos" tabindex="0" hidden>
+              <h4>Productos</h4>
+              <p class="plat-desc">Tu catalogo. Es lo unico que el agente puede ofrecer.</p>
+              <ul class="rows">
+                <li><span class="r-main">Runner Pro</span><span class="r-sub">Bs 450</span><span class="chip chip-ok">3 en stock</span></li>
+                <li><span class="r-main">AirLite</span><span class="r-sub">Bs 380</span><span class="chip chip-warn">1 en stock</span></li>
+                <li><span class="r-main">Mochila urbana</span><span class="r-sub">Bs 220</span><span class="chip chip-ok">12 en stock</span></li>
+              </ul>
+              <p class="plat-note">Cuando algo se agota, el agente deja de ofrecerlo al instante.</p>
+            </section>
+
+            <section class="plat-panel" role="tabpanel" id="plat-agente" aria-labelledby="pt-agente" tabindex="0" hidden>
+              <h4>Agente IA</h4>
+              <p class="plat-desc">Le pones el tono, las reglas, y lo probas antes de soltarlo.</p>
+              <ul class="rows rows-plain">
+                <li><span class="r-main">Tono</span><span class="r-sub">Cercano y respetuoso, de usted</span></li>
+                <li><span class="r-main">Instrucciones</span><span class="r-sub">"Nunca prometer descuentos sin autorizar"</span></li>
+                <li><span class="r-main">Bienvenida</span><span class="r-sub">"Hola! Bienvenido a la tienda 👋"</span></li>
+              </ul>
+              <p class="plat-note">Hay un chat de prueba dentro del panel: hablas con tu agente sin gastar tu WhatsApp.</p>
+            </section>
+
+            <section class="plat-panel" role="tabpanel" id="plat-reportes" aria-labelledby="pt-reportes" tabindex="0" hidden>
+              <h4>Reportes</h4>
+              <p class="plat-desc">Como viene la semana y cuanto trabajo te esta sacando la IA.</p>
+              <div class="mini-bars" aria-hidden="true">
+                <span style="--h: 42%"></span><span style="--h: 58%"></span><span style="--h: 35%"></span>
+                <span style="--h: 76%"></span><span style="--h: 64%"></span><span style="--h: 90%"></span>
+                <span style="--h: 52%"></span>
+              </div>
+              <p class="plat-note">Conversaciones de los ultimos 7 dias, productos mas pedidos y porcentaje resuelto sin vos.</p>
+            </section>
+
+            <section class="plat-panel" role="tabpanel" id="plat-consumo" aria-labelledby="pt-consumo" tabindex="0" hidden>
+              <h4>Mi consumo</h4>
+              <p class="plat-desc">Cuantas conversaciones te quedan del mes y cuantas tenes de paquetes.</p>
+              <div class="meter" role="img" aria-label="312 de 500 conversaciones usadas">
+                <span style="--p: 62%"></span>
+              </div>
+              <ul class="rows rows-plain">
+                <li><span class="r-main">Del plan</span><span class="r-sub">188 de 500 disponibles</span></li>
+                <li><span class="r-main">De paquetes</span><span class="r-sub">1.000 (no caducan)</span></li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <p class="plat-foot">
+          Vistas de ejemplo con datos inventados, para que veas como se organiza.
+          <% if (site.plataforma) { %>
+            El panel de verdad esta en <a href="<%= site.plataforma %>" target="_blank" rel="noopener">la plataforma</a>.
+          <% } %>
+        </p>
+      </div>
+
+      <div class="plans-scroll" id="planes-tabla">
+        <div class="plans" style="--cols: <%= planes.length %>">
+
+          <div class="plan plan-labels" aria-hidden="true">
+            <div class="p-cell p-name"></div>
+            <div class="p-cell p-price"></div>
+            <div class="p-cell">Conversaciones / mes</div>
+            <div class="p-cell">Productos</div>
+            <div class="p-cell">Usuarios</div>
+            <div class="p-cell">Implementacion</div>
+            <div class="p-cell p-cta"></div>
+          </div>
+
+          <% planes.forEach(function (p) { %>
+            <div class="plan <%= p.recomendado ? 'is-reco' : '' %>">
+              <% if (p.recomendado) { %><span class="reco">Mas elegido</span><% } %>
+
+              <div class="p-cell p-name"><h3><%= p.nombre %></h3></div>
+
+              <div class="p-cell p-price">
+                <span class="cur">Bs</span><span class="num"><%= Number(p.mensualidadBs).toLocaleString('es-BO') %></span><span class="per">/mes</span>
+              </div>
+
+              <div class="p-cell" data-label="Conversaciones / mes">
+                <b><%= p.convIncluidas.toLocaleString('es-BO') %></b>
+              </div>
+              <div class="p-cell" data-label="Productos">
+                <b><%= p.maxProductos.toLocaleString('es-BO') %></b>
+              </div>
+              <div class="p-cell" data-label="Usuarios">
+                <b><%= p.maxUsuarios %></b>
+              </div>
+              <div class="p-cell" data-label="Implementacion">
+                <% if (Number(p.implementacionBs) > 0) { %>
+                  <b>Bs <%= Number(p.implementacionBs).toLocaleString('es-BO') %></b>
+                  <span class="once">pago unico</span>
+                <% } else { %>
+                  <b>—</b>
+                <% } %>
+              </div>
+
+              <div class="p-cell p-cta">
+                <a class="btn btn-block <%= p.recomendado ? 'btn-solid' : 'btn-line' %>"
+                   href="/registro?plan=<%= p.id %>">
+                  <%= Number(p.mensualidadBs) === 0 ? 'Empezar gratis' : 'Contratar' %>
+                </a>
+                <% if (Number(p.primerPagoBs) > 0) { %>
+                  <p class="first-pay">Primer pago Bs <%= Number(p.primerPagoBs).toLocaleString('es-BO') %></p>
+                <% } %>
+              </div>
+
+              <% if (p.features && p.features.length) { %>
+                <ul class="p-feats">
+                  <% p.features.slice(0, 6).forEach(function (f) { %>
+                    <li><%= f %></li>
+                  <% }); %>
+                </ul>
+              <% } %>
+            </div>
+          <% }); %>
+
+        </div>
+      </div>
+
+      <div class="packs">
+        <div class="packs-copy">
+          <h3 data-edit="packs.titulo"><%- t('packs.titulo', 'Se te acabaron las conversaciones del mes?') %></h3>
+          <p data-edit="packs.texto"><%- t('packs.texto', 'Compras un paquete adicional y sigues vendiendo. <b>No caduca</b>: lo que no uses este mes te queda para el siguiente. Mientras mas grande el paquete, mas barata sale cada conversacion.') %></p>
+        </div>
+        <ul class="packs-list">
+          <% paquetes.forEach(function (q) { %>
+            <li>
+              <span class="pk-qty"><%= q.cantidad.toLocaleString('es-BO') %></span>
+              <span class="pk-lbl">conversaciones</span>
+              <span class="pk-price">US$ <%= Number(q.precioUsd).toFixed(2) %></span>
+              <span class="pk-unit">US$ <%= (Number(q.precioUsd) / q.cantidad).toFixed(3) %> c/u</span>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       05 — CONTACTO
+  ============================================================= -->
+  <section id="contacto" class="section section-tint">
+    <div class="shell">
+      <header class="head">
+        <span class="idx">05</span>
+        <h2 data-edit="sec5.titulo"><%- t('sec5.titulo', 'Contanos que necesitas.') %></h2>
+        <p data-edit="sec5.lead"><%- t('sec5.lead', 'Escribinos que hace tu negocio y que te gustaria automatizar. Te respondemos si se puede, cuanto demora y cuanto cuesta.') %></p>
+      </header>
+
+      <div class="contact">
+        <div class="contact-side">
+          <ul class="contact-list">
+            <li>
+              <span class="cl-lbl">WhatsApp</span>
+              <a href="https://wa.me/<%= site.whatsapp %>" target="_blank" rel="noopener"><%= site.phone %></a>
+            </li>
+            <li>
+              <span class="cl-lbl">Correo</span>
+              <a href="mailto:<%= site.email %>"><%= site.email %></a>
+            </li>
+            <li>
+              <span class="cl-lbl">Donde estamos</span>
+              <span><%= site.location %></span>
+            </li>
+          </ul>
+          <p class="contact-note" data-edit="contacto.nota">
+            <%- t('contacto.nota', 'Respondemos en horario de oficina. Si es urgente, escribinos directo al WhatsApp.') %>
+          </p>
+        </div>
+
+        <form class="form" id="contactForm" novalidate>
+          <div class="field">
+            <label for="nombre">Nombre <i>*</i></label>
+            <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Como te llamas" />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="email">Correo <i>*</i></label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="tu@correo.com" />
+            </div>
+            <div class="field">
+              <label for="telefono">WhatsApp</label>
+              <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+591 7xx xxx" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="servicio">Que necesitas</label>
+            <select id="servicio" name="servicio">
+              <option value="">Todavia no lo se</option>
+              <option>Plataforma web a medida</option>
+              <option>Aplicacion movil</option>
+              <option>Panel de control / administrativo</option>
+              <option>Agente o bot con IA</option>
+              <option>Integracion con otro sistema</option>
+              <option>Terminar o arreglar un proyecto existente</option>
+              <% planes.forEach(function (p) { %>
+                <option>Agente IA — Plan <%= p.nombre %></option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="mensaje">Contanos tu idea <i>*</i></label>
+            <textarea id="mensaje" name="mensaje" rows="4" required placeholder="A que se dedica tu negocio y que te gustaria que el sistema haga por vos."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-solid btn-lg btn-block" id="submitBtn">Enviar</button>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <div class="foot-brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name"><%= site.name %></span>
+      <p data-edit="foot.desc"><%- t('foot.desc', 'Software a medida en Bolivia. Plataformas web, apps moviles, paneles y agentes de IA.') %></p>
+    </div>
+
+    <nav class="foot-nav">
+      <span class="foot-lbl">Servicios</span>
+      <a href="#servicios">Que hacemos</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#proceso">Como trabajamos</a>
+    </nav>
+
+    <nav class="foot-nav">
+      <span class="foot-lbl">Plataforma</span>
+      <a href="#agente">El producto</a>
+      <a href="#planes-tabla">Planes</a>
+      <a href="/registro">Crear cuenta</a>
+      <a href="/ingresar">Entrar al panel</a>
+    </nav>
+
+    <div class="foot-end">
+      <span>&copy; <%= new Date().getFullYear() %> <%= site.name %></span>
+      <span><%= site.location %></span>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/landing.js"></script>
+<% if (editando) { %><script src="/js/landing-editor.js"></script><% } %>
+</body>
+</html>

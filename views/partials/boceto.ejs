@@ -1,0 +1,182 @@
+<%#
+  Boceto (wireframe) de un proyecto. Recibe la variable "id".
+  Lo incluye views/landing.ejs dentro de cada panel de proyecto.
+
+  Son dibujos a linea, sin imagenes: no pesan nada, se ven nitidos en cualquier
+  pantalla y toman los colores del tema desde las clases .bo-* de landing.css.
+  Si agregas un proyecto y todavia no tiene boceto, no se rompe: no dibuja nada.
+
+  OJO: no escribas una etiqueta EJS de cierre dentro de este comentario,
+  lo corta a la mitad.
+%>
+
+<% if (id === 'protaxi') { %>
+  <svg class="bo" viewBox="0 0 420 240" aria-hidden="true">
+    <!-- aviso flotante -->
+    <rect x="24" y="52" width="96" height="52" rx="8" class="bo-s bo-pf" />
+    <circle cx="42" cy="70" r="6" class="bo-a" />
+    <rect x="56" y="66" width="48" height="6" rx="3" class="bo-f" />
+    <rect x="38" y="84" width="66" height="4" rx="2" class="bo-f2" />
+    <path d="M126 66 q10 12 0 24" class="bo-a" />
+    <path d="M134 60 q16 18 0 36" class="bo-s2" />
+
+    <!-- telefono -->
+    <rect x="152" y="10" width="140" height="220" rx="18" class="bo-s bo-pf" />
+    <rect x="205" y="20" width="34" height="5" rx="2.5" class="bo-f2" />
+    <line x1="152" y1="40" x2="292" y2="40" class="bo-s2" />
+    <text x="166" y="60" class="bo-t">VIAJE NUEVO</text>
+
+    <!-- tarjeta de oferta -->
+    <rect x="164" y="70" width="116" height="106" rx="8" class="bo-a bo-abg" />
+    <text x="176" y="94" class="bo-tb">Bs 25</text>
+    <circle cx="180" cy="112" r="3.5" class="bo-af" />
+    <line x1="180" y1="116" x2="180" y2="134" class="bo-s2" />
+    <rect x="177" y="134" width="7" height="7" class="bo-af" />
+    <rect x="192" y="108" width="72" height="5" rx="2.5" class="bo-f2" />
+    <rect x="192" y="133" width="56" height="5" rx="2.5" class="bo-f2" />
+    <rect x="176" y="152" width="48" height="16" rx="8" class="bo-af" />
+    <rect x="230" y="152" width="38" height="16" rx="8" class="bo-s2" />
+
+    <!-- barra inferior -->
+    <line x1="152" y1="192" x2="292" y2="192" class="bo-s2" />
+    <circle cx="182" cy="210" r="5" class="bo-af" />
+    <circle cx="222" cy="210" r="5" class="bo-s2" />
+    <circle cx="262" cy="210" r="5" class="bo-s2" />
+
+    <!-- ganancias -->
+    <rect x="316" y="96" width="80" height="72" rx="8" class="bo-s bo-pf" />
+    <rect x="326" y="146" width="9" height="14" class="bo-af" />
+    <rect x="340" y="136" width="9" height="24" class="bo-af" />
+    <rect x="354" y="126" width="9" height="34" class="bo-af" />
+    <rect x="368" y="140" width="9" height="20" class="bo-af" />
+    <rect x="326" y="108" width="42" height="5" rx="2.5" class="bo-f" />
+  </svg>
+
+<% } else if (id === 'avaroa') { %>
+  <svg class="bo" viewBox="0 0 420 240" aria-hidden="true">
+    <!-- ventana -->
+    <rect x="14" y="14" width="392" height="212" rx="8" class="bo-s bo-pf" />
+    <line x1="14" y1="40" x2="406" y2="40" class="bo-s2" />
+    <circle cx="30" cy="27" r="3" class="bo-f2" />
+    <circle cx="42" cy="27" r="3" class="bo-f2" />
+    <circle cx="54" cy="27" r="3" class="bo-f2" />
+
+    <!-- menu lateral -->
+    <line x1="86" y1="40" x2="86" y2="226" class="bo-s2" />
+    <rect x="26" y="56" width="48" height="12" rx="4" class="bo-af" />
+    <rect x="26" y="78" width="40" height="5" rx="2.5" class="bo-f2" />
+    <rect x="26" y="92" width="46" height="5" rx="2.5" class="bo-f2" />
+    <rect x="26" y="106" width="36" height="5" rx="2.5" class="bo-f2" />
+    <rect x="26" y="120" width="44" height="5" rx="2.5" class="bo-f2" />
+
+    <!-- mapa con flota -->
+    <rect x="100" y="54" width="184" height="158" rx="6" class="bo-s2 bo-abg" />
+    <path d="M110 190 q40 -30 70 -18 t50 -46 t44 -12" class="bo-a" />
+    <path d="M128 60 q-8 40 24 62 t18 84" class="bo-s2" />
+    <circle cx="150" cy="164" r="6" class="bo-af" />
+    <circle cx="208" cy="118" r="6" class="bo-af" />
+    <circle cx="252" cy="82" r="6" class="bo-mf" />
+    <rect x="112" y="64" width="52" height="6" rx="3" class="bo-f" />
+
+    <!-- columna de datos -->
+    <rect x="298" y="54" width="94" height="44" rx="6" class="bo-s2" />
+    <rect x="308" y="64" width="30" height="10" rx="3" class="bo-f" />
+    <rect x="308" y="80" width="56" height="5" rx="2.5" class="bo-f2" />
+    <rect x="298" y="108" width="94" height="44" rx="6" class="bo-s2" />
+    <rect x="308" y="118" width="38" height="10" rx="3" class="bo-f" />
+    <rect x="308" y="134" width="48" height="5" rx="2.5" class="bo-f2" />
+    <rect x="298" y="162" width="94" height="50" rx="6" class="bo-s2" />
+    <rect x="308" y="174" width="60" height="5" rx="2.5" class="bo-f2" />
+    <rect x="308" y="188" width="44" height="5" rx="2.5" class="bo-f2" />
+  </svg>
+
+<% } else if (id === 'alotaxi') { %>
+  <svg class="bo" viewBox="0 0 420 240" aria-hidden="true">
+    <!-- telefono con el chat -->
+    <rect x="18" y="10" width="150" height="220" rx="18" class="bo-s bo-pf" />
+    <line x1="18" y1="42" x2="168" y2="42" class="bo-s2" />
+    <circle cx="36" cy="27" r="7" class="bo-s2" />
+    <rect x="50" y="23" width="52" height="6" rx="3" class="bo-f" />
+
+    <rect x="32" y="56" width="90" height="26" rx="8" class="bo-s2" />
+    <rect x="42" y="66" width="66" height="5" rx="2.5" class="bo-f2" />
+
+    <rect x="62" y="92" width="92" height="26" rx="8" class="bo-a bo-abg" />
+    <rect x="72" y="102" width="70" height="5" rx="2.5" class="bo-af" />
+
+    <rect x="32" y="128" width="76" height="26" rx="8" class="bo-s2" />
+    <rect x="42" y="138" width="52" height="5" rx="2.5" class="bo-f2" />
+
+    <rect x="62" y="164" width="92" height="34" rx="8" class="bo-a bo-abg" />
+    <rect x="72" y="174" width="70" height="5" rx="2.5" class="bo-af" />
+    <rect x="72" y="185" width="44" height="5" rx="2.5" class="bo-af" />
+
+    <line x1="18" y1="210" x2="168" y2="210" class="bo-s2" />
+
+    <!-- flecha -->
+    <path d="M182 120 h34" class="bo-a" />
+    <path d="M210 114 l7 6 l-7 6" class="bo-a" />
+
+    <!-- mapa con las ciudades -->
+    <rect x="232" y="26" width="174" height="188" rx="8" class="bo-s bo-pf" />
+    <path d="M244 188 q34 -26 62 -14 t44 -48 t48 -16" class="bo-s2" />
+    <circle cx="278" cy="72" r="5" class="bo-af" />
+    <text x="290" y="76" class="bo-t">SCZ</text>
+    <circle cx="278" cy="106" r="5" class="bo-af" />
+    <text x="290" y="110" class="bo-t">CBBA</text>
+    <circle cx="278" cy="140" r="5" class="bo-af" />
+    <text x="290" y="144" class="bo-t">TJA</text>
+    <circle cx="278" cy="174" r="5" class="bo-af" />
+    <text x="290" y="178" class="bo-t">SRE</text>
+    <rect x="244" y="40" width="56" height="6" rx="3" class="bo-f" />
+  </svg>
+
+<% } else if (id === 'agentes') { %>
+  <svg class="bo" viewBox="0 0 420 240" aria-hidden="true">
+    <!-- chat de whatsapp -->
+    <rect x="18" y="10" width="152" height="220" rx="18" class="bo-s bo-pf" />
+    <line x1="18" y1="42" x2="170" y2="42" class="bo-s2" />
+    <circle cx="36" cy="27" r="7" class="bo-s2" />
+    <rect x="50" y="23" width="46" height="6" rx="3" class="bo-f" />
+    <circle cx="158" cy="27" r="3.5" class="bo-mf" />
+
+    <rect x="32" y="56" width="84" height="24" rx="8" class="bo-s2" />
+    <rect x="42" y="65" width="60" height="5" rx="2.5" class="bo-f2" />
+
+    <rect x="64" y="90" width="92" height="42" rx="8" class="bo-a bo-abg" />
+    <rect x="74" y="100" width="70" height="5" rx="2.5" class="bo-af" />
+    <rect x="74" y="111" width="58" height="5" rx="2.5" class="bo-af" />
+    <rect x="74" y="122" width="44" height="5" rx="2.5" class="bo-af" />
+
+    <rect x="32" y="142" width="66" height="24" rx="8" class="bo-s2" />
+    <rect x="42" y="151" width="44" height="5" rx="2.5" class="bo-f2" />
+
+    <rect x="64" y="176" width="92" height="30" rx="8" class="bo-a bo-abg" />
+    <rect x="74" y="186" width="68" height="5" rx="2.5" class="bo-af" />
+    <rect x="74" y="196" width="40" height="5" rx="2.5" class="bo-af" />
+
+    <!-- flecha -->
+    <path d="M184 118 h32" class="bo-a" />
+    <path d="M210 112 l7 6 l-7 6" class="bo-a" />
+
+    <!-- panel del negocio -->
+    <rect x="232" y="34" width="174" height="172" rx="8" class="bo-s bo-pf" />
+    <line x1="232" y1="60" x2="406" y2="60" class="bo-s2" />
+    <rect x="244" y="44" width="48" height="6" rx="3" class="bo-f" />
+
+    <rect x="244" y="72" width="70" height="34" rx="5" class="bo-s2" />
+    <rect x="252" y="80" width="26" height="10" rx="3" class="bo-f" />
+    <rect x="252" y="94" width="46" height="4" rx="2" class="bo-f2" />
+    <rect x="324" y="72" width="70" height="34" rx="5" class="bo-s2" />
+    <rect x="332" y="80" width="34" height="10" rx="3" class="bo-f" />
+    <rect x="332" y="94" width="40" height="4" rx="2" class="bo-f2" />
+
+    <line x1="244" y1="124" x2="394" y2="124" class="bo-s2" />
+    <rect x="244" y="134" width="86" height="5" rx="2.5" class="bo-f2" />
+    <rect x="352" y="132" width="42" height="10" rx="5" class="bo-mf" />
+    <line x1="244" y1="154" x2="394" y2="154" class="bo-s2" />
+    <rect x="244" y="164" width="70" height="5" rx="2.5" class="bo-f2" />
+    <rect x="352" y="162" width="42" height="10" rx="5" class="bo-mf" />
+    <line x1="244" y1="184" x2="394" y2="184" class="bo-s2" />
+  </svg>
+<% } %>
