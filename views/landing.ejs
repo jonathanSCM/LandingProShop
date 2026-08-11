@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Proshop desarrolla software a medida en Bolivia: plataformas web, apps moviles, paneles administrativos y agentes de IA. Lo que tu negocio necesite, te lo construimos." />
+  <meta name="description" content="ProShop: estrategia, marketing y tecnologia para construir ventajas competitivas. Entendemos tu negocio y desarrollamos las herramientas que necesita para competir mejor." />
   <meta name="theme-color" content="#f4f3ef" />
   <title><%= title %></title>
 
-  <meta property="og:title" content="<%= site.name %> — Software a medida" />
-  <meta property="og:description" content="Plataformas web, apps moviles, paneles y agentes de IA. Construidos desde cero para tu negocio." />
+  <meta property="og:title" content="<%= site.name %> — Estrategia, tecnologia y competitividad" />
+  <meta property="og:description" content="Entendemos tu negocio y desarrollamos las herramientas que necesita para competir mejor." />
   <meta property="og:type" content="website" />
 
   <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
@@ -40,8 +40,7 @@
 <header class="nav">
   <div class="shell nav-inner">
     <a class="brand" href="/">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-name"><%= site.name %></span>
+      <img class="brand-logo" src="/img/logo-proshop.png" alt="<%= site.name %>" />
     </a>
 
     <nav class="nav-links" id="navLinks">
@@ -70,22 +69,22 @@
     <div class="shell">
       <p class="tag">
         <span class="tag-dot" aria-hidden="true"></span>
-        <span data-edit="hero.tag"><%- t('hero.tag', 'Desarrollo de software a medida · Bolivia') %></span>
+        <span data-edit="hero.tag"><%- t('hero.tag', 'Estrategia · Tecnologia · Competitividad') %></span>
       </p>
 
       <h1 class="hero-title" data-edit="hero.titulo">
-        <%- t('hero.titulo', 'Lo que tu negocio<br />\nnecesite, <em>te lo construimos</em>.') %>
+        <%- t('hero.titulo', 'Entendemos tu negocio.<br />\n<em>Construimos lo que necesita</em>.') %>
       </h1>
 
       <div class="hero-foot">
         <p class="hero-lead" data-edit="hero.lead">
-          <%- t('hero.lead', 'No vendemos plantillas ni sistemas enlatados. Escuchamos como funciona tu negocio de verdad y te construimos el software que le falta: <strong>plataformas web, apps moviles, paneles de control y agentes de inteligencia artificial</strong>. Desde cero, y funcionando.') %>
+          <%- t('hero.lead', 'Primero entendemos como funciona tu empresa. Despues disenamos y desarrollamos <strong>plataformas web, aplicaciones moviles, paneles de control y agentes de inteligencia artificial</strong> adaptados a tus procesos.') %>
         </p>
 
         <div class="hero-cta">
-          <a class="btn btn-solid btn-lg" href="#contacto" data-edit="hero.cta1"><%- t('hero.cta1', 'Cuentanos tu idea') %></a>
-          <a class="btn btn-line btn-lg" href="#proyectos" data-edit="hero.cta2"><%- t('hero.cta2', 'Ver lo que hicimos') %></a>
-          <p class="cta-note" data-edit="hero.nota"><%- t('hero.nota', 'La primera reunion es gratis y sin compromiso.') %></p>
+          <a class="btn btn-solid btn-lg" href="#contacto" data-edit="hero.cta1"><%- t('hero.cta1', 'Conversemos sobre tu empresa') %></a>
+          <a class="btn btn-line btn-lg" href="#proyectos" data-edit="hero.cta2"><%- t('hero.cta2', 'Ver casos de exito') %></a>
+          <p class="cta-note" data-edit="hero.nota"><%- t('hero.nota', 'La primera reunion es un diagnostico sin costo.') %></p>
         </div>
       </div>
     </div>
@@ -96,22 +95,22 @@
         <div class="spec">
           <dt data-edit="spec1.et"><%- t('spec1.et', 'Como trabajamos') %></dt>
           <dd data-edit="spec1.valor"><%- t('spec1.valor', 'A medida') %></dd>
-          <p data-edit="spec1.nota"><%- t('spec1.nota', 'Cada sistema se disena para un negocio, no para todos') %></p>
+          <p data-edit="spec1.nota"><%- t('spec1.nota', 'Cada solucion se disena para tu negocio, no para cualquiera.') %></p>
         </div>
         <div class="spec">
           <dt data-edit="spec2.et"><%- t('spec2.et', 'Que construimos') %></dt>
           <dd data-edit="spec2.valor"><%- t('spec2.valor', 'Web · Movil · IA') %></dd>
-          <p data-edit="spec2.nota"><%- t('spec2.nota', 'Lo que el proyecto pida, no lo que nos quede comodo') %></p>
+          <p data-edit="spec2.nota"><%- t('spec2.nota', 'Desarrollamos lo que tu empresa necesita, no soluciones prefabricadas.') %></p>
         </div>
         <div class="spec">
           <dt data-edit="spec3.et"><%- t('spec3.et', 'Donde estamos') %></dt>
           <dd data-edit="spec3.valor"><%- t('spec3.valor', 'Bolivia') %></dd>
-          <p data-edit="spec3.nota"><%- t('spec3.nota', 'Proyectos en La Paz, Santa Cruz, Cochabamba, Tarija y Sucre') %></p>
+          <p data-edit="spec3.nota"><%- t('spec3.nota', 'Desarrollamos proyectos para empresas en toda Bolivia.') %></p>
         </div>
         <div class="spec">
           <dt data-edit="spec4.et"><%- t('spec4.et', 'Nuestro trabajo') %></dt>
           <dd data-edit="spec4.valor"><%- t('spec4.valor', 'En produccion') %></dd>
-          <p data-edit="spec4.nota"><%- t('spec4.nota', 'Sistemas que ya estan operando todos los dias') %></p>
+          <p data-edit="spec4.nota"><%- t('spec4.nota', 'Soluciones que generan resultados todos los dias.') %></p>
         </div>
       </dl>
     </div>
@@ -124,40 +123,40 @@
     <div class="shell">
       <header class="head">
         <span class="idx">01</span>
-        <h2 data-edit="sec1.titulo"><%- t('sec1.titulo', 'Si se puede programar, se puede construir.') %></h2>
-        <p data-edit="sec1.lead"><%- t('sec1.lead', 'Estas son las formas que suele tomar un proyecto. Si lo tuyo no entra en ninguna, igual conversemos.') %></p>
+        <h2 data-edit="sec1.titulo"><%- t('sec1.titulo', 'Cada desafio necesita una solucion diferente.') %></h2>
+        <p data-edit="sec1.lead"><%- t('sec1.lead', 'Estas son algunas formas que puede tomar una solucion. Si tu desafio es distinto, la disenamos contigo.') %></p>
       </header>
 
       <div class="feats">
         <article class="feat">
           <span class="feat-n">A</span>
           <h3 data-edit="feat1.titulo"><%- t('feat1.titulo', 'Plataformas web') %></h3>
-          <p data-edit="feat1.texto"><%- t('feat1.texto', 'Sistemas completos que corren en el navegador: reservas, pedidos, gestion interna, lo que tu operacion necesite.') %></p>
+          <p data-edit="feat1.texto"><%- t('feat1.texto', 'Sistemas web que organizan procesos, conectan equipos y se adaptan a la forma real de operar de tu empresa.') %></p>
         </article>
         <article class="feat">
           <span class="feat-n">B</span>
           <h3 data-edit="feat2.titulo"><%- t('feat2.titulo', 'Aplicaciones moviles') %></h3>
-          <p data-edit="feat2.texto"><%- t('feat2.texto', 'Apps para Android y iOS con su propia API. Como la app de conductores que hicimos para AloTaxi.') %></p>
+          <p data-edit="feat2.texto"><%- t('feat2.texto', 'Aplicaciones para Android y iOS conectadas con tus procesos, usuarios y objetivos de negocio.') %></p>
         </article>
         <article class="feat">
           <span class="feat-n">C</span>
-          <h3 data-edit="feat3.titulo"><%- t('feat3.titulo', 'Paneles de control') %></h3>
-          <p data-edit="feat3.texto"><%- t('feat3.texto', 'El tablero desde donde manejas todo: usuarios, ventas, inventario, reportes y permisos por rol.') %></p>
+          <h3 data-edit="feat3.titulo"><%- t('feat3.titulo', 'Control y decisiones') %></h3>
+          <p data-edit="feat3.texto"><%- t('feat3.texto', 'Controla usuarios, ventas, inventario y reportes con informacion clara para decidir mejor.') %></p>
         </article>
         <article class="feat">
           <span class="feat-n">D</span>
-          <h3 data-edit="feat4.titulo"><%- t('feat4.titulo', 'Agentes y bots con IA') %></h3>
-          <p data-edit="feat4.texto"><%- t('feat4.texto', 'Atencion automatica por WhatsApp que entiende lo que le escriben. Es nuestro producto propio.') %></p>
+          <h3 data-edit="feat4.titulo"><%- t('feat4.titulo', 'Agentes con IA') %></h3>
+          <p data-edit="feat4.texto"><%- t('feat4.texto', 'Agentes entrenados con tu negocio para atender, vender y automatizar procesos con proposito.') %></p>
         </article>
         <article class="feat">
           <span class="feat-n">E</span>
-          <h3 data-edit="feat5.titulo"><%- t('feat5.titulo', 'Integraciones') %></h3>
-          <p data-edit="feat5.texto"><%- t('feat5.texto', 'Conectamos tu sistema con WhatsApp, pasarelas de pago, mapas o el software que ya usas.') %></p>
+          <h3 data-edit="feat5.titulo"><%- t('feat5.titulo', 'Procesos conectados') %></h3>
+          <p data-edit="feat5.texto"><%- t('feat5.texto', 'Conectamos tus sistemas para reducir tareas manuales y mantener la informacion sincronizada.') %></p>
         </article>
         <article class="feat">
           <span class="feat-n">F</span>
-          <h3 data-edit="feat6.titulo"><%- t('feat6.titulo', 'Rescate de proyectos') %></h3>
-          <p data-edit="feat6.texto"><%- t('feat6.texto', 'Tienes un sistema a medio hacer o que nadie mantiene? Lo revisamos, lo arreglamos y lo terminamos.') %></p>
+          <h3 data-edit="feat6.titulo"><%- t('feat6.titulo', 'Proyectos en marcha') %></h3>
+          <p data-edit="feat6.texto"><%- t('feat6.texto', 'Tienes un proyecto detenido o dificil de mantener? Lo recuperamos, mejoramos y llevamos a produccion.') %></p>
         </article>
       </div>
     </div>
@@ -316,30 +315,30 @@
     <div class="shell">
       <header class="head">
         <span class="idx">03</span>
-        <h2 data-edit="sec3.titulo"><%- t('sec3.titulo', 'Sabes cuanto cuesta antes de empezar.') %></h2>
-        <p data-edit="sec3.lead"><%- t('sec3.lead', 'Nada de "vamos viendo". Se define el alcance, se acuerda el precio y se entrega por partes.') %></p>
+        <h2 data-edit="sec3.titulo"><%- t('sec3.titulo', 'Sabes que construiremos antes de empezar.') %></h2>
+        <p data-edit="sec3.lead"><%- t('sec3.lead', 'Primero entendemos el negocio. Luego definimos la solucion, la inversion y cada etapa del proyecto.') %></p>
       </header>
 
       <ol class="steps">
         <li class="step">
           <span class="step-n">01</span>
-          <h3 data-edit="paso1.titulo"><%- t('paso1.titulo', 'Conversamos') %></h3>
-          <p data-edit="paso1.texto"><%- t('paso1.texto', 'Nos cuentas como trabajas hoy y que te esta costando tiempo o plata. Sin tecnicismos.') %></p>
+          <h3 data-edit="paso1.titulo"><%- t('paso1.titulo', 'Entendemos tu negocio') %></h3>
+          <p data-edit="paso1.texto"><%- t('paso1.texto', 'Conocemos como trabajas, que limita tu operacion y que resultado necesitas alcanzar.') %></p>
         </li>
         <li class="step">
           <span class="step-n">02</span>
-          <h3 data-edit="paso2.titulo"><%- t('paso2.titulo', 'Te pasamos la propuesta') %></h3>
-          <p data-edit="paso2.texto"><%- t('paso2.texto', 'Que se va a construir, en cuanto tiempo y cuanto sale. Por escrito y cerrado.') %></p>
+          <h3 data-edit="paso2.titulo"><%- t('paso2.titulo', 'Definimos la solucion') %></h3>
+          <p data-edit="paso2.texto"><%- t('paso2.texto', 'Presentamos objetivos, alcance, etapas, inversion y beneficios esperados. Todo por escrito.') %></p>
         </li>
         <li class="step">
           <span class="step-n">03</span>
-          <h3 data-edit="paso3.titulo"><%- t('paso3.titulo', 'Construimos por partes') %></h3>
-          <p data-edit="paso3.texto"><%- t('paso3.texto', 'Cada pocas semanas ves algo funcionando y lo pruebas. Corregimos sobre la marcha.') %></p>
+          <h3 data-edit="paso3.titulo"><%- t('paso3.titulo', 'Implementamos por etapas') %></h3>
+          <p data-edit="paso3.texto"><%- t('paso3.texto', 'Recibes avances funcionales, los pruebas con tu equipo y ajustamos antes de continuar.') %></p>
         </li>
         <li class="step">
           <span class="step-n">04</span>
           <h3 data-edit="paso4.titulo"><%- t('paso4.titulo', 'Entregamos y acompanamos') %></h3>
-          <p data-edit="paso4.texto"><%- t('paso4.texto', 'Lo dejamos publicado y andando, capacitamos a tu gente y seguimos dando soporte.') %></p>
+          <p data-edit="paso4.texto"><%- t('paso4.texto', 'Implementamos, capacitamos a tu equipo y seguimos mejorando la solucion contigo.') %></p>
         </li>
       </ol>
     </div>
@@ -418,8 +417,7 @@
         <div class="plat">
           <nav class="plat-side" role="tablist" aria-orientation="vertical" aria-label="Secciones del panel" data-tabs="plat">
             <span class="plat-brand">
-              <span class="brand-mark" aria-hidden="true"></span>
-              <b><%= site.name %></b>
+              <img class="brand-logo brand-logo-sm" src="/img/logo-proshop.png" alt="<%= site.name %>" />
             </span>
 
             <span class="plat-group">Operacion</span>
@@ -638,8 +636,8 @@
     <div class="shell">
       <header class="head">
         <span class="idx">05</span>
-        <h2 data-edit="sec5.titulo"><%- t('sec5.titulo', 'Contanos que necesitas.') %></h2>
-        <p data-edit="sec5.lead"><%- t('sec5.lead', 'Escribinos que hace tu negocio y que te gustaria automatizar. Te respondemos si se puede, cuanto demora y cuanto cuesta.') %></p>
+        <h2 data-edit="sec5.titulo"><%- t('sec5.titulo', 'Conversemos sobre tu empresa.') %></h2>
+        <p data-edit="sec5.lead"><%- t('sec5.lead', 'Cuentanos como funciona tu negocio, que necesitas mejorar y que resultado esperas. Te ayudaremos a encontrar la solucion adecuada.') %></p>
       </header>
 
       <div class="contact">
@@ -659,14 +657,14 @@
             </li>
           </ul>
           <p class="contact-note" data-edit="contacto.nota">
-            <%- t('contacto.nota', 'Respondemos en horario de oficina. Si es urgente, escribinos directo al WhatsApp.') %>
+            <%- t('contacto.nota', 'Respondemos en horario de oficina. Para una atencion mas rapida, escribinos por WhatsApp.') %>
           </p>
         </div>
 
         <form class="form" id="contactForm" novalidate>
           <div class="field">
             <label for="nombre">Nombre <i>*</i></label>
-            <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Como te llamas" />
+            <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="¿Como te llamas?" />
           </div>
 
           <div class="field-row">
@@ -681,15 +679,17 @@
           </div>
 
           <div class="field">
-            <label for="servicio">Que necesitas</label>
+            <label for="servicio">¿Que necesitas mejorar?</label>
             <select id="servicio" name="servicio">
-              <option value="">Todavia no lo se</option>
-              <option>Plataforma web a medida</option>
-              <option>Aplicacion movil</option>
-              <option>Panel de control / administrativo</option>
-              <option>Agente o bot con IA</option>
-              <option>Integracion con otro sistema</option>
-              <option>Terminar o arreglar un proyecto existente</option>
+              <option value="">Necesito orientacion</option>
+              <option>Automatizar procesos</option>
+              <option>Mejorar ventas o atencion</option>
+              <option>Desarrollar una plataforma web</option>
+              <option>Crear una aplicacion movil</option>
+              <option>Implementar inteligencia artificial</option>
+              <option>Integrar sistemas y herramientas</option>
+              <option>Retomar un proyecto detenido</option>
+              <option>Otro desafio</option>
               <% planes.forEach(function (p) { %>
                 <option>Agente IA — Plan <%= p.nombre %></option>
               <% }); %>
@@ -697,11 +697,11 @@
           </div>
 
           <div class="field">
-            <label for="mensaje">Contanos tu idea <i>*</i></label>
-            <textarea id="mensaje" name="mensaje" rows="4" required placeholder="A que se dedica tu negocio y que te gustaria que el sistema haga por vos."></textarea>
+            <label for="mensaje">Cuentanos tu desafio <i>*</i></label>
+            <textarea id="mensaje" name="mensaje" rows="4" required placeholder="¿Como funciona tu empresa y que proceso, problema u oportunidad te gustaria mejorar?"></textarea>
           </div>
 
-          <button type="submit" class="btn btn-solid btn-lg btn-block" id="submitBtn">Enviar</button>
+          <button type="submit" class="btn btn-solid btn-lg btn-block" id="submitBtn">Conversemos</button>
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -713,24 +713,23 @@
 <footer class="foot">
   <div class="shell foot-inner">
     <div class="foot-brand">
-      <span class="brand-mark" aria-hidden="true"></span>
-      <span class="brand-name"><%= site.name %></span>
-      <p data-edit="foot.desc"><%- t('foot.desc', 'Software a medida en Bolivia. Plataformas web, apps moviles, paneles y agentes de IA.') %></p>
+      <img class="brand-logo" src="/img/logo-proshop.png" alt="<%= site.name %>" />
+      <p data-edit="foot.desc"><%- t('foot.desc', 'Estrategia, marketing y tecnologia para construir ventajas competitivas.') %></p>
     </div>
 
     <nav class="foot-nav">
-      <span class="foot-lbl">Servicios</span>
-      <a href="#servicios">Que hacemos</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#proceso">Como trabajamos</a>
+      <span class="foot-lbl">ProShop</span>
+      <a href="#servicios">Qué hacemos</a>
+      <a href="#proyectos">Casos y proyectos</a>
+      <a href="#proceso">Cómo trabajamos</a>
     </nav>
 
     <nav class="foot-nav">
-      <span class="foot-lbl">Plataforma</span>
-      <a href="#agente">El producto</a>
-      <a href="#planes-tabla">Planes</a>
-      <a href="/registro">Crear cuenta</a>
-      <a href="/ingresar">Entrar al panel</a>
+      <span class="foot-lbl">Soluciones</span>
+      <a href="#agente">Agentes de IA</a>
+      <a href="#planes-tabla">Planes para agentes</a>
+      <a href="/registro">Probar el agente</a>
+      <a href="/ingresar">Acceder al panel</a>
     </nav>
 
     <div class="foot-end">

@@ -24,13 +24,13 @@ const PORT = process.env.PORT || 3000;
 
 // ---- Configuracion del negocio (editable por variables de entorno) ----
 const site = {
-  name: 'Proshop',
+  name: 'ProShop',
   tagline: 'Software a medida que impulsa tu negocio',
   // Numero de WhatsApp en formato internacional SIN el signo + (591 = Bolivia).
   whatsapp: process.env.WHATSAPP_NUMBER || '59162095357',
   email: process.env.CONTACT_EMAIL || 'contacto@proshop.lat',
   phone: process.env.CONTACT_PHONE || '+591 62095357',
-  location: process.env.CONTACT_LOCATION || 'Santa Cruz, Bolivia',
+  location: process.env.CONTACT_LOCATION || 'Santa Cruz · Bolivia',
   // Donde vive la plataforma de agentes publicada. Si algun dia esta landing se
   // sirve desde ese mismo dominio, pon PLATFORM_URL vacia y el boton desaparece.
   // Ojo: hay que distinguir "vacia a proposito" de "no definida", por eso no se
