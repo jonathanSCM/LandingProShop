@@ -281,12 +281,6 @@ async function agenteEmpresaId(agenteId) {
   return a ? a.empresaId : null;
 }
 
-// Requerida por la revision de la app de Meta (permisos de WhatsApp Business):
-// una URL publica con instrucciones de como pedir el borrado de datos.
-app.get('/data-deletion', (req, res) => {
-  res.render('data-deletion', { title: 'Data Deletion Instructions - CRM PROSHOP' });
-});
-
 // ==================== REGISTRO E INGRESO DE CLIENTES ====================
 app.get('/registro', async (req, res, next) => {
   try {
