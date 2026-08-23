@@ -335,16 +335,25 @@ img { max-width: 100%; display: block; }
 .spec {
   padding: 22px 22px 24px 0;
   border-right: 1px solid var(--rule);
+  /* Referencia para las unidades cqi del valor (ver .spec dd). */
+  container-type: inline-size;
 }
 .spec:last-child { border-right: 0; }
 .spec dt { color: var(--ink-3); }
 .spec dd {
   margin: 10px 0 6px;
   font-family: var(--disp);
-  font-size: clamp(30px, 4.2vw, 52px);
+  /* Un valor de una sola palabra ("Latinoamerica") no puede partirse en dos
+     lineas, asi que a tamaño fijo se desborda sobre la columna vecina. El tope
+     en cqi (1cqi = 1% del ancho de la columna) lo achica solo lo necesario
+     para que quepa, sea cual sea el ancho de pantalla. */
+  font-size: min(clamp(30px, 4.2vw, 52px), 16.5cqi);
   font-weight: 600;
   letter-spacing: -0.045em;
   line-height: 1;
+  /* Ultima defensa: si algun dia entra una palabra aun mas larga, se parte
+     dentro de su casilla en vez de invadir la de al lado. */
+  overflow-wrap: break-word;
 }
 .spec p { font-size: 13px; color: var(--ink-2); max-width: 22ch; }
 
