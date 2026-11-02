@@ -22,6 +22,95 @@
     });
   }
 
+  /* ---------- Selector de tema ----------
+     Mientras el visitante no toque el boton manda la preferencia del sistema
+     operativo (no se escribe nada en <html>). En cuanto elige, su eleccion
+     pisa al sistema y queda recordada para las proximas visitas. */
+  // Hay dos controles iguales: el circulo de la barra (escritorio) y la fila
+  // dentro del menu desplegable (movil). Solo uno se ve a la vez, pero los dos
+  // comparten esta logica.
+  var botonesTema = document.querySelectorAll('[data-boton-tema]');
+
+  if (botonesTema.length) {
+    var raiz = document.documentElement;
+    var consultaOscuro = window.matchMedia('(prefers-color-scheme: dark)');
+
+    var estaOscuro = function () {
+      var elegido = raiz.dataset.tema;
+      if (elegido === 'oscuro') return true;
+      if (elegido === 'claro') return false;
+      return consultaOscuro.matches;
+    };
+
+    // El rotulo dice A DONDE se va, no donde se esta. En el que lleva texto
+    // visible se cambia el texto; en el de solo icono, la etiqueta accesible
+    // (poner aria-label sobre un texto visible lo taparia para quien navega
+    // por voz, porque el nombre accesible dejaria de coincidir).
+    var rotular = function () {
+      var oscuro = estaOscuro();
+      Array.prototype.forEach.call(botonesTema, function (boton) {
+        var texto = boton.querySelector('[data-tema-texto]');
+        if (texto) {
+          texto.textContent = oscuro ? 'Modo claro' : 'Modo oscuro';
+        } else {
+          boton.setAttribute('aria-label', oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+        }
+      });
+    };
+
+    rotular();
+
+    Array.prototype.forEach.call(botonesTema, function (boton) {
+      boton.addEventListener('click', function () {
+        var siguiente = estaOscuro() ? 'claro' : 'oscuro';
+        raiz.dataset.tema = siguiente;
+        try { localStorage.setItem('tema', siguiente); } catch (e) { /* sin guardar */ }
+        rotular();
+      });
+    });
+
+    // Si cambia el tema del sistema y el visitante nunca eligio, lo seguimos.
+    if (consultaOscuro.addEventListener) {
+      consultaOscuro.addEventListener('change', function () {
+        if (!raiz.dataset.tema) rotular();
+      });
+    }
+  }
+
+  /* ---------- Volver arriba ----------
+     El desplazamiento suave lo pone el CSS (html { scroll-behavior: smooth }),
+     que ya se apaga solo con prefers-reduced-motion. Por eso aqui NO se pasa
+     "behavior": asi la preferencia de quien visita se respeta sin codigo. */
+  var btnSubir = document.getElementById('btnSubir');
+
+  if (btnSubir) {
+    var UMBRAL = 600;
+    var pedido = false;
+
+    var revisarScroll = function () {
+      pedido = false;
+      btnSubir.classList.toggle('se-ve', window.scrollY > UMBRAL);
+    };
+
+    // El evento scroll se dispara muchisimas veces por segundo: se agrupa en
+    // un frame para no hacer trabajo de mas.
+    window.addEventListener('scroll', function () {
+      if (pedido) return;
+      pedido = true;
+      window.requestAnimationFrame(revisarScroll);
+    }, { passive: true });
+
+    revisarScroll();
+
+    btnSubir.addEventListener('click', function () {
+      window.scrollTo({ top: 0 });
+      // Quien navega con teclado tiene que quedar arriba tambien, no solo la
+      // pagina: sin esto el foco se queda perdido al final del documento.
+      var marca = document.querySelector('.brand');
+      if (marca) marca.focus({ preventScroll: true });
+    });
+  }
+
   /* ---------- Pestanas accesibles (patron tablist del WAI-ARIA) ----------
      Sirve para cualquier grupo: el tablist lleva data-tabs="<prefijo>", cada
      boton data-target="<id>" y su panel el id "<prefijo>-<id>". */

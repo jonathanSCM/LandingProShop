@@ -5,22 +5,51 @@
    ============================================================= */
 
 :root {
+  /* Tema claro y oscuro.
+     Cada color se declara DOS veces a proposito: primero el valor claro de
+     siempre y debajo la version light-dark(). Un navegador antiguo no entiende
+     la segunda linea, la descarta y se queda con la primera, o sea que ve la
+     pagina clara de toda la vida; uno moderno usa la segunda y obtiene el modo
+     oscuro. Cual de las dos variantes se aplica lo decide "color-scheme". */
+  color-scheme: light dark;
+
   /* Papel y tinta */
   --paper:      #f4f3ef;
+  --paper:      light-dark(#f4f3ef, #131310);
   --paper-2:    #eceae4;   /* franja alterna */
+  --paper-2:    light-dark(#eceae4, #1b1b17);
   --card:       #ffffff;
+  --card:       light-dark(#ffffff, #1e1e19);
   --ink:        #14140f;
+  --ink:        light-dark(#14140f, #f4f3ef);
   --ink-2:      #56554e;
+  --ink-2:      light-dark(#56554e, #a8a79e);
   --ink-3:      #8b8a82;
+  --ink-3:      light-dark(#8b8a82, #8f8e85);
 
   /* Reglas / hairlines */
   --rule:       rgba(20, 20, 15, 0.14);
+  --rule:       light-dark(rgba(20, 20, 15, 0.14), rgba(244, 243, 239, 0.17));
   --rule-soft:  rgba(20, 20, 15, 0.07);
+  --rule-soft:  light-dark(rgba(20, 20, 15, 0.07), rgba(244, 243, 239, 0.08));
 
-  /* Acentos de marca */
+  /* Acentos de marca. Sobre fondo oscuro el morado de marca no tiene contraste
+     suficiente, asi que se aclara; el verde, en cambio, vuelve a su tono
+     original (sobre papel claro habia que oscurecerlo para que se leyera). */
   --accent:     #6d28d9;
+  --accent:     light-dark(#6d28d9, #a78bfa);
   --accent-ink: #4c1d95;
+  --accent-ink: light-dark(#4c1d95, #c4b5fd);
   --mint:       #12a97a;   /* verde marca, oscurecido para contraste sobre papel */
+  --mint:       light-dark(#12a97a, #2fe3a6);
+
+  /* Texto que va encima del acento, y color de error. Son los unicos dos
+     colores que estaban escritos a mano dentro de las reglas; ahora son
+     tokens para que el modo oscuro tambien los alcance. */
+  --on-accent:  #ffffff;
+  --on-accent:  light-dark(#ffffff, #14140f);
+  --danger:     #c0392b;
+  --danger:     light-dark(#c0392b, #ff7a6b);
 
   /* Tipografía */
   --sans:  'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -32,6 +61,11 @@
   --gutter:  clamp(20px, 4vw, 56px);
   --sec-y:   clamp(72px, 9vw, 140px);
 }
+
+/* Sin atributo manda la preferencia del sistema operativo. El selector del
+   menu escribe data-tema en <html> para forzar uno u otro. */
+:root[data-tema="claro"]  { color-scheme: light; }
+:root[data-tema="oscuro"] { color-scheme: dark; }
 
 /* ---------- Reset acotado ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -64,7 +98,7 @@ ul, ol, dl { margin: 0; padding: 0; list-style: none; }
 a  { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 
-::selection { background: var(--accent); color: #fff; }
+::selection { background: var(--accent); color: var(--on-accent); }
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -207,7 +241,7 @@ img { max-width: 100%; display: block; }
   height: 68px;
 }
 
-.brand { display: flex; align-items: center; gap: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; flex: none; }
 .brand-logo { height: 24px; width: auto; display: block; }
 .brand-logo-sm { height: 18px; }
 
@@ -256,6 +290,27 @@ img { max-width: 100%; display: block; }
   }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 14px 0; border-bottom: 1px solid var(--rule-soft); }
+
+  /* El circulo de la barra estorba en pantallas angostas (apretaba el logo):
+     ahi el control vive dentro del menu desplegable, con texto. */
+  .nav-actions .tema { display: none; }
+  .tema-movil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 0;
+    font: inherit;
+    font-size: 14px;
+    color: var(--ink-2);
+    text-align: left;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    transition: color .16s ease;
+  }
+  .tema-movil svg { width: 17px; height: 17px; flex: none; }
+  .tema-movil:hover { color: var(--ink); }
 }
 @media (max-width: 480px) {
   .nav-actions .btn { padding: 10px 16px; font-size: 13px; }
@@ -881,7 +936,7 @@ img { max-width: 100%; display: block; }
   position: absolute;
   top: 0; left: 0; right: 0;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.14em;
@@ -1072,7 +1127,7 @@ img { max-width: 100%; display: block; }
 .plat-item:hover { background: color-mix(in srgb, var(--card) 70%, transparent); color: var(--ink); }
 .plat-item.is-active {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-weight: 500;
 }
 
@@ -1334,11 +1389,11 @@ img { max-width: 100%; display: block; }
   border-bottom-color: var(--accent);
 }
 .field ::placeholder { color: var(--ink-3); }
-.field :is(input, textarea):user-invalid { border-bottom-color: #c0392b; }
+.field :is(input, textarea):user-invalid { border-bottom-color: var(--danger); }
 
 .form-note { font-size: 13.5px; min-height: 20px; }
 .form-note.ok  { color: var(--mint); }
-.form-note.err { color: #c0392b; }
+.form-note.err { color: var(--danger); }
 .form-note a { color: var(--accent); border-bottom: 1px solid currentColor; }
 
 /* =============================================================
@@ -1381,6 +1436,92 @@ img { max-width: 100%; display: block; }
 @media (max-width: 720px) {
   .foot-inner { grid-template-columns: 1fr 1fr; }
   .foot-brand { grid-column: 1 / -1; }
+}
+
+/* =============================================================
+   Selector de tema y boton de "volver arriba"
+   ============================================================= */
+
+/* Circulo hairline compartido por los dos botones nuevos. Mismo lenguaje
+   visual que .nav-toggle para que no parezcan pegados despues. */
+.pildora {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease,
+              background .18s ease, transform .18s ease;
+}
+.pildora:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+.pildora:active { transform: translateY(0); }
+.pildora svg { width: 17px; height: 17px; display: block; }
+
+/* ---------- Selector de tema ----------
+   Un solo icono (circulo mitad lleno) que significa "cambiar contraste": no
+   hace falta dibujar sol y luna ni mantener dos estados sincronizados. */
+.tema svg { transition: transform .4s ease; }
+.tema:hover svg { transform: rotate(180deg); }
+
+/* El gemelo del menu solo existe en movil. Va envuelto en su propio media
+   query y no suelto: si fuera una regla global ganaria por orden de archivo
+   (esta despues) y lo dejaria oculto tambien en movil. */
+@media (min-width: 861px) {
+  .tema-movil { display: none; }
+}
+
+/* ---------- Volver arriba ----------
+   La clase .se-ve la pone el JS cuando hay scroll suficiente. Se oculta con
+   visibility y pointer-events ademas de opacidad: si solo fuera opacidad
+   quedaria un boton invisible robando clics en la esquina. */
+.subir {
+  position: fixed;
+  right: clamp(16px, 3vw, 28px);
+  bottom: clamp(16px, 3vw, 28px);
+  z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  background: color-mix(in srgb, var(--card) 86%, transparent);
+  backdrop-filter: saturate(180%) blur(10px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s,
+              color .18s ease, border-color .18s ease;
+}
+.subir.se-ve {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+}
+.subir.se-ve:hover { transform: translateY(-2px); }
+
+/* ---------- Microinteraccion de los enlaces del menu ----------
+   Subrayado que crece desde la izquierda. Solo en escritorio: en movil los
+   enlaces ya llevan su propia linea divisoria y se duplicarian. */
+@media (min-width: 861px) {
+  .nav-links a { position: relative; padding-bottom: 2px; }
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .22s ease;
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
 }
 
 /* =============================================================

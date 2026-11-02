@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="ProShop: estrategia, marketing y tecnologia para construir ventajas competitivas. Entendemos tu negocio y desarrollamos las herramientas que necesita para competir mejor." />
-  <meta name="theme-color" content="#f4f3ef" />
+  <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#131310" media="(prefers-color-scheme: dark)" />
   <title><%= title %></title>
 
   <meta property="og:title" content="<%= site.name %> — Estrategia, tecnologia y competitividad" />
@@ -17,6 +18,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/landing.css" />
   <% if (editando) { %><link rel="stylesheet" href="/css/landing-editor.css" /><% } %>
+
+  <script>
+    /* Aplica el tema elegido antes del primer pintado: sin esto la pagina
+       asomaria en claro un instante antes de pasar a oscuro. Va aqui suelto
+       y no en landing.js justamente porque ese se carga al final del body.
+       Si no hay nada guardado no se toca nada y manda el sistema operativo. */
+    (function () {
+      try {
+        var t = localStorage.getItem('tema');
+        if (t === 'claro' || t === 'oscuro') document.documentElement.dataset.tema = t;
+      } catch (e) { /* navegacion privada o cookies bloqueadas: da igual */ }
+    })();
+  </script>
 </head>
 <body class="<%= editando ? 'modo-edicion' : '' %>">
 
@@ -48,9 +62,22 @@
       <a href="#proyectos">Proyectos</a>
       <a href="#proceso">Como trabajamos</a>
       <a href="#contacto">Contacto</a>
+      <button class="tema-movil" type="button" data-boton-tema>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" />
+          <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
+        </svg>
+        <span data-tema-texto>Modo oscuro</span>
+      </button>
     </nav>
 
     <div class="nav-actions">
+      <button class="pildora tema" type="button" data-boton-tema aria-label="Cambiar de tema">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" />
+          <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
+        </svg>
+      </button>
       <a class="btn btn-solid" href="#contacto" data-edit="nav.cta"><%- t('nav.cta', 'Cuentanos tu idea') %></a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
         <span></span><span></span>
@@ -455,6 +482,13 @@
     </div>
   </div>
 </footer>
+
+<button class="pildora subir" id="btnSubir" type="button" aria-label="Volver arriba">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 19V5M5 12l7-7 7 7" stroke="currentColor" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</button>
 
 <script src="/js/landing.js"></script>
 <% if (editando) { %><script src="/js/landing-editor.js"></script><% } %>

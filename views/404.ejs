@@ -1,18 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <%- include('partials/head') %>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title><%= title %></title>
+
+  <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#131310" media="(prefers-color-scheme: dark)" />
+
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/landing.css" />
+
+  <script>
+    /* Mismo criterio que en la landing: aplicar el tema guardado antes de
+       pintar, para que quien navega en oscuro no reciba un flash blanco. */
+    (function () {
+      try {
+        var t = localStorage.getItem('tema');
+        if (t === 'claro' || t === 'oscuro') document.documentElement.dataset.tema = t;
+      } catch (e) { /* navegacion privada o cookies bloqueadas: da igual */ }
+    })();
+  </script>
+
+  <style>
+    /* Lo unico propio de esta pagina. No va en landing.css porque no se usa
+       en ningun otro lado y ese archivo lo descarga todo el mundo. */
+    .err {
+      min-height: 68vh;
+      display: grid;
+      align-content: center;
+      padding-block: var(--sec-y);
+    }
+    .err-num {
+      font-family: var(--disp);
+      font-size: clamp(74px, 17vw, 184px);
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      line-height: .88;
+      margin: 14px 0 0;
+    }
+    .err p {
+      margin: 20px 0 34px;
+      max-width: 46ch;
+      color: var(--ink-2);
+      font-size: clamp(15px, 1.6vw, 18px);
+    }
+    .err-botones { display: flex; flex-wrap: wrap; gap: 12px; }
+  </style>
 </head>
 <body>
-  <%- include('partials/header') %>
-  <main class="section" style="min-height:60vh;display:grid;place-items:center;text-align:center">
-    <div class="container">
-      <span class="eyebrow">Error 404</span>
-      <h1 class="grad" style="font-size:clamp(3rem,10vw,6rem);margin:.2em 0">404</h1>
-      <p class="lead">La página que buscas no existe o fue movida.</p>
-      <a class="btn btn-primary btn-lg" href="/">Volver al inicio</a>
+
+<!-- Reticula de fondo: las mismas 12 columnas que la landing -->
+<div class="grid-lines" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<header class="nav">
+  <div class="shell nav-inner">
+    <a class="brand" href="/">
+      <img class="brand-logo" src="/img/logo-proshop.png" alt="<%= site.name %>" />
+    </a>
+    <div class="nav-actions">
+      <a class="btn btn-line" href="/#contacto">Contacto</a>
     </div>
-  </main>
-  <%- include('partials/footer') %>
+  </div>
+</header>
+
+<main>
+  <section class="err">
+    <div class="shell">
+      <p class="tag">
+        <span class="tag-dot" aria-hidden="true"></span>
+        <span>Error 404</span>
+      </p>
+      <h1 class="err-num">404</h1>
+      <p>Esta pagina no existe o fue movida. Puede que el enlace que seguiste
+         este desactualizado.</p>
+      <div class="err-botones">
+        <a class="btn btn-solid btn-lg" href="/">Volver al inicio</a>
+        <a class="btn btn-line btn-lg" href="/#contacto">Escribenos</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <div class="foot-end">
+      <span>&copy; <%= new Date().getFullYear() %> <%= site.name %></span>
+      <span><%= site.location %></span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
