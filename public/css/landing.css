@@ -559,6 +559,18 @@ img { max-width: 100%; display: block; }
   border-radius: 4px;
   padding: 10px;
 }
+/* Captura real del proyecto. Mismo marco que el boceto dibujado, pero sin
+   relleno interior: la imagen llega hasta el borde. El alto lo fijan los
+   atributos width/height del HTML, asi la pagina no salta al cargarla. */
+.pp-shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+}
+
 .pp-boceto figcaption {
   margin-top: 11px;
   font-size: 13px;

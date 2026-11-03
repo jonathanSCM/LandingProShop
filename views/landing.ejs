@@ -257,21 +257,33 @@
 
               <p class="pp-resumen" data-campo="resumen"><%= p.resumen %></p>
 
-              <% if (p.boceto) { %>
+              <% if (p.imagen || p.boceto) { %>
                 <figure class="pp-boceto">
-                  <%- include('partials/boceto', { id: p.id }) %>
-                  <figcaption data-campo="boceto"><%= p.boceto %></figcaption>
+                  <% if (p.imagen) { %>
+                    <img class="pp-shot"
+                         src="<%= p.imagen %>"
+                         alt="Captura de <%= p.nombre %>"
+                         <% if (p.ancho && p.alto) { %>width="<%= p.ancho %>" height="<%= p.alto %>"<% } %>
+                         loading="lazy" decoding="async" />
+                  <% } else { %>
+                    <%- include('partials/boceto', { id: p.id }) %>
+                  <% } %>
+                  <% if (p.boceto) { %>
+                    <figcaption data-campo="boceto"><%= p.boceto %></figcaption>
+                  <% } %>
                 </figure>
               <% } %>
 
-              <dl class="pp-metrics">
-                <% p.metricas.forEach(function (m) { %>
-                  <div>
-                    <dd><%= m.valor %></dd>
-                    <dt><%= m.etiqueta %></dt>
-                  </div>
-                <% }); %>
-              </dl>
+              <% if (p.metricas && p.metricas.length) { %>
+                <dl class="pp-metrics">
+                  <% p.metricas.forEach(function (m) { %>
+                    <div>
+                      <dd><%= m.valor %></dd>
+                      <dt><%= m.etiqueta %></dt>
+                    </div>
+                  <% }); %>
+                </dl>
+              <% } %>
 
               <div class="pp-cols">
                 <div class="pp-col">
@@ -296,14 +308,7 @@
                       <span data-edit="cta.boton"><%- t('cta.boton', 'Crear proyecto') %></span>
                     </a>
 
-                    <%
-                      // El proyecto "agentes" es nuestra propia plataforma: si esta
-                      // publicada, su enlace va primero.
-                      var enlaces = (p.enlaces || []).slice();
-                      if (p.id === 'agentes' && site.plataforma) {
-                        enlaces.unshift({ texto: 'Ir a la plataforma', href: site.plataforma, externo: true });
-                      }
-                    %>
+                    <% var enlaces = p.enlaces || []; %>
                     <% if (enlaces.length) { %>
                       <div class="pp-links">
                         <% enlaces.forEach(function (e) { %>
