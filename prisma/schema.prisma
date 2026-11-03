@@ -387,3 +387,24 @@ model Notificacion {
   @@index([empresaId, leida])
   @@map("notificaciones")
 }
+
+// ======================= CONTENIDO EDITABLE DE LA LANDING =======================
+
+// Textos y ajustes que el admin cambia desde la landing en modo edicion
+// (/?editar=1). Es una sola fila (id = 1) y guarda SOLO las diferencias
+// respecto a los textos por defecto, que siguen viviendo en la vista: si un
+// texto nunca se toco, no ocupa lugar aca.
+//
+// Antes esto era el archivo data/landing.json. Ese archivo vivia DENTRO del
+// contenedor, asi que cada despliegue lo borraba y el admin perdia todo lo
+// editado. En la base de datos sobrevive a los despliegues y entra en los
+// respaldos junto con el resto.
+model ContenidoLanding {
+  id          Int      @id @default(1)
+  textos      Json     @default("{}") // { "hero.titulo": "...", "sec1.titulo": "..." }
+  ocultos     Json     @default("[]") // ids de proyectos que no se muestran
+  proyectos   Json     @default("{}") // { "protaxi": { nombre, resumen, ... } }
+  actualizado DateTime @updatedAt
+
+  @@map("contenido_landing")
+}

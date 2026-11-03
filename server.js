@@ -97,7 +97,7 @@ app.get('/', async (req, res, next) => {
     }
 
     const editando = quiereEditar && esAdmin;
-    const cont = contenido.leer();
+    const cont = await contenido.leer();
 
     const [planes, paquetes] = await Promise.all([
       prisma.plan.findMany({ where: { activo: true }, orderBy: { orden: 'asc' } }),
@@ -121,9 +121,9 @@ app.get('/', async (req, res, next) => {
 });
 
 // Guarda los cambios del modo edicion. Solo admin.
-app.post('/api/landing', requireAuth, (req, res) => {
+app.post('/api/landing', requireAuth, async (req, res) => {
   try {
-    const guardado = contenido.guardar(req.body || {});
+    const guardado = await contenido.guardar(req.body || {});
     return res.json({
       ok: true,
       textos: Object.keys(guardado.textos).length,
@@ -137,9 +137,9 @@ app.post('/api/landing', requireAuth, (req, res) => {
 });
 
 // Restablece TODO a los textos originales de la vista.
-app.post('/api/landing/restablecer', requireAuth, (req, res) => {
+app.post('/api/landing/restablecer', requireAuth, async (req, res) => {
   try {
-    contenido.guardar({});
+    await contenido.guardar({});
     return res.json({ ok: true });
   } catch (err) {
     return res.status(500).json({ ok: false, error: 'No se pudo restablecer.' });
