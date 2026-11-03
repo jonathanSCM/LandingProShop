@@ -72,7 +72,7 @@ body.modo-edicion .nav { top: 52px; }
 
 /* ---------- Campos editables ---------- */
 .ed-campo {
-  outline: 1px dashed rgba(109, 40, 217, .35);
+  outline: 1px dashed color-mix(in srgb, var(--accent) 35%, transparent);
   outline-offset: 3px;
   border-radius: 2px;
   transition: outline-color .15s ease, background .15s ease;
@@ -80,13 +80,13 @@ body.modo-edicion .nav { top: 52px; }
 }
 .ed-campo:hover {
   outline-style: solid;
-  outline-color: rgba(109, 40, 217, .6);
-  background: rgba(109, 40, 217, .05);
+  outline-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
 }
 .ed-campo:focus {
-  outline: 2px solid #6d28d9;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  background: rgba(109, 40, 217, .07);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 /* ---------- Cabecera de edicion de cada proyecto ---------- */
@@ -97,22 +97,24 @@ body.modo-edicion .nav { top: 52px; }
   gap: 12px;
   margin: -8px 0 20px;
   padding-bottom: 14px;
-  border-bottom: 1px dashed rgba(109, 40, 217, .35);
+  border-bottom: 1px dashed color-mix(in srgb, var(--accent) 35%, transparent);
 }
 .ed-proy-id {
   font-family: 'IBM Plex Mono', ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8b8a82;
+  color: var(--ink-3);
 }
 .ed-proy .ed-btn-2 {
-  color: #14140f;
-  border-color: rgba(20, 20, 15, .25);
+  /* Va sobre el papel de la pagina, no sobre la barra: tiene que seguir el
+     tema o en oscuro queda tinta oscura sobre fondo oscuro (invisible). */
+  color: var(--ink);
+  border-color: var(--rule);
   padding: 7px 13px;
   font-size: 12px;
 }
-.ed-proy .ed-btn-2:hover { border-color: #14140f; }
+.ed-proy .ed-btn-2:hover { border-color: var(--ink); }
 
 /* ---------- Proyecto marcado como oculto ---------- */
 .proj-panel.esta-oculto,
@@ -130,5 +132,5 @@ body.modo-edicion .nav { top: 52px; }
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #6d28d9;
+  color: var(--accent);
 }
