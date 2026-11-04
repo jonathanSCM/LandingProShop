@@ -938,6 +938,7 @@
   }
   function abrirEnlace(a) {
     popEnlace = a;
+    yAlAbrir = window.scrollY;
     var clave = a.dataset.link;
     var e = cfg.enlaces[clave] || { url: actualUrl(a), nueva: a.getAttribute('target') === '_blank' };
     pop.innerHTML = '';
@@ -978,7 +979,9 @@
     if (a && !barra.contains(a)) { if (popEnlace !== a) abrirEnlace(a); return; }
     if (!pop.hidden && !pop.contains(e.target)) cerrarEnlace();
   });
-  window.addEventListener('scroll', function () { if (!pop.hidden) cerrarEnlace(); }, { passive: true });
+  // La ventanita se cierra al desplazarse bastante (un reajuste pequeno del diseno no debe cerrarla)
+  var yAlAbrir = 0;
+  window.addEventListener('scroll', function () { if (!pop.hidden && Math.abs(window.scrollY - yAlAbrir) > 80) cerrarEnlace(); }, { passive: true });
 
   // ------------------------------------------------------------------
   // Guardar

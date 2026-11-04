@@ -15,7 +15,7 @@
   <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/landing.css" />
   <% if (hayCustom || editando) { %><link rel="stylesheet" href="/css/paginas.css" /><% } %>
   <% if (fuenteUrl) { %><link rel="stylesheet" href="<%= fuenteUrl %>" /><% } %>
@@ -56,11 +56,7 @@
   <a class="ed-pildora" href="/?editar=1">✏️ Editar la página</a>
 <% } %>
 
-<!-- Reticula de fondo: 12 columnas visibles -->
-<div class="grid-lines" aria-hidden="true">
-  <span></span><span></span><span></span><span></span><span></span><span></span>
-  <span></span><span></span><span></span><span></span><span></span><span></span>
-</div>
+
 
 <% if (cab.visible || editando) { %>
 <header class="nav <%= cabEstilo.clase %><%= cab.visible ? '' : ' nav-oculta' %>" id="cabecera" style="<%= cabEstilo.style %>">
@@ -135,6 +131,10 @@
   </div>
 </footer>
 <% } %>
+
+<a class="fab-wa"<%- enlace('fab.wa', 'https://wa.me/' + site.whatsapp + '?text=' + encodeURIComponent('Hola ' + site.name + ', quiero conversar sobre mi proyecto.'), true) %> aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.95L2 22l5.2-1.5A9.9 9.9 0 1 0 12.04 2Zm0 1.8a8.1 8.1 0 1 1-4.1 15.08l-.3-.17-3.08.89.9-3-.2-.31A8.1 8.1 0 0 1 12.04 3.8Zm-3.2 4.1c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.2.87 2.35.99 2.51.12.16 1.7 2.7 4.19 3.68 2.07.82 2.5.66 2.95.62.45-.04 1.44-.59 1.65-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.74-1.8-.19-.46-.39-.4-.54-.41h-.46Z" /></svg>
+</a>
 
 <button class="pildora subir" id="btnSubir" type="button" aria-label="Volver arriba">
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">

@@ -335,4 +335,38 @@
     }, { threshold: 0.1 });
     Array.prototype.forEach.call(els, function (e) { io.observe(e); });
   })();
+
+  // ---------- Movimiento: revelado al hacer scroll, luz del mouse, menu ----------
+  (function () {
+    var body = document.body;
+    var editando = body.classList.contains('modo-edicion');
+    var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Menu: se oscurece y gana sombra al bajar
+    var nav = document.querySelector('.nav');
+    if (nav) {
+      var marcarNav = function () { nav.classList.toggle('is-scrolled', window.scrollY > 12); };
+      marcarNav();
+      window.addEventListener('scroll', marcarNav, { passive: true });
+    }
+
+    // Revelado escalonado de tarjetas, titulos y bloques
+    var objetivos = document.querySelectorAll('.head, .specs, .feat, .step, .proj-tabs, .proj-panels, .proj-foot, .contact-list li, .contact-note, .form, .foot-inner > *:not(.foot-end)');
+    if (objetivos.length && !editando && !quieto && !body.classList.contains('sin-anim') && 'IntersectionObserver' in window) {
+      document.documentElement.classList.add('js-rev');
+      var io = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      Array.prototype.forEach.call(objetivos, function (el) {
+        var hermanos = el.parentElement ? Array.prototype.slice.call(el.parentElement.children) : [el];
+        el.style.setProperty('--rd', Math.min(hermanos.indexOf(el), 6) * 90 + 'ms');
+        el.setAttribute('data-rev', '');
+        io.observe(el);
+      });
+    }
+  })();
 })();

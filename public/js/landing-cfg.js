@@ -49,19 +49,22 @@
 
 
   var FUENTES = {
-    'inter-tight': { nombre: 'Inter Tight (original)', css: "'Inter Tight','Inter',system-ui,sans-serif", url: '' },
-    poppins: { nombre: 'Poppins', css: "'Poppins','Inter',system-ui,sans-serif", url: 'https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap' },
-    playfair: { nombre: 'Playfair Display', css: "'Playfair Display',Georgia,serif", url: 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap' },
-    grotesk: { nombre: 'Space Grotesk', css: "'Space Grotesk','Inter',system-ui,sans-serif", url: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap' },
-    mono: { nombre: 'IBM Plex Mono', css: "'IBM Plex Mono',ui-monospace,monospace", url: '' },
+    manrope: { nombre: 'Manrope (original)', css: "'Manrope',system-ui,sans-serif", url: '' },
+    sora: { nombre: 'Sora', css: "'Sora','Manrope',system-ui,sans-serif", url: 'https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&display=swap' },
+    'inter-tight': { nombre: 'Inter Tight', css: "'Inter Tight','Inter',system-ui,sans-serif", url: 'https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&display=swap' },
+    poppins: { nombre: 'Poppins', css: "'Poppins','Manrope',system-ui,sans-serif", url: 'https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap' },
+    playfair: { nombre: 'Playfair Display', css: "'Playfair Display',Georgia,serif", url: 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&display=swap' },
+    grotesk: { nombre: 'Space Grotesk', css: "'Space Grotesk','Manrope',system-ui,sans-serif", url: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap' },
+    mono: { nombre: 'IBM Plex Mono', css: "'IBM Plex Mono',ui-monospace,monospace", url: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&display=swap' },
   };
+
 
   var CAMPOS_DISENO = [
     { k: 'acento', t: 'color', def: '', label: 'Color principal (botones y detalles)' },
     { k: 'fondo', t: 'color', def: '', label: 'Fondo de la página' },
     { k: 'franja', t: 'color', def: '', label: 'Fondo de las franjas alternas' },
     { k: 'texto', t: 'color', def: '', label: 'Color del texto' },
-    { k: 'fuente', t: 'enum', def: 'inter-tight', label: 'Tipografía de los títulos', op: Object.keys(FUENTES).map(function (k) { return [k, FUENTES[k].nombre]; }) },
+    { k: 'fuente', t: 'enum', def: 'manrope', label: 'Tipografía de los títulos', op: Object.keys(FUENTES).map(function (k) { return [k, FUENTES[k].nombre]; }) },
     { k: 'bordes', t: 'enum', def: 'original', label: 'Forma de botones y tarjetas', op: [['original', 'Original'], ['rectos', 'Rectos'], ['suaves', 'Suaves'], ['redondos', 'Redondos']] },
     { k: 'modo', t: 'enum', def: 'auto', label: 'Modo claro / oscuro', op: [['auto', 'Automático'], ['claro', 'Siempre claro'], ['oscuro', 'Siempre oscuro']] },
     { k: 'botonTema', t: 'bool', def: true, label: 'Mostrar el botón para cambiar de modo', si: ['modo', ['auto']] },
@@ -250,8 +253,9 @@
     if (st.length) clases.push('con-fondo');
     var texto = sec.texto || auto;
     if (texto) {
-      st.push('color:' + texto, '--ink:' + texto,
-        '--ink-2:color-mix(in srgb,' + texto + ' 72%,transparent)', '--ink-3:color-mix(in srgb,' + texto + ' 52%,transparent)');
+      st.push('color:' + texto, '--ink:' + texto, '--ov-ink:' + texto,
+        '--ink-2:color-mix(in srgb,' + texto + ' 72%,transparent)', '--ink-3:color-mix(in srgb,' + texto + ' 52%,transparent)',
+        '--ov-ink-2:color-mix(in srgb,' + texto + ' 72%,transparent)', '--ov-ink-3:color-mix(in srgb,' + texto + ' 52%,transparent)');
     }
     if (ESPACIOS[sec.espacio]) st.push('--sec-y:' + ESPACIOS[sec.espacio]);
     if (sec.escala && sec.escala !== 100) st.push('zoom:' + (sec.escala / 100));
@@ -289,7 +293,7 @@
     if (d.franja) v.push('--paper-2:' + d.franja);
     if (d.texto) v.push('--ink:' + d.texto, '--ink-2:color-mix(in srgb,' + d.texto + ' 72%,transparent)', '--ink-3:color-mix(in srgb,' + d.texto + ' 52%,transparent)');
     var f = FUENTES[d.fuente];
-    if (f && d.fuente !== 'inter-tight') v.push('--disp:' + f.css);
+    if (f && d.fuente !== 'manrope') v.push('--disp:' + f.css);
     return v.length ? ':root{' + v.join(';') + '}' : '';
   }
 
