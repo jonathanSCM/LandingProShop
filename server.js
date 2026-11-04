@@ -23,7 +23,7 @@ const site = {
   whatsapp: process.env.WHATSAPP_NUMBER || '59162095357',
   email: process.env.CONTACT_EMAIL || 'soporte@proshop.lat',
   phone: process.env.CONTACT_PHONE || '+591 62095357',
-  location: process.env.CONTACT_LOCATION || 'Santa Cruz · Bolivia',
+  location: process.env.CONTACT_LOCATION || 'Lima Metropolitana, Perú',
   // Donde vive la plataforma de agentes publicada. Si algun dia esta landing se
   // sirve desde ese mismo dominio, pon PLATFORM_URL vacia y el boton desaparece.
   // Ojo: hay que distinguir "vacia a proposito" de "no definida", por eso no se
@@ -128,7 +128,7 @@ app.get('/', async (req, res, next) => {
     const cab = LandingCfg.estiloCabecera(cfg.cabecera);
     const pie = LandingCfg.estiloPie(cfg.pie);
     res.render('landing', {
-      title: `${site.name} — Software a medida en Bolivia`,
+      title: `${site.name} | Software a medida`,
       proyectos: editando ? lista : lista.filter((p) => !p.oculto),
       editando, esAdmin, secciones, enlace, t,
       menu: LandingCfg.itemsMenu(cfg),

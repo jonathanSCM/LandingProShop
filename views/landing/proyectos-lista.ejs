@@ -47,12 +47,28 @@
                       %><% if (p.lugar) { %> · <span data-campo="lugar"><%= p.lugar %></span><% } %>
                   </p>
                 </div>
-                <span class="pp-state pp-state-<%= p.estado %>">
-                  <%= p.estado === 'produccion' ? 'En produccion' : 'En desarrollo' %>
+                <span class="pp-badges">
+                  <span class="pp-origen"><%= p.origen === 'propio' ? 'Producto propio' : 'Proyecto para cliente' %></span>
+                  <span class="pp-state pp-state-<%= p.estado %>">
+                    <%= ({ produccion: 'En producción', desarrollo: 'En desarrollo', piloto: 'Piloto', demo: 'Demo' })[p.estado] || 'En desarrollo' %>
+                  </span>
                 </span>
               </div>
 
               <p class="pp-resumen" data-campo="resumen"><%= p.resumen %></p>
+
+              <%# Contexto comercial: solo se muestra lo que tiene contenido (en el editor se ven todos para poder llenarlos) %>
+              <% var ctx = [['problema', 'Problema inicial'], ['solucion', 'Solución implementada'], ['uso', 'Uso actual'], ['resultado', 'Resultado']]; %>
+              <% if (ctx.some(function (c) { return p[c[0]]; }) || editando) { %>
+                <dl class="pp-ctx">
+                  <% ctx.forEach(function (c) { if (!p[c[0]] && !editando) return; %>
+                    <div>
+                      <dt><%= c[1] %></dt>
+                      <dd data-campo="<%= c[0] %>" data-ph="Escribe aquí (opcional)"><%= p[c[0]] %></dd>
+                    </div>
+                  <% }); %>
+                </dl>
+              <% } %>
 
               <% if (p.imagen || p.boceto) { %>
                 <% var paradas = p.puntos || []; %>
@@ -116,7 +132,7 @@
 
               <div class="pp-cols">
                 <div class="pp-col">
-                  <h4>Que hace</h4>
+                  <h4>Qué hace</h4>
                   <ul class="pp-feats">
                     <% p.features.forEach(function (f) { %>
                       <li><%= f %></li>
@@ -125,14 +141,14 @@
                 </div>
                 <div class="pp-col">
                   <div class="pp-cta">
-                    <h4 data-edit="cta.titulo"><%- t('cta.titulo', 'Queres algo asi?') %></h4>
-                    <p data-edit="cta.texto"><%- t('cta.texto', 'Te construimos uno pensado para tu negocio. Contanos la idea y te decimos plazo y precio.') %></p>
+                    <h4 data-edit="cta.titulo"><%- t('cta.titulo', '¿Tienes un proceso parecido?') %></h4>
+                    <p data-edit="cta.texto"><%- t('cta.texto', 'Conversemos en un diagnóstico sin costo para entender qué necesitas mejorar. Después definimos contigo el alcance y las etapas.') %></p>
 
-                    <a class="btn btn-solid btn-block btn-wa"<%- enlace('proy.' + p.id + '.cta', 'https://wa.me/' + site.whatsapp + '?text=' + encodeURIComponent('Hola ' + site.name + ', vi ' + p.nombre + ' en su web y quiero un proyecto asi para mi negocio.'), true) %>>
+                    <a class="btn btn-solid btn-block btn-wa"<%- enlace('proy.' + p.id + '.cta', 'https://wa.me/' + site.whatsapp + '?text=' + encodeURIComponent('Hola ' + site.name + ', vi ' + p.nombre + ' en su web y quiero solicitar un diagnóstico para mi empresa.'), true) %>>
                       <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-wa">
                         <path d="M12.04 2a9.9 9.9 0 0 0-8.5 14.95L2 22l5.2-1.5A9.9 9.9 0 1 0 12.04 2Zm0 1.8a8.1 8.1 0 1 1-4.1 15.08l-.3-.17-3.08.89.9-3-.2-.31A8.1 8.1 0 0 1 12.04 3.8Zm-3.2 4.1c-.16 0-.42.06-.64.3-.22.24-.85.83-.85 2.02 0 1.2.87 2.35.99 2.51.12.16 1.7 2.7 4.19 3.68 2.07.82 2.5.66 2.95.62.45-.04 1.44-.59 1.65-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28-.24-.12-1.44-.71-1.66-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.2-.72-.64-1.2-1.44-1.34-1.68-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.32-.74-1.8-.19-.46-.39-.4-.54-.41h-.46Z"/>
                       </svg>
-                      <span data-edit="cta.boton"><%- t('cta.boton', 'Crear proyecto') %></span>
+                      <span data-edit="cta.boton"><%- t('cta.boton', 'Solicitar diagnóstico') %></span>
                     </a>
 
                     <% var enlaces = p.enlaces || []; %>
@@ -159,5 +175,5 @@
       </div>
 
       <p class="proj-foot" data-edit="proj.pie">
-        <%- t('proj.pie', 'Y el tuyo? <a href="#contacto">Contanos que necesitas</a> y te decimos si se puede — con plazo y precio, no con promesas.') %>
+        <%- t('proj.pie', '¿Y tu empresa? <a href="#contacto">Cuéntanos qué necesitas mejorar</a> y lo vemos en un diagnóstico, sin compromiso de precio ni de alcance.') %>
       </p>

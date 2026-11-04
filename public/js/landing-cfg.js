@@ -25,6 +25,7 @@
     { id: 'servicios', nombre: 'Qué hacemos', ancla: 'servicios', menu: 'Qué hacemos' },
     { id: 'proyectos', nombre: 'Proyectos', ancla: 'proyectos', menu: 'Proyectos' },
     { id: 'proceso', nombre: 'Cómo trabajamos', ancla: 'proceso', menu: 'Cómo trabajamos' },
+    { id: 'tecnologia', nombre: 'Tecnología e integraciones', ancla: 'tecnologia', menu: '' },
     { id: 'contacto', nombre: 'Contacto', ancla: 'contacto', menu: 'Contacto' },
   ];
 
@@ -101,10 +102,15 @@
     { k: 'nombre', t: 'texto', def: 'Nuevo proyecto', max: 120, label: 'Nombre' },
     { k: 'tipo', t: 'texto', def: 'Qué es, en una línea', max: 160, label: 'Qué es (una línea)' },
     { k: 'lugar', t: 'texto', def: '', max: 120, label: 'Lugar o cliente (opcional)' },
-    { k: 'estado', t: 'enum', def: 'produccion', label: 'Estado', op: [['produccion', 'En producción'], ['desarrollo', 'En desarrollo']] },
+    { k: 'estado', t: 'enum', def: 'produccion', label: 'Estado real', op: [['produccion', 'En producción'], ['piloto', 'Piloto'], ['demo', 'Demo'], ['desarrollo', 'En desarrollo']] },
+    { k: 'origen', t: 'enum', def: 'cliente', label: 'Tipo', op: [['cliente', 'Proyecto para cliente'], ['propio', 'Producto propio']] },
     { k: 'resumen', t: 'area', def: 'Cuenta en dos o tres frases qué hace este proyecto y qué problema resuelve, con palabras de cliente.', max: 1200, label: 'Resumen' },
     { k: 'imagen', t: 'imagen', def: '', label: 'Captura o foto del proyecto' },
     { k: 'boceto', t: 'texto', def: '', max: 300, label: 'Pie de la imagen (opcional)' },
+    { k: 'problema', t: 'area', def: '', max: 500, label: 'Problema inicial (qué necesitaba mejorar el negocio)' },
+    { k: 'solucion', t: 'area', def: '', max: 500, label: 'Solución implementada (qué construyó o integró ProShop)' },
+    { k: 'uso', t: 'area', def: '', max: 500, label: 'Uso actual (qué puede hacer o controlar hoy el cliente)' },
+    { k: 'resultado', t: 'area', def: '', max: 500, label: 'Resultado (solo con datos verificados)' },
     { k: 'features', t: 'lista', def: ['Primera característica', 'Segunda característica'], max: 12, label: 'Qué hace' },
     { k: 'enlaces', t: 'items', def: [], max: 6, sub: [{ k: 'texto', t: 'texto', def: 'Ver sitio', max: 60, label: 'Texto' }, { k: 'href', t: 'url', def: 'https://', max: 500, label: 'Enlace' }, { k: 'externo', t: 'bool', def: true, label: 'Abrir en pestaña nueva' }], label: 'Botones del proyecto' },
   ];
@@ -198,7 +204,13 @@
       if (typeof id !== 'string' || orden.indexOf(id) >= 0) return;
       if (nativa(id) || custom[id]) orden.push(id);
     });
-    NATIVAS.forEach(function (n) { if (orden.indexOf(n.id) < 0) orden.push(n.id); });
+    // Una seccion de fabrica que falta (ej. una agregada despues) entra detras de la que la antecede por defecto
+    NATIVAS.forEach(function (n, i) {
+      if (orden.indexOf(n.id) >= 0) return;
+      var pos = 0;
+      for (var k = i - 1; k >= 0; k--) { var a = orden.indexOf(NATIVAS[k].id); if (a >= 0) { pos = a + 1; break; } }
+      orden.splice(pos, 0, n.id);
+    });
 
     var secciones = {}, mapaCustom = {};
     orden.forEach(function (id) {

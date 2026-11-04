@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ProShop: estrategia, marketing y tecnologia para construir ventajas competitivas. Entendemos tu negocio y desarrollamos las herramientas que necesita para competir mejor." />
+  <meta name="description" content="ProShop desarrolla software a medida para empresas que ya operan y necesitan mejorar procesos concretos: plataformas web, aplicaciones móviles, paneles de datos y agentes con inteligencia artificial." />
   <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
   <meta name="theme-color" content="#131310" media="(prefers-color-scheme: dark)" />
   <title><%= title %></title>
 
-  <meta property="og:title" content="<%= site.name %> — Estrategia, tecnologia y competitividad" />
-  <meta property="og:description" content="Entendemos tu negocio y desarrollamos las herramientas que necesita para competir mejor." />
+  <meta property="og:title" content="<%= title %>" />
+  <meta property="og:description" content="Software a medida para empresas que ya operan y necesitan mejorar procesos concretos." />
   <meta property="og:type" content="website" />
 
   <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
@@ -88,7 +88,7 @@
           <path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" />
         </svg>
       </button>
-      <a class="btn btn-solid"<%- enlace('nav.cta', '#contacto') %> data-edit="nav.cta"><%- t('nav.cta', 'Cuentanos tu idea') %></a>
+      <a class="btn btn-solid"<%- enlace('nav.cta', '#contacto') %> data-edit="nav.cta"><%- t('nav.cta', 'Solicitar diagnóstico') %></a>
       <button class="nav-toggle" id="navToggle" aria-label="Abrir menu" aria-expanded="false">
         <span></span><span></span>
       </button>
@@ -110,7 +110,7 @@
   <div class="shell foot-inner">
     <div class="foot-brand">
       <img class="brand-logo" src="/img/logo-proshop.png" alt="<%= site.name %>" />
-      <p data-edit="foot.desc"><%- t('foot.desc', 'Estrategia, marketing y tecnologia para construir ventajas competitivas.') %></p>
+      <p data-edit="foot.desc"><%- t('foot.desc', 'Estrategia, marketing y tecnología para construir ventajas competitivas.') %></p>
     </div>
 
     <nav class="foot-nav">

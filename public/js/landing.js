@@ -508,4 +508,12 @@
       sig.click();
     });
   })();
+
+  // ---------- "Ver el ejemplo": abre el proyecto indicado en la seccion de proyectos ----------
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-ver-proyecto]');
+    if (!a || document.body.classList.contains('modo-edicion')) return;
+    var tab = document.getElementById('tab-' + a.dataset.verProyecto);
+    if (tab) tab.click(); // el enlace #proyectos hace el desplazamiento
+  });
 })();

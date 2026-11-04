@@ -4,9 +4,9 @@
   <section id="contacto" class="section section-tint">
     <div class="shell">
       <header class="head">
-        <span class="idx">04</span>
+        <span class="idx">05</span>
         <h2 data-edit="sec5.titulo"><%- t('sec5.titulo', 'Conversemos sobre tu empresa.') %></h2>
-        <p data-edit="sec5.lead"><%- t('sec5.lead', 'Cuentanos como funciona tu negocio, que necesitas mejorar y que resultado esperas. Te ayudaremos a encontrar la solucion adecuada.') %></p>
+        <p data-edit="sec5.lead"><%- t('sec5.lead', 'Cuéntanos qué necesitas mejorar en tu empresa. Conversamos en un diagnóstico de 20 minutos, sin costo, para entender cómo trabajas hoy antes de proponer una solución.') %></p>
       </header>
 
       <div class="contact">
@@ -17,7 +17,7 @@
               <p class="u1" data-edit="contacto.chat.m1"><%- t('contacto.chat.m1', 'Hola, quiero una plataforma para mi empresa') %></p>
               <p class="b1" data-edit="contacto.chat.m2"><%- t('contacto.chat.m2', '¡Hola! Cuéntame cómo trabajas hoy y qué quieres mejorar.') %></p>
               <p class="u2" data-edit="contacto.chat.m3"><%- t('contacto.chat.m3', 'Vendemos por WhatsApp y todo es manual') %></p>
-              <p class="b2" data-edit="contacto.chat.m4"><%- t('contacto.chat.m4', 'Perfecto, lo automatizamos. Agendemos 20 min 👍') %></p>
+              <p class="b2" data-edit="contacto.chat.m4"><%- t('contacto.chat.m4', 'Cuéntame cómo lo hacen hoy. Podemos agendar un diagnóstico de 20 minutos para entender qué necesitan mejorar.') %></p>
               <span class="typing"><i></i><i></i><i></i></span>
             </div>
           </div>
@@ -34,19 +34,19 @@
             </li>
             <li>
               <span class="cl-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
-              <div><span class="cl-lbl" data-edit="contacto.lugar.et"><%- t('contacto.lugar.et', 'Donde estamos') %></span>
+              <div><span class="cl-lbl" data-edit="contacto.lugar.et"><%- t('contacto.lugar.et', 'Dónde estamos') %></span>
               <span data-edit="contacto.lugar.valor"><%- t('contacto.lugar.valor', site.location) %></span></div>
             </li>
           </ul>
           <p class="contact-note" data-edit="contacto.nota">
-            <%- t('contacto.nota', 'Respondemos en horario de oficina. Para una atencion mas rapida, escribinos por WhatsApp.') %>
+            <%- t('contacto.nota', 'Respondemos en horario de oficina. Para una atención más rápida, escríbenos por WhatsApp.') %>
           </p>
         </div>
 
         <form class="form" id="contactForm" novalidate>
           <div class="field">
             <label for="nombre"><span data-edit="form.nombre"><%- t('form.nombre', 'Nombre') %></span> <i>*</i></label>
-            <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="¿Como te llamas?" />
+            <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="¿Cómo te llamas?" />
           </div>
 
           <div class="field-row">
@@ -61,30 +61,30 @@
           </div>
 
           <div class="field">
-            <label for="servicio"><span data-edit="form.servicio"><%- t('form.servicio', '¿Que necesitas mejorar?') %></span></label>
+            <label for="servicio"><span data-edit="form.servicio"><%- t('form.servicio', '¿Qué necesitas mejorar?') %></span></label>
             <select id="servicio" name="servicio">
-              <option value="">Necesito orientacion</option>
+              <option value="">Necesito orientación</option>
               <option>Automatizar procesos</option>
-              <option>Mejorar ventas o atencion</option>
+              <option>Mejorar ventas o atención</option>
               <option>Desarrollar una plataforma web</option>
-              <option>Crear una aplicacion movil</option>
+              <option>Crear una aplicación móvil</option>
               <option>Implementar inteligencia artificial</option>
               <option>Integrar sistemas y herramientas</option>
               <option>Retomar un proyecto detenido</option>
-              <option>Otro desafio</option>
+              <option>Otro desafío</option>
             </select>
           </div>
 
           <div class="field">
-            <label for="mensaje"><span data-edit="form.mensaje"><%- t('form.mensaje', 'Cuentanos tu desafio') %></span> <i>*</i></label>
-            <textarea id="mensaje" name="mensaje" rows="4" required placeholder="¿Como funciona tu empresa y que proceso, problema u oportunidad te gustaria mejorar?"></textarea>
+            <label for="mensaje"><span data-edit="form.mensaje"><%- t('form.mensaje', 'Cuéntanos tu desafío') %></span> <i>*</i></label>
+            <textarea id="mensaje" name="mensaje" rows="4" required placeholder="¿Cómo funciona tu empresa y qué proceso, problema u oportunidad te gustaría mejorar?"></textarea>
           </div>
 
           <%# En el editor el boton es un div: el navegador no deja escribir dentro de un <button>. %>
           <% if (editando) { %>
-            <div class="btn btn-solid btn-lg btn-block" id="submitBtn"><span data-edit="form.boton"><%- t('form.boton', 'Conversemos') %></span></div>
+            <div class="btn btn-solid btn-lg btn-block" id="submitBtn"><span data-edit="form.boton"><%- t('form.boton', 'Solicitar diagnóstico') %></span></div>
           <% } else { %>
-            <button type="submit" class="btn btn-solid btn-lg btn-block" id="submitBtn"><span data-edit="form.boton"><%- t('form.boton', 'Conversemos') %></span></button>
+            <button type="submit" class="btn btn-solid btn-lg btn-block" id="submitBtn"><span data-edit="form.boton"><%- t('form.boton', 'Solicitar diagnóstico') %></span></button>
           <% } %>
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
