@@ -162,7 +162,7 @@
     el.guardar.disabled = true;
     var cuerpo = {
       titulo: pag.titulo, slug: pag.slug, descripcion: pag.descripcion,
-      publicada: pag.publicada, doc: doc,
+      publicada: pag.publicada, inicio: !!pag.inicio, doc: doc,
     };
     if (!forzar) cuerpo.base = pag.actualizada;
     return fetch('/api/paginas/' + pag.id, {
@@ -182,7 +182,7 @@
         }
         if (!x.r.ok || !x.j.ok) throw new Error(x.j.error || 'No se pudo guardar.');
         pag.actualizada = x.j.actualizada;
-        pag.slug = x.j.slug; pag.titulo = x.j.titulo; pag.publicada = x.j.publicada;
+        pag.slug = x.j.slug; pag.titulo = x.j.titulo; pag.publicada = x.j.publicada; pag.inicio = x.j.inicio;
         if (rev === miRev) { sucio = false; avisar('Guardado ✓', 'ok'); }
         else { avisar('Cambios sin guardar', 'aviso'); }
         bloqueado = false;
@@ -726,6 +726,10 @@
     slugIn.querySelector('input').addEventListener('blur', function (e) { e.target.value = pag.slug; });
     c.appendChild(slugIn);
     c.appendChild(h('p', { class: 'c-ayuda c-url', id: 'cUrl', text: location.origin + '/p/' + pag.slug }));
+    var cbi = h('input', { id: 'f-inicio', type: 'checkbox', checked: !!pag.inicio });
+    cbi.addEventListener('change', function () { pag.inicio = cbi.checked; marcar(); });
+    c.appendChild(h('div', { class: 'f f-bool' }, cbi, h('label', { for: 'f-inicio', text: 'Usar como portada del sitio (/)' })));
+    c.appendChild(h('p', { class: 'c-ayuda', text: 'Solo se muestra en / si además está publicada.' }));
     c.appendChild(campoSimple('Descripción (para buscadores y al compartir)', 'textarea', pag.descripcion, 300, function (v) { pag.descripcion = v; marcar(); }));
 
     c.appendChild(h('h4', { class: 'c-grupo', text: 'Estilo general' }));

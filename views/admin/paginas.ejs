@@ -2,7 +2,7 @@
 
 <div class="page-head">
   <h2>Páginas</h2>
-  <p>Crea páginas web con el constructor: secciones prediseñadas, imágenes con marcos, botones y enlaces. Se publican en <code>/p/nombre</code>.</p>
+  <p>Crea páginas con secciones prediseñadas, imágenes con marcos, botones y enlaces. Se publican en <code>/p/nombre</code>, o elige una como portada del sitio (<code>/</code>).</p>
 </div>
 
 <% if (error) { %><div class="alert-err"><%= error %></div><% } %>
@@ -39,7 +39,8 @@
         <% paginas.forEach(function (p) { %>
           <tr>
             <td><strong><%= p.titulo %></strong><br /><a class="muted" href="/p/<%= p.slug %>" target="_blank" rel="noopener">/p/<%= p.slug %></a></td>
-            <td><span class="badge <%= p.publicada ? 'badge-new' : 'badge-off' %>"><%= p.publicada ? 'Publicada' : 'Borrador' %></span></td>
+            <td><span class="badge <%= p.publicada ? 'badge-new' : 'badge-off' %>"><%= p.publicada ? 'Publicada' : 'Borrador' %></span>
+              <% if (p.inicio) { %><span class="badge badge-star">Portada</span><% } %></td>
             <td class="nowrap muted"><%= new Date(p.actualizada).toLocaleString('es-BO') %></td>
             <td class="actions-cell">
               <a class="icon-btn" title="Editar" href="/admin/paginas/<%= p.id %>/editor">✎</a>

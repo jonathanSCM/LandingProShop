@@ -467,9 +467,6 @@
               <option>Integrar sistemas y herramientas</option>
               <option>Retomar un proyecto detenido</option>
               <option>Otro desafio</option>
-              <% planes.forEach(function (p) { %>
-                <option>Agente IA — Plan <%= p.nombre %></option>
-              <% }); %>
             </select>
           </div>
 
@@ -501,16 +498,12 @@
       <a href="#proceso">Cómo trabajamos</a>
     </nav>
 
+    <% if (site.plataforma) { %>
     <nav class="foot-nav">
       <span class="foot-lbl">Soluciones</span>
-      <% if (site.plataforma) { %>
-        <a href="<%= site.plataforma %>" target="_blank" rel="noopener">Agentes de IA</a>
-      <% } else { %>
-        <a href="/registro">Agentes de IA</a>
-      <% } %>
-      <a href="/registro">Probar el agente</a>
-      <a href="/ingresar">Acceder al panel</a>
+      <a href="<%= site.plataforma %>" target="_blank" rel="noopener">Agentes de IA</a>
     </nav>
+    <% } %>
 
     <div class="foot-end">
       <span>&copy; <%= new Date().getFullYear() %> <%= site.name %></span>

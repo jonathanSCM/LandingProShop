@@ -1,63 +1,29 @@
 # Proshop — Sitio web
 
-Landing profesional para **Proshop**, empresa de desarrollo de software a medida
-(web apps, apps móviles y paneles administrativos). Construida con **Node.js + Express + EJS**.
+Landing de Proshop + **constructor de páginas** para crear nuevas páginas sin programar.
+Node.js + Express + EJS + PostgreSQL (Prisma).
 
-## Requisitos
-- Node.js 18 o superior (probado con Node 24)
-
-## Instalación
+## Puesta en marcha
 ```bash
 npm install
+cp .env.example .env      # define DATABASE_URL, ADMIN_USER, ADMIN_PASSWORD, SESSION_SECRET
+npx prisma migrate deploy
+npm start                 # http://localhost:3000
 ```
+El Dockerfile ya ejecuta `prisma migrate deploy` al arrancar.
 
-## Configuración
-Copia `.env.example` a `.env` y ajusta tus datos (WhatsApp, email, teléfono):
-```bash
-cp .env.example .env
-```
-Valores editables: `PORT`, `WHATSAPP_NUMBER`, `CONTACT_EMAIL`, `CONTACT_PHONE`, `CONTACT_LOCATION`.
+## Admin (`/admin`)
+- **Páginas**: crea páginas con secciones prediseñadas, arrastra y suelta, edita textos sobre
+  el lienzo, imágenes con marcos, botones y enlaces, vista móvil/tableta, deshacer/rehacer.
+  Se publican en `/p/nombre`; una de ellas puede ser la **portada** (`/`).
+- **Editar la landing actual**: modo edición de textos de la landing clásica (`/?editar=1`).
 
-> El número de WhatsApp va en formato internacional **sin** el signo `+` (ej: `51999888777`).
+Si ninguna página está marcada como portada y publicada, `/` muestra la landing clásica.
 
-## Ejecutar
-```bash
-npm start        # modo normal
-npm run dev      # recarga automática al guardar cambios (node --watch)
-```
-Luego abre http://localhost:3000
+## Contacto
+El formulario (landing y constructor) valida los datos y abre WhatsApp con el mensaje escrito.
+No se guarda bandeja de mensajes.
 
 ## Estructura
-```
-├─ server.js              # Servidor Express + API de contacto
-├─ views/                 # Plantillas EJS
-│  ├─ index.ejs           # Página principal (landing)
-│  ├─ 404.ejs
-│  └─ partials/           # head, header, footer reutilizables
-├─ public/                # Archivos estáticos
-│  ├─ css/styles.css      # Diseño / tema
-│  ├─ js/main.js          # Interacciones del front
-│  └─ img/                # Íconos y assets
-├─ data/leads.json        # Se genera solo: mensajes del formulario
-└─ .env                   # Configuración (no se sube al repo)
-```
-
-## Formulario de contacto
-Los mensajes enviados desde la web se guardan en `data/leads.json` y, al enviarse,
-se abre un enlace de WhatsApp prellenado para continuar la conversación.
-
-## Panel de administración
-Accede en **http://localhost:3000/admin** (o el enlace "Panel" del footer).
-
-- **Usuario/contraseña por defecto:** `admin` / `proshop123` — **cámbialos** en `.env`
-  (`ADMIN_USER`, `ADMIN_PASSWORD`) antes de publicar el sitio.
-- Desde el panel puedes: ver todos los mensajes, marcarlos como *atendido*,
-  eliminarlos, y responder rápido por WhatsApp o email.
-- La sesión dura 8 horas. Define un `SESSION_SECRET` propio en `.env`.
-
-## Próximos pasos (opcional)
-- Notificación por email al recibir un lead (nodemailer).
-- Secciones de testimonios y preguntas frecuentes.
-- Integración de pagos en línea (Mercado Pago / Stripe).
-- Base de datos (PostgreSQL / MongoDB) en lugar del archivo JSON.
-- Envío de notificaciones por email al recibir un lead.
+- `server.js` rutas · `lib/paginas.js` constructor (rutas, API, imágenes) · `lib/contenido.js` textos de la landing
+- `public/js/bloques.js` motor compartido editor/servidor · `public/js/constructor.js` editor visual

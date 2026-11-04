@@ -21,53 +21,12 @@
     </a>
 
     <nav class="sidebar-nav" aria-label="Menu de administracion">
-      <span class="sidebar-section">General</span>
-      <a href="/admin" class="<%= activo === 'resumen' ? 'is-active' : '' %>">
-        <span class="si">📊</span> Resumen
-      </a>
-      <a href="/admin/mensajes" class="<%= activo === 'mensajes' ? 'is-active' : '' %>">
-        <span class="si">✉️</span> Mensajes
-        <% if (typeof badgeMensajes !== 'undefined' && badgeMensajes > 0) { %>
-          <span class="nav-badge"><%= badgeMensajes %></span>
-        <% } %>
-      </a>
-
+      <span class="sidebar-section">Sitio web</span>
       <a href="/admin/paginas" class="<%= activo === 'paginas' ? 'is-active' : '' %>">
         <span class="si">🧩</span> Páginas
       </a>
-
-      <span class="sidebar-section">Clientes</span>
-      <a href="/admin/registrados" class="<%= activo === 'registrados' ? 'is-active' : '' %>">
-        <span class="si">🏢</span> Registrados
-      </a>
-      <a href="/admin/usuarios" class="<%= activo === 'usuarios' ? 'is-active' : '' %>">
-        <span class="si">👥</span> Usuarios y planes
-      </a>
-      <a href="/admin/seguimiento" class="<%= activo === 'seguimiento' ? 'is-active' : '' %>">
-        <span class="si">📊</span> Seguimiento mensajes
-      </a>
-      <a href="/admin/activos" class="<%= activo === 'activos' ? 'is-active' : '' %>">
-        <span class="si">✅</span> Activos
-      </a>
-      <a href="/admin/agentes" class="<%= activo === 'agentes' ? 'is-active' : '' %>">
-        <span class="si">🤖</span> Agentes
-      </a>
-      <a href="/admin/conexiones" class="<%= activo === 'conexiones' ? 'is-active' : '' %>">
-        <span class="si">📱</span> Conexiones WhatsApp
-      </a>
-
-      <span class="sidebar-section">Comercial</span>
-      <a href="/admin/compras" class="<%= activo === 'compras' ? 'is-active' : '' %>">
-        <span class="si">🧾</span> Registro de paquetes
-      </a>
-      <a href="/admin/planes" class="<%= activo === 'planes' ? 'is-active' : '' %>">
-        <span class="si">📦</span> Planes
-      </a>
-      <a href="/admin/paquetes" class="<%= activo === 'paquetes' ? 'is-active' : '' %>">
-        <span class="si">➕</span> Paquetes
-      </a>
-      <a href="/admin/pagos" class="<%= activo === 'pagos' ? 'is-active' : '' %>">
-        <span class="si">💳</span> Pagos
+      <a href="/?editar=1">
+        <span class="si">✏️</span> Editar la landing actual
       </a>
     </nav>
 

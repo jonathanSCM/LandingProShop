@@ -421,6 +421,7 @@ model Pagina {
   titulo      String
   descripcion String   @default("")
   publicada   Boolean  @default(false)
+  inicio      Boolean  @default(false) // se muestra en la portada (/)
   doc         Json     @default("{}")
   creada      DateTime @default(now())
   actualizada DateTime @updatedAt

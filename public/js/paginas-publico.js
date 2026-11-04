@@ -1,5 +1,4 @@
-/* Formularios de las paginas del constructor: envian a /api/contacto (los mensajes
-   llegan a Admin > Mensajes). El resto de la pagina no necesita JavaScript. */
+/* Formularios de las paginas del constructor: envian a /api/contacto, que valida y ofrece seguir por WhatsApp. El resto de la pagina no necesita JavaScript. */
 (function () {
   'use strict';
   var script = document.currentScript;
@@ -36,8 +35,14 @@
         .then(function (r) {
           if (!r.ok) throw new Error(r.j.error || 'No se pudo enviar.');
           form.reset();
-          msg.textContent = msg.dataset.exito || '¡Gracias!';
+          msg.textContent = (msg.dataset.exito || '¡Gracias!') + ' ';
           msg.classList.add('ok');
+          if (r.j.whatsappUrl) {
+            var a = document.createElement('a');
+            a.href = r.j.whatsappUrl; a.target = '_blank'; a.rel = 'noopener';
+            a.textContent = 'Continuar por WhatsApp →';
+            msg.appendChild(a);
+          }
         })
         .catch(function (err) {
           msg.textContent = err.message || 'No se pudo enviar. Intenta de nuevo.';
