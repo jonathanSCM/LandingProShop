@@ -7,10 +7,10 @@ const crypto = require('crypto');
 const express = require('express');
 const session = require('express-session');
 
-const proyectos = require('./lib/proyectos');
 const contenido = require('./lib/contenido');
 const Bloques = require('./public/js/bloques.js');
 const LandingCfg = require('./public/js/landing-cfg.js');
+const LandingRender = require('./lib/landing-render');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -105,6 +105,7 @@ app.get('/', async (req, res, next) => {
     const editando = quiereEditar && esAdmin;
     const cont = await contenido.leer();
     const cfg = cont.config;
+    const { t, enlace } = LandingRender.helpers(cont.textos, cfg.enlaces);
 
     // Secciones en el orden elegido. Las ocultas solo se ven al editar, para poder recuperarlas.
     const secciones = [];
@@ -121,31 +122,28 @@ app.get('/', async (req, res, next) => {
       });
     });
 
-    // enlace('hero.cta1', '#contacto', abrirEnPestanaNueva): atributos del <a> segun lo editado.
-    const enlace = (clave, porDefecto, nuevaPorDefecto) => {
-      const e = cfg.enlaces[clave];
-      const url = Bloques.url(e ? e.url : porDefecto) || '#';
-      const nueva = e ? e.nueva : !!nuevaPorDefecto;
-      return ` href="${Bloques.esc(url)}"${nueva ? ' target="_blank" rel="noopener"' : ''} data-link="${Bloques.esc(clave)}"`;
-    };
-
+    const lista = LandingRender.listaProyectos(cont);
     const fuente = LandingCfg.FUENTES[cfg.diseno.fuente];
+    const d = cfg.diseno;
+    const cab = LandingCfg.estiloCabecera(cfg.cabecera);
+    const pie = LandingCfg.estiloPie(cfg.pie);
     res.render('landing', {
       title: `${site.name} — Software a medida en Bolivia`,
-      proyectos: contenido.aplicarAProyectos(proyectos, cont, editando),
-      editando, esAdmin, secciones, enlace,
+      proyectos: editando ? lista : lista.filter((p) => !p.oculto),
+      editando, esAdmin, secciones, enlace, t,
       menu: LandingCfg.itemsMenu(cfg),
       hayCustom: secciones.some((s) => s.custom),
-      disenoCss: LandingCfg.cssDiseno(cfg.diseno),
+      disenoCss: LandingCfg.cssDiseno(d),
       fuenteUrl: fuente ? fuente.url : '',
-      sinAnim: cfg.diseno.animaciones === 'ninguna',
+      sinAnim: d.animaciones === 'ninguna',
+      htmlAttrs: [
+        d.modo !== 'auto' ? `data-tema="${d.modo}" data-tema-fijo` : '',
+        d.bordes !== 'original' ? `data-bordes="${d.bordes}"` : '',
+      ].filter(Boolean).join(' '),
+      sinBotonTema: d.modo !== 'auto' || !d.botonTema,
+      cab: cfg.cabecera, cabEstilo: cab, pie: cfg.pie, pieEstilo: pie,
       // Datos que necesita el editor del navegador (el JSON no puede cerrar el <script>).
-      edDatos: editando ? JSON.stringify({ config: cfg, textos: cont.textos, proyectos: cont.proyectos }).replace(/</g, '\\u003c') : '',
-      // t('clave', 'texto por defecto') -> devuelve el texto editado si existe.
-      t: (clave, porDefecto) => {
-        const v = cont.textos[clave];
-        return typeof v === 'string' && v.trim() !== '' ? v : porDefecto;
-      },
+      edDatos: editando ? JSON.stringify({ config: cfg, textos: cont.textos, lista }).replace(/</g, '\\u003c') : '',
     });
   } catch (err) { next(err); }
 });
@@ -172,6 +170,25 @@ app.post('/api/landing/restablecer', requireAuthApi, async (req, res) => {
     return res.json({ ok: true });
   } catch (err) {
     return res.status(500).json({ ok: false, error: 'No se pudo restablecer.' });
+  }
+});
+
+// Repinta la lista de proyectos con los datos que lleva el editor (sin guardar todavia).
+app.post('/api/landing/proyectos-html', requireAuthApi, async (req, res) => {
+  try {
+    const cont = await contenido.leer();
+    const body = req.body || {};
+    const lista = (Array.isArray(body.lista) ? body.lista : []).slice(0, 40).map((p) => LandingCfg.limpiarProyecto(p));
+    const enlaces = LandingCfg.limpiarConfig({ enlaces: body.enlaces }).enlaces;
+    const textos = Object.assign({}, cont.textos);
+    const h = LandingRender.helpers(textos, Object.assign({}, cont.config.enlaces, enlaces));
+    app.render('landing/proyectos-lista', { proyectos: lista, editando: true, site, t: h.t, enlace: h.enlace }, (err, html) => {
+      if (err) { console.error(err); return res.status(500).json({ ok: false, error: 'No se pudo dibujar la lista.' }); }
+      res.json({ ok: true, html });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ ok: false, error: 'No se pudo dibujar la lista.' });
   }
 });
 

@@ -203,7 +203,6 @@
     mostrar(-1);
   }
 
-  Array.prototype.forEach.call(document.querySelectorAll('.pp-boceto'), montarRecorrido);
 
   /* ---------- Pestanas accesibles (patron tablist del WAI-ARIA) ----------
      Sirve para cualquier grupo: el tablist lleva data-tabs="<prefijo>", cada
@@ -248,7 +247,13 @@
     });
   }
 
-  document.querySelectorAll('[data-tabs]').forEach(montarTabs);
+  // Se llama al cargar y, en el editor, cada vez que se repinta la lista de proyectos.
+  window.__montarProyectos = function (raiz) {
+    raiz = raiz || document;
+    Array.prototype.forEach.call(raiz.querySelectorAll('.pp-boceto'), montarRecorrido);
+    Array.prototype.forEach.call(raiz.querySelectorAll('[data-tabs]'), montarTabs);
+  };
+  window.__montarProyectos(document);
 
   // ---------- Formulario de contacto ----------
   var form = document.getElementById('contactForm');

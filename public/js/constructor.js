@@ -962,109 +962,9 @@
   }
 
   // ------------------------------------------------------------------
-  // Biblioteca de imagenes
+  // Biblioteca de imagenes (selector compartido: biblioteca.js)
   // ------------------------------------------------------------------
-  var modal = $('#cModal');
-  var modalCb = null;
-  var EJEMPLOS = [['ph-hero.svg', 'Portada'], ['ph-foto-1.svg', 'Foto 1'], ['ph-foto-2.svg', 'Foto 2'], ['ph-foto-3.svg', 'Foto 3'], ['ph-avatar.svg', 'Persona']];
-
-  function abrirBiblioteca(cb) {
-    modalCb = cb;
-    modal.hidden = false;
-    pintarBiblioteca(null);
-    cargarBiblioteca();
-  }
-  function cerrarBiblioteca() { modal.hidden = true; modalCb = null; }
-  function elegirImagen(url) { var cb = modalCb; cerrarBiblioteca(); if (cb) cb(url); }
-
-  function pintarBiblioteca(imagenes, error) {
-    var cuerpo = $('#cModalCuerpo');
-    cuerpo.innerHTML = '';
-    var fi = h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp,image/gif', multiple: true, hidden: true, id: 'cArchivo' });
-    fi.addEventListener('change', function () { subirVarios(fi.files); });
-    var zona = h('label', { class: 'c-zona', for: 'cArchivo' }, h('strong', { text: 'Sube imágenes' }), h('span', { text: 'Haz clic o suelta aquí tus archivos (PNG, JPG, WEBP o GIF)' }));
-    ['dragenter', 'dragover'].forEach(function (ev) { zona.addEventListener(ev, function (e) { e.preventDefault(); zona.classList.add('on'); }); });
-    ['dragleave', 'drop'].forEach(function (ev) { zona.addEventListener(ev, function () { zona.classList.remove('on'); }); });
-    zona.addEventListener('drop', function (e) { e.preventDefault(); if (e.dataTransfer.files.length) subirVarios(e.dataTransfer.files); });
-    cuerpo.appendChild(h('div', {}, fi, zona));
-    cuerpo.appendChild(h('div', { id: 'cSubiendo', class: 'c-ayuda', role: 'status' }));
-    if (error) cuerpo.appendChild(h('p', { class: 'c-err', text: error }));
-
-    cuerpo.appendChild(h('h4', { class: 'c-grupo', text: 'Tus imágenes' }));
-    var rej = h('div', { class: 'c-galeria', id: 'cGaleria' });
-    if (imagenes == null) rej.appendChild(h('p', { class: 'c-ayuda', text: 'Cargando…' }));
-    else if (!imagenes.length) rej.appendChild(h('p', { class: 'c-ayuda', text: 'Todavía no subiste imágenes.' }));
-    else imagenes.forEach(function (im) {
-      rej.appendChild(h('div', { class: 'c-gi' },
-        h('button', { type: 'button', class: 'c-gi-b', title: im.nombre, onclick: function () { elegirImagen(im.url); } }, h('img', { src: im.url, alt: im.nombre, loading: 'lazy' })),
-        h('button', {
-          type: 'button', class: 'c-gi-x', title: 'Borrar imagen', 'aria-label': 'Borrar ' + im.nombre, text: '✕',
-          onclick: function () {
-            if (!confirm('¿Borrar esta imagen? Si la usas en alguna página, dejará de verse.')) return;
-            fetch('/api/imagenes/' + im.id, { method: 'DELETE' }).then(cargarBiblioteca);
-          },
-        })));
-    });
-    cuerpo.appendChild(rej);
-
-    cuerpo.appendChild(h('h4', { class: 'c-grupo', text: 'Imágenes de ejemplo' }));
-    var ej = h('div', { class: 'c-galeria' });
-    EJEMPLOS.forEach(function (e) {
-      ej.appendChild(h('div', { class: 'c-gi' }, h('button', { type: 'button', class: 'c-gi-b', title: e[1], onclick: function () { elegirImagen('/img/plantillas/' + e[0]); } }, h('img', { src: '/img/plantillas/' + e[0], alt: e[1] }))));
-    });
-    cuerpo.appendChild(ej);
-  }
-
-  function cargarBiblioteca() {
-    fetch('/api/imagenes').then(function (r) { return r.json(); }).then(function (j) {
-      if (modal.hidden) return;
-      if (!j.ok) throw new Error(j.error);
-      pintarBiblioteca(j.imagenes);
-    }).catch(function (err) { if (!modal.hidden) pintarBiblioteca([], err.message || 'No se pudo cargar la biblioteca.'); });
-  }
-
-  /** Reduce fotos pesadas del celular antes de subirlas (max 2000px). */
-  function prepararImagen(file) {
-    if (file.type === 'image/gif' || file.size <= 1200 * 1024 || !window.createImageBitmap) return Promise.resolve(file);
-    return createImageBitmap(file).then(function (bmp) {
-      var k = Math.min(1, 2000 / Math.max(bmp.width, bmp.height));
-      var cv = document.createElement('canvas');
-      cv.width = Math.round(bmp.width * k); cv.height = Math.round(bmp.height * k);
-      cv.getContext('2d').drawImage(bmp, 0, 0, cv.width, cv.height);
-      return new Promise(function (ok) {
-        cv.toBlob(function (blob) { ok(blob && blob.size < file.size ? blob : file); }, 'image/webp', 0.86);
-      });
-    }).catch(function () { return file; });
-  }
-
-  function subirArchivo(file) {
-    if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) return Promise.reject(new Error('«' + file.name + '»: solo PNG, JPG, WEBP o GIF.'));
-    return prepararImagen(file).then(function (blob) {
-      var tipo = blob.type || file.type;
-      return fetch('/api/imagenes?nombre=' + encodeURIComponent(file.name), { method: 'POST', headers: { 'Content-Type': tipo }, body: blob });
-    }).then(function (r) { return r.json(); }).then(function (j) {
-      if (!j.ok) throw new Error(j.error || 'No se pudo subir.');
-      return j.imagen;
-    });
-  }
-
-  function subirVarios(archivos) {
-    archivos = Array.prototype.slice.call(archivos);
-    if (!archivos.length) return;
-    var info = $('#cSubiendo');
-    if (info) info.textContent = 'Subiendo ' + archivos.length + (archivos.length === 1 ? ' imagen…' : ' imágenes…');
-    var ultima = null, errores = [];
-    archivos.reduce(function (p, f) {
-      return p.then(function () { return subirArchivo(f).then(function (im) { ultima = im; }, function (e) { errores.push(e.message); }); });
-    }, Promise.resolve()).then(function () {
-      if (ultima && archivos.length === 1 && !errores.length) return elegirImagen(ultima.url);
-      cargarBiblioteca();
-      if (errores.length) setTimeout(function () { var i2 = $('#cSubiendo'); if (i2) { i2.textContent = errores.join(' '); i2.classList.add('c-err'); } }, 150);
-    });
-  }
-
-  modal.addEventListener('mousedown', function (e) { if (e.target === modal) cerrarBiblioteca(); });
-  $('#cModalCerrar').addEventListener('click', cerrarBiblioteca);
+  function abrirBiblioteca(cb) { window.Biblioteca.abrir(cb); }
 
   // ------------------------------------------------------------------
   // Cabecera: dispositivos, historial, vista previa, guardar, publicar
@@ -1118,7 +1018,6 @@
     var mod = e.ctrlKey || e.metaKey;
 
     if (e.key === 'Escape') {
-      if (!modal.hidden) { cerrarBiblioteca(); return; }
       if (vista) { alternarVista(false); return; }
       if (!enCampo && !enTexto && sel) seleccionar(null);
       return;

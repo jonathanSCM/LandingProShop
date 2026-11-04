@@ -1,0 +1,23 @@
+/* Selector de imagenes compartido (colores fijos: no siguen el tema de la pagina). */
+.bib { position: fixed; z-index: 400; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(20, 20, 30, .55); }
+.bib, .bib * { box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.bib-caja { width: min(760px, 100%); max-height: min(90vh, 760px); display: flex; flex-direction: column; background: #fff; color: #1a1a24; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px -20px rgba(0,0,0,.5); font-size: 14px; line-height: 1.4; }
+.bib-cab { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #e3e3ea; font-size: 16px; }
+.bib-x { border: 0; background: #f1f1f5; color: #1a1a24; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; }
+.bib-cuerpo { padding: 16px 18px 20px; overflow-y: auto; min-height: 0; }
+.bib-zona { display: grid; gap: 4px; text-align: center; padding: 22px; border: 2px dashed #d4d4de; border-radius: 12px; cursor: pointer; color: #6b6b7b; }
+.bib-zona strong { color: #1a1a24; }
+.bib-zona:hover, .bib-zona.on { border-color: #6d28d9; background: #ede9fe; }
+.bib-url { width: 100%; margin-top: 12px; padding: 9px 11px; border: 1px solid #d4d4de; border-radius: 8px; font-size: 13.5px; color: #1a1a24; background: #fff; }
+.bib-url:focus { outline: 2px solid #6d28d9; outline-offset: -1px; border-color: transparent; }
+.bib-info { margin: 8px 0 0; font-size: 12.5px; color: #6b6b7b; }
+.bib-err { color: #dc2626; font-size: 13px; }
+.bib-grupo { margin: 18px 0 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #6b6b7b; }
+.bib-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
+.bib-gi { position: relative; }
+.bib-gb { display: block; width: 100%; aspect-ratio: 1; padding: 0; border: 1px solid #e3e3ea; border-radius: 10px; overflow: hidden; cursor: pointer; background: #f4f4f8; }
+.bib-gb:hover { border-color: #6d28d9; outline: 2px solid #6d28d9; }
+.bib-gb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.bib-gx { position: absolute; top: 5px; right: 5px; width: 22px; height: 22px; border: 0; border-radius: 50%; background: rgba(0,0,0,.65); color: #fff; cursor: pointer; font-size: 11px; opacity: 0; }
+.bib-gi:hover .bib-gx, .bib-gx:focus { opacity: 1; }
+.bib-gx:hover { background: #dc2626; }

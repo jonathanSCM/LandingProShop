@@ -1782,3 +1782,26 @@ img { max-width: 100%; display: block; }
 /* "Sin animaciones" en el diseno general */
 .sin-anim *, .sin-anim *::before, .sin-anim *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 .sin-anim [data-anim] { opacity: 1 !important; transform: none !important; }
+
+/* =============================================================
+   Ajustes del editor: cabecera, forma de los componentes y modo de color
+   ============================================================= */
+.nav-inner { height: var(--nav-h, 68px); }
+.brand-logo { height: var(--logo-h, 24px); }
+.brand-txt { font-family: var(--disp); font-weight: 700; font-size: calc(var(--logo-h, 24px) * .85); letter-spacing: -0.02em; line-height: 1; }
+.nav.nav-libre { position: relative; }
+.nav.nav-sin-boton .nav-actions > .btn { display: none; }
+@media (max-width: 860px) { .nav-links { inset: var(--nav-h, 68px) 0 auto 0; } }
+
+html[data-tema-fijo] [data-boton-tema], body.sin-boton-tema [data-boton-tema] { display: none !important; }
+
+html[data-bordes="rectos"] :is(.btn, .pildora, .nav-toggle, .pp-state, .chip, .stamp, .visor-nav, .proj-panel, .visor, .pp-shot, .pp-cta, .plan, .pp-boceto .bo) { border-radius: 0; }
+html[data-bordes="suaves"] :is(.btn, .pildora, .nav-toggle, .pp-state, .chip, .stamp) { border-radius: 10px; }
+html[data-bordes="suaves"] :is(.proj-panel, .visor, .pp-shot, .pp-cta, .plan) { border-radius: 12px; }
+html[data-bordes="suaves"] .field :is(input, select, textarea) { border-radius: 10px; }
+html[data-bordes="redondos"] :is(.btn, .pildora, .nav-toggle, .pp-state, .chip, .stamp) { border-radius: 999px; }
+html[data-bordes="redondos"] :is(.proj-panel, .visor, .pp-shot, .pp-cta, .plan) { border-radius: 24px; }
+html[data-bordes="redondos"] .field :is(input, select, textarea) { border-radius: 16px; }
+
+.seccion.con-alto { display: flex; flex-direction: column; justify-content: center; }
+.seccion.con-alto > * { width: 100%; }

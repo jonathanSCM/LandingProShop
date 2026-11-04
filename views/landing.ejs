@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"<%- htmlAttrs ? ' ' + htmlAttrs : '' %>>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,6 +20,7 @@
   <% if (hayCustom || editando) { %><link rel="stylesheet" href="/css/paginas.css" /><% } %>
   <% if (fuenteUrl) { %><link rel="stylesheet" href="<%= fuenteUrl %>" /><% } %>
   <% if (editando || esAdmin) { %><link rel="stylesheet" href="/css/landing-editor.css" /><% } %>
+  <% if (editando) { %><link rel="stylesheet" href="/css/biblioteca.css" /><% } %>
   <% if (disenoCss) { %><style id="disenoCss"><%- disenoCss %></style><% } %>
 
   <script>
@@ -29,19 +30,22 @@
        Si no hay nada guardado no se toca nada y manda el sistema operativo. */
     (function () {
       try {
+        if (document.documentElement.hasAttribute('data-tema-fijo')) return; // el admin fijo el modo
         var t = localStorage.getItem('tema');
         if (t === 'claro' || t === 'oscuro') document.documentElement.dataset.tema = t;
       } catch (e) { /* navegacion privada o cookies bloqueadas: da igual */ }
     })();
   </script>
 </head>
-<body class="<%= editando ? 'modo-edicion' : '' %><%= sinAnim ? ' sin-anim' : '' %>">
+<body class="<%= editando ? 'modo-edicion' : '' %><%= sinAnim ? ' sin-anim' : '' %><%= sinBotonTema ? ' sin-boton-tema' : '' %>">
 
 <% if (editando) { %>
   <div class="ed-barra" id="edBarra">
     <span class="ed-marca">Editor</span>
-    <button type="button" class="ed-btn ed-btn-2" id="edAnadir">＋ Añadir sección</button>
+    <button type="button" class="ed-btn ed-btn-2" id="edAnadir">＋ Sección</button>
     <button type="button" class="ed-btn ed-btn-2" id="edSecciones">☰ Secciones</button>
+    <button type="button" class="ed-btn ed-btn-2" id="edProyectos">🗂 Proyectos</button>
+    <button type="button" class="ed-btn ed-btn-2" id="edCabecera">▭ Cabecera</button>
     <button type="button" class="ed-btn ed-btn-2" id="edDiseno">🎨 Diseño</button>
     <span class="ed-estado" id="edEstado" role="status" aria-live="polite"></span>
     <button type="button" class="ed-btn ed-btn-2" id="edRestablecer">Restablecer todo</button>
@@ -58,14 +62,19 @@
   <span></span><span></span><span></span><span></span><span></span><span></span>
 </div>
 
-<header class="nav">
+<% if (cab.visible || editando) { %>
+<header class="nav <%= cabEstilo.clase %><%= cab.visible ? '' : ' nav-oculta' %>" id="cabecera" style="<%= cabEstilo.style %>">
   <div class="shell nav-inner">
     <a class="brand" href="/">
-      <img class="brand-logo" src="/img/logo-proshop.png" alt="<%= site.name %>" />
+      <% if (cab.logoTipo === 'texto') { %>
+        <span class="brand-txt"><%= cab.logoTexto || site.name %></span>
+      <% } else { %>
+        <img class="brand-logo" src="<%= cab.logoSrc || '/img/logo-proshop.png' %>" alt="<%= site.name %>" />
+      <% } %>
     </a>
 
     <nav class="nav-links" id="navLinks">
-      <span style="display:contents" data-menu-box><% menu.forEach(function (m) { %><a href="#<%= m.ancla %>"><%= m.texto %></a><% }); %></span>
+      <span style="display:contents" data-menu-box><% menu.forEach(function (m) { %><a href="<%= m.href || '#' + m.ancla %>"><%= m.texto %></a><% }); %></span>
       <button class="tema-movil" type="button" data-boton-tema>
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" />
@@ -89,6 +98,7 @@
     </div>
   </div>
 </header>
+<% } %>
 
 <main id="landingMain">
 <% secciones.forEach(function (s) { %>
@@ -98,7 +108,8 @@
 <% }); %>
 </main>
 
-<footer class="foot">
+<% if (pie.visible || editando) { %>
+<footer class="foot<%= pie.visible ? '' : ' nav-oculta' %>" id="pie" style="<%= pieEstilo.style %>">
   <div class="shell foot-inner">
     <div class="foot-brand">
       <img class="brand-logo" src="/img/logo-proshop.png" alt="<%= site.name %>" />
@@ -107,7 +118,7 @@
 
     <nav class="foot-nav">
       <span class="foot-lbl">ProShop</span>
-      <span style="display:contents" data-menu-box><% menu.forEach(function (m) { %><a href="#<%= m.ancla %>"><%= m.texto %></a><% }); %></span>
+      <span style="display:contents" data-menu-box><% menu.forEach(function (m) { %><a href="<%= m.href || '#' + m.ancla %>"><%= m.texto %></a><% }); %></span>
     </nav>
 
     <% if (site.plataforma) { %>
@@ -123,6 +134,7 @@
     </div>
   </div>
 </footer>
+<% } %>
 
 <button class="pildora subir" id="btnSubir" type="button" aria-label="Volver arriba">
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -136,6 +148,7 @@
 <script id="edDatos" type="application/json"><%- edDatos %></script>
 <script src="/js/bloques.js"></script>
 <script src="/js/landing-cfg.js"></script>
+<script src="/js/biblioteca.js"></script>
 <script src="/js/landing-editor.js"></script>
 <% } else if (hayCustom) { %>
 <script src="/js/paginas-publico.js" data-origen="Landing" defer></script>

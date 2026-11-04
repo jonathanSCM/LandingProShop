@@ -46,6 +46,7 @@
         { k: 'texto', t: 'area', def: 'Un título que llame la atención', max: 300, label: 'Texto' },
         { k: 'nivel', t: 'enum', def: '2', label: 'Tamaño', op: [['1', 'Grande'], ['2', 'Medio'], ['3', 'Chico']] },
         { k: 'color', t: 'color', def: '', label: 'Color' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
@@ -55,6 +56,7 @@
         { k: 'texto', t: 'area', def: 'Escribe aquí tu texto. Cuenta lo que haces, para quién y por qué importa.', max: 3000, label: 'Texto' },
         { k: 'tam', t: 'enum', def: 'm', label: 'Tamaño', op: TAM },
         { k: 'color', t: 'color', def: '', label: 'Color' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
@@ -79,9 +81,11 @@
         { k: 'estilo', t: 'enum', def: 'solido', label: 'Estilo', op: [['solido', 'Sólido'], ['linea', 'Borde'], ['suave', 'Suave']] },
         { k: 'tam', t: 'enum', def: 'm', label: 'Tamaño', op: TAM },
         { k: 'color', t: 'color', def: '', label: 'Color del botón' },
+        { k: 'forma', t: 'enum', def: '', label: 'Forma', op: [['', 'Auto'], ['pildora', 'Píldora'], ['suave', 'Suave'], ['recto', 'Recto']] },
         { k: 'enLinea', t: 'bool', def: false, label: 'En la misma línea que el anterior' },
         { k: 'completo', t: 'bool', def: false, label: 'Ancho completo' },
         { k: 'nueva', t: 'bool', def: false, label: 'Abrir en pestaña nueva' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
@@ -92,6 +96,7 @@
         { k: 'url', t: 'url', def: '#', max: 500, label: 'Enlace' },
         { k: 'color', t: 'color', def: '', label: 'Color' },
         { k: 'nueva', t: 'bool', def: false, label: 'Abrir en pestaña nueva' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
@@ -102,7 +107,9 @@
         { k: 'titulo', t: 'texto', def: 'Una ventaja clave', max: 120, label: 'Título' },
         { k: 'texto', t: 'area', def: 'Explica en una o dos frases por qué esto le sirve a tu cliente.', max: 600, label: 'Texto' },
         { k: 'estilo', t: 'enum', def: 'borde', label: 'Estilo', op: [['borde', 'Borde'], ['sombra', 'Sombra'], ['plana', 'Plana']] },
+        { k: 'forma', t: 'enum', def: '', label: 'Forma', op: [['', 'Auto'], ['pildora', 'Píldora'], ['suave', 'Suave'], ['recto', 'Recto']] },
         { k: 'url', t: 'url', def: '', max: 500, label: 'Enlace (opcional)' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
@@ -110,8 +117,9 @@
       nombre: 'Lista', icono: '≡',
       campos: [
         { k: 'items', t: 'items', def: [{ texto: 'Primer punto' }, { texto: 'Segundo punto' }, { texto: 'Tercer punto' }], max: 20, sub: [{ k: 'texto', t: 'texto', def: '', max: 200, label: 'Texto' }], label: 'Puntos' },
-        { k: 'icono', t: 'enum', def: '✓', label: 'Viñeta', op: [['✓', '✓'], ['•', '•'], ['→', '→'], ['★', '★'], ['+', '+']] },
+        { k: 'icono', t: 'enum', def: '✓', label: 'Viñeta', op: [['✓', '✓'], ['•', '•'], ['→', '→'], ['★', '★'], ['+', '+'], ['✕', '✕'], ['–', '–']] },
         { k: 'color', t: 'color', def: '', label: 'Color del texto' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
       ],
     },
     menu: {
@@ -119,6 +127,7 @@
       campos: [
         { k: 'items', t: 'items', def: [{ texto: 'Inicio', url: '#inicio' }, { texto: 'Servicios', url: '#servicios' }, { texto: 'Contacto', url: '#contacto' }], max: 12, sub: [{ k: 'texto', t: 'texto', def: 'Enlace', max: 60, label: 'Texto' }, { k: 'url', t: 'url', def: '#', max: 500, label: 'Enlace' }], label: 'Enlaces' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
       ],
     },
     estadistica: {
@@ -126,6 +135,7 @@
       campos: [
         { k: 'valor', t: 'texto', def: '+120', max: 20, label: 'Número' },
         { k: 'etiqueta', t: 'texto', def: 'Clientes felices', max: 80, label: 'Etiqueta' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
         { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
@@ -143,6 +153,28 @@
         { k: 'boton', t: 'texto', def: 'Enviar mensaje', max: 60, label: 'Texto del botón' },
         { k: 'exito', t: 'texto', def: '¡Gracias! Te responderemos muy pronto.', max: 200, label: 'Mensaje al enviar' },
         { k: 'telefono', t: 'bool', def: false, label: 'Pedir teléfono' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
+      ],
+    },
+    insignia: {
+      nombre: 'Etiqueta', icono: '◉',
+      campos: [
+        { k: 'texto', t: 'texto', def: '✨ Novedad', max: 60, label: 'Texto' },
+        { k: 'estilo', t: 'enum', def: 'suave', label: 'Estilo', op: [['suave', 'Suave'], ['solido', 'Sólido'], ['linea', 'Borde']] },
+        { k: 'color', t: 'color', def: '', label: 'Color' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
+        { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
+      ],
+    },
+    cita: {
+      nombre: 'Cita', icono: '❝',
+      campos: [
+        { k: 'texto', t: 'area', def: 'Una frase que resuma lo mejor que dicen de ti.', max: 500, label: 'Cita' },
+        { k: 'autor', t: 'texto', def: 'Nombre Apellido', max: 80, label: 'Autor' },
+        { k: 'cargo', t: 'texto', def: 'Cargo, Empresa', max: 100, label: 'Cargo o empresa' },
+        { k: 'color', t: 'color', def: '', label: 'Color' },
+        { k: 'escala', t: 'num', def: 100, min: 50, max: 220, step: 5, label: 'Tamaño (%)' },
+        { k: 'alinear', t: 'enum', def: '', label: 'Alineación', op: ALINEAR },
       ],
     },
     espacio: {
@@ -160,9 +192,9 @@
   };
 
   var SECCION = [
-    { k: 'fondoTipo', t: 'enum', def: 'color', label: 'Fondo', op: [['color', 'Color'], ['acento', 'Acento'], ['degradado', 'Degradado'], ['imagen', 'Imagen']] },
-    { k: 'fondo', t: 'color', def: '', label: 'Color de fondo', si: ['fondoTipo', ['color', 'degradado']] },
-    { k: 'fondo2', t: 'color', def: '#2563eb', label: 'Segundo color', si: ['fondoTipo', ['degradado']] },
+    { k: 'fondoTipo', t: 'enum', def: 'color', label: 'Fondo', op: [['color', 'Color'], ['acento', 'Acento'], ['degradado', 'Degradado'], ['aurora', 'Aurora'], ['puntos', 'Puntos'], ['malla', 'Malla'], ['imagen', 'Imagen']] },
+    { k: 'fondo', t: 'color', def: '', label: 'Color de fondo', si: ['fondoTipo', ['color', 'degradado', 'aurora', 'puntos', 'malla']] },
+    { k: 'fondo2', t: 'color', def: '#2563eb', label: 'Segundo color', si: ['fondoTipo', ['degradado', 'aurora']] },
     { k: 'fondoImagen', t: 'imagen', def: '', label: 'Imagen de fondo', si: ['fondoTipo', ['imagen']] },
     { k: 'oscurecer', t: 'num', def: 40, min: 0, max: 80, step: 5, label: 'Oscurecer imagen (%)', si: ['fondoTipo', ['imagen']] },
     { k: 'texto', t: 'color', def: '', label: 'Color del texto (auto si está vacío)' },
@@ -174,6 +206,7 @@
     { k: 'separacion', t: 'enum', def: 'm', label: 'Separación entre columnas', op: [['s', 'Poca'], ['m', 'Media'], ['l', 'Mucha']], si: ['#cols', [2, 3, 4]] },
     { k: 'cajas', t: 'bool', def: false, label: 'Columnas como tarjetas', si: ['#cols', [2, 3, 4]] },
     { k: 'alto', t: 'enum', def: 'auto', label: 'Altura mínima', op: [['auto', 'Auto'], ['mitad', 'Media pantalla'], ['pantalla', 'Pantalla']] },
+    { k: 'altoPx', t: 'num', def: 0, min: 0, max: 1000, step: 20, label: 'Altura mínima exacta (px, 0 = auto)' },
     { k: 'ancla', t: 'texto', def: '', max: 40, label: 'Ancla (para enlazar con #nombre)' },
   ];
 
@@ -380,13 +413,14 @@
           estilo({ color: el.color }) + ph('texto', 'Escribe un título') + '>' + esc(el.texto) + '</h' + el.nivel + '>';
         break;
       case 'texto':
+        if (!el.texto && !ed) break;
         inner = '<p class="pg-p t-' + el.tam + '"' + estilo({ color: el.color }) + ph('texto', 'Escribe un texto') + '>' + esc(el.texto) + '</p>';
         break;
       case 'boton': {
         var bc = el.color || '';
         var st = { '--bc': bc };
         if (bc) st['--bt'] = textoSobre(bc);
-        inner = '<a class="pg-btn b-' + el.estilo + ' t-' + el.tam + (el.completo ? ' completo' : '') + '"' +
+        inner = '<a class="pg-btn b-' + el.estilo + ' t-' + el.tam + (el.completo ? ' completo' : '') + (el.forma ? ' f-' + el.forma : '') + '"' +
           enlaceAttrs(el.url, el.nueva) + estilo(st) + '><span' + ph('texto', 'Botón') + '>' + esc(el.texto) + '</span></a>';
         if (el.enLinea && !el.completo) extra = ' en-linea';
         break;
@@ -418,12 +452,12 @@
         var cuerpo = (el.icono ? '<span class="pg-card-i"' + ph('icono', '★') + '>' + esc(el.icono) + '</span>' : '') +
           (el.titulo || ed ? '<h3 class="pg-card-t"' + ph('titulo', 'Título') + '>' + esc(el.titulo) + '</h3>' : '') +
           (el.texto || ed ? '<p class="pg-card-p"' + ph('texto', 'Texto') + '>' + esc(el.texto) + '</p>' : '');
-        var caja = '<div class="pg-card c-' + el.estilo + '">' + cuerpo + '</div>';
+        var caja = '<div class="pg-card c-' + el.estilo + (el.forma ? ' f-' + el.forma : '') + '">' + cuerpo + '</div>';
         inner = url(el.url) ? '<a class="pg-card-link"' + enlaceAttrs(el.url, false) + '>' + caja + '</a>' : caja;
         break;
       }
       case 'lista':
-        inner = '<ul class="pg-list"' + estilo({ color: el.color }) + '>' + el.items.map(function (it) {
+        inner = '<ul class="pg-list"' + estilo({ color: el.color, '--lc': el.color }) + '>' + el.items.map(function (it) {
           return '<li><span class="pg-li-i" aria-hidden="true">' + esc(el.icono) + '</span><span>' + esc(it.texto) + '</span></li>';
         }).join('') + '</ul>';
         break;
@@ -455,6 +489,14 @@
           '<button type="submit" class="pg-btn b-solido t-m completo"><span>' + esc(el.boton) + '</span></button>' +
           '<p class="pg-form-msg" role="status" data-exito="' + esc(el.exito) + '"></p></form>';
         break;
+      case 'insignia':
+        inner = '<span class="pg-badge i-' + el.estilo + '"' + estilo({ '--bc': el.color, '--bt': el.color ? textoSobre(el.color) : '' }) + ph('texto', 'Etiqueta') + '>' + esc(el.texto) + '</span>';
+        break;
+      case 'cita':
+        inner = '<blockquote class="pg-quote"' + estilo({ color: el.color }) + '><p class="pg-quote-t"' + ph('texto', 'Escribe la cita') + '>' + esc(el.texto) + '</p>' +
+          (el.autor || el.cargo || ed ? '<footer><strong' + ph('autor', 'Autor') + '>' + esc(el.autor) + '</strong>' +
+            (el.cargo || ed ? '<span' + ph('cargo', 'Cargo') + '>' + esc(el.cargo) + '</span>' : '') + '</footer>' : '') + '</blockquote>';
+        break;
       case 'espacio':
         inner = '<div class="pg-space"' + estilo({ height: el.alto + 'px' }) + '></div>';
         break;
@@ -464,7 +506,8 @@
     }
     if (!inner) return '';
     var al = el.alinear || (sec ? sec.alinear : 'izq');
-    return '<div class="pg-el e-' + el.tipo + ' al-' + al + extra + '"' +
+    var kst = el.escala && el.escala !== 100 ? ' style="--k:' + (el.escala / 100) + '"' : '';
+    return '<div class="pg-el e-' + el.tipo + ' al-' + al + extra + '"' + kst +
       (ed ? ' data-el="' + esc(el.id) + '" data-tipo="' + el.tipo + '"' : '') + '>' + inner + '</div>';
   }
 
@@ -485,6 +528,15 @@
       var c1 = s.fondo || '#6d28d9';
       st.background = 'linear-gradient(135deg,' + c1 + ',' + (s.fondo2 || '#2563eb') + ')';
       st.color = textoSobre(c1);
+    } else if (s.fondoTipo === 'aurora') {
+      var base = s.fondo || '#0b1020';
+      st['background-color'] = base;
+      st['background-image'] = 'radial-gradient(60% 80% at 12% 15%,color-mix(in srgb,var(--pg-acento) 62%,transparent),transparent 70%),' +
+        'radial-gradient(55% 75% at 88% 25%,color-mix(in srgb,' + (s.fondo2 || '#06b6d4') + ' 50%,transparent),transparent 70%),' +
+        'radial-gradient(60% 60% at 55% 105%,color-mix(in srgb,#f472b6 38%,transparent),transparent 70%)';
+      st.color = textoSobre(base);
+    } else if (s.fondoTipo === 'puntos' || s.fondoTipo === 'malla') {
+      if (s.fondo) { st['background-color'] = s.fondo; st.color = textoSobre(s.fondo); }
     } else if (s.fondoTipo === 'imagen') {
       var im = src(s.fondoImagen);
       if (im) {
@@ -506,7 +558,8 @@
       return '<div class="pg-col' + (s.cajas && s.cols.length > 1 ? ' caja' : '') + '">' + inner + '</div>';
     }).join('');
 
-    return '<section class="pg-sec p-' + s.padding + ' w-' + s.ancho + ' al-' + s.alinear + ' v-' + s.vertical + ' h-' + s.alto +
+    if (s.altoPx > 0) st['min-height'] = s.altoPx + 'px';
+    return '<section class="pg-sec p-' + s.padding + ' w-' + s.ancho + ' al-' + s.alinear + ' v-' + s.vertical + ' h-' + (s.altoPx > 0 ? 'px' : s.alto) +
       ' n' + s.cols.length + ' bg-' + s.fondoTipo + '"' + (s.ancla ? ' id="' + esc(s.ancla) + '"' : '') +
       (ed ? ' data-sec="' + esc(s.id) + '"' : '') + estilo(st) + '>' + capa +
       '<div class="pg-wrap"><div class="pg-cols g-' + s.separacion + '" style="grid-template-columns:' + plantillaCols(s) + '">' +
@@ -547,7 +600,7 @@
     return o;
   }
   function encabezado(titulo, texto, ancla) {
-    return S({ padding: 'm', alinear: 'centro', ancho: 'angosto', ancla: ancla || '' }, [[
+    return S({ padding: 's', alinear: 'centro', ancho: 'angosto', ancla: ancla || '' }, [[
       E('titulo', { texto: titulo, nivel: '2' }),
       E('texto', { texto: texto, tam: 'l' }),
     ]]);
@@ -756,6 +809,241 @@
         return [S({ fondoTipo: 'color', fondo: '#111827', padding: 's', vertical: 'centro', separacion: 's' }, [
           [E('texto', { texto: '© ' + ANIO + ' Mi Marca. Todos los derechos reservados.', tam: 's' })],
           [E('menu', { alinear: 'der', items: [{ texto: 'Inicio', url: '#inicio' }, { texto: 'Contacto', url: '#contacto' }] })],
+        ])];
+      },
+    },
+    // ---------------- Portadas originales ----------------
+    {
+      id: 'hero-aurora', nombre: 'Portada aurora', grupo: 'Portadas',
+      crear: function () {
+        return [S({ fondoTipo: 'aurora', padding: 'xl', alinear: 'centro', ancho: 'angosto', ancla: 'inicio' }, [[
+          E('insignia', { texto: '✨ Algo nuevo está llegando' }),
+          E('titulo', { texto: 'Ideas que se ven, se sienten y se venden', nivel: '1' }),
+          E('texto', { texto: 'Una frase corta que explique el valor de lo que haces, con la energía de un fondo que se mueve en colores.', tam: 'l' }),
+          E('boton', { texto: 'Quiero empezar', url: '#contacto', tam: 'l' }),
+          E('boton', { texto: 'Ver cómo funciona', url: '#pasos', estilo: 'linea', tam: 'l', enLinea: true }),
+          E('espacio', { alto: 24 }),
+          E('imagen', { src: IMG + 'ph-hero.svg', alt: 'Vista previa', marco: 'navegador', ancho: 90, alinear: 'centro' }),
+        ]])];
+      },
+    },
+    {
+      id: 'hero-oscuro', nombre: 'Portada oscura con teléfono', grupo: 'Portadas',
+      crear: function () {
+        return [S({ fondoTipo: 'color', fondo: '#0b1020', padding: 'xl', vertical: 'centro', separacion: 'l', ancla: 'inicio' }, [
+          [
+            E('insignia', { texto: 'APP MÓVIL', estilo: 'linea' }),
+            E('titulo', { texto: 'Tu negocio en el bolsillo de tus clientes', nivel: '1' }),
+            E('texto', { texto: 'Cuenta en dos líneas qué problema resuelve tu producto y para quién está hecho.', tam: 'l' }),
+            E('boton', { texto: 'Probar gratis', url: '#contacto', color: '#a78bfa' }),
+            E('boton', { texto: 'Ver demo', url: '#video', estilo: 'linea', enLinea: true }),
+            E('espacio', { alto: 8 }),
+            E('lista', { items: [{ texto: 'Sin tarjeta de crédito' }, { texto: 'Listo en minutos' }] }),
+          ],
+          [E('imagen', { src: IMG + 'ph-hero.svg', alt: 'App', marco: 'telefono', ratio: '3:4', ancho: 80, alinear: 'centro' })],
+        ])];
+      },
+    },
+    {
+      id: 'hero-puntos', nombre: 'Portada con puntos', grupo: 'Portadas',
+      crear: function () {
+        return [S({ fondoTipo: 'puntos', padding: 'xl', alinear: 'centro', ancho: 'angosto', ancla: 'inicio' }, [[
+          E('insignia', { texto: '★ 4.9 · +500 clientes' }),
+          E('titulo', { texto: 'Simple por fuera, potente por dentro', nivel: '1' }),
+          E('texto', { texto: 'Un fondo de puntos sutil que da textura sin robar protagonismo al mensaje.', tam: 'l' }),
+          E('boton', { texto: 'Comenzar ahora', url: '#contacto', tam: 'l' }),
+          E('enlace', { texto: 'o conoce más →', url: '#servicios', alinear: 'centro' }),
+        ]])];
+      },
+    },
+    // ---------------- Contenido ----------------
+    {
+      id: 'cuatro', nombre: 'Cuatro características', grupo: 'Contenido',
+      crear: function () {
+        return [
+          encabezado('Todo lo que necesitas', 'Cuatro piezas que trabajan juntas.', 'servicios'),
+          S({ padding: 'm', cajas: true, separacion: 's' }, [
+            [E('tarjeta', { icono: '🚀', titulo: 'Arranque rápido', texto: 'Empiezas en minutos.', estilo: 'plana', forma: 'recto' })],
+            [E('tarjeta', { icono: '🔒', titulo: 'Seguro', texto: 'Tus datos protegidos.', estilo: 'plana', forma: 'recto' })],
+            [E('tarjeta', { icono: '📈', titulo: 'Crece contigo', texto: 'Sin límites ocultos.', estilo: 'plana', forma: 'recto' })],
+            [E('tarjeta', { icono: '💬', titulo: 'Soporte humano', texto: 'Personas, no bots.', estilo: 'plana', forma: 'recto' })],
+          ]),
+        ];
+      },
+    },
+    {
+      id: 'pasos', nombre: 'Cómo funciona (pasos)', grupo: 'Contenido',
+      crear: function () {
+        function paso(n, t, d) {
+          return [E('estadistica', { valor: n, etiqueta: '' }), E('titulo', { texto: t, nivel: '3' }), E('texto', { texto: d, tam: 's' })];
+        }
+        return [
+          encabezado('Cómo funciona', 'Tan fácil como contar hasta tres.', 'pasos'),
+          S({ padding: 'm', separacion: 'l' }, [
+            paso('01', 'Nos cuentas', 'Cuéntanos tu idea en una conversación sin compromiso.'),
+            paso('02', 'Diseñamos', 'Te mostramos una propuesta clara con plazos y precio.'),
+            paso('03', 'Construimos', 'Desarrollamos y lanzamos, tú ves el avance en cada paso.'),
+          ]),
+        ];
+      },
+    },
+    {
+      id: 'antes-despues', nombre: 'Antes y después', grupo: 'Contenido',
+      crear: function () {
+        return [
+          encabezado('El cambio que vas a notar', '', 'cambio'),
+          S({ padding: 'm', cajas: true, ancho: 'angosto' }, [
+            [E('titulo', { texto: 'Antes', nivel: '3' }),
+             E('lista', { icono: '✕', color: '#dc2626', items: [{ texto: 'Hojas de cálculo por todos lados' }, { texto: 'Clientes que se pierden' }, { texto: 'Horas en tareas repetidas' }] })],
+            [E('titulo', { texto: 'Después', nivel: '3' }),
+             E('lista', { icono: '✓', items: [{ texto: 'Todo en un solo lugar' }, { texto: 'Seguimiento automático' }, { texto: 'Tiempo para lo importante' }] })],
+          ]),
+        ];
+      },
+    },
+    {
+      id: 'cita-grande', nombre: 'Cita destacada', grupo: 'Contenido',
+      crear: function () {
+        return [S({ ancho: 'angosto', alinear: 'centro', padding: 'xl' }, [[
+          E('cita', { texto: 'Lo mejor que hicimos fue confiar el proyecto a un equipo que entendió nuestro negocio.', autor: 'Carlos Rojas', cargo: 'Gerente, Empresa Ejemplo', escala: 120 }),
+        ]])];
+      },
+    },
+    {
+      id: 'logos', nombre: 'Marcas que confían', grupo: 'Contenido',
+      crear: function () {
+        function marca(t) { return [E('titulo', { texto: t, nivel: '3', alinear: 'centro', color: '#8b8a99' })]; }
+        return [
+          S({ padding: 's', alinear: 'centro' }, [[E('texto', { texto: 'Confían en nosotros', tam: 's' })]]),
+          S({ padding: 'm', vertical: 'centro' }, [marca('ACME'), marca('Globex'), marca('Initech'), marca('Umbrella')]),
+        ];
+      },
+    },
+    {
+      id: 'equipo', nombre: 'Equipo', grupo: 'Contenido',
+      crear: function () {
+        function persona(n, c) {
+          return [E('imagen', { src: IMG + 'ph-avatar.svg', alt: n, marco: 'circulo', ancho: 55, alinear: 'centro' }),
+            E('titulo', { texto: n, nivel: '3', alinear: 'centro' }), E('texto', { texto: c, tam: 's', alinear: 'centro' })];
+        }
+        return [
+          encabezado('El equipo', 'Personas reales detrás de cada proyecto.', 'equipo'),
+          S({ padding: 'm' }, [persona('Ana Pérez', 'Dirección'), persona('Luis Mora', 'Desarrollo'), persona('Sofía Vega', 'Diseño'), persona('Marco Ruiz', 'Soporte')]),
+        ];
+      },
+    },
+    {
+      id: 'mosaico', nombre: 'Mosaico de imágenes', grupo: 'Contenido',
+      crear: function () {
+        return [S({ padding: 'm', separacion: 's', ancho: 'completo' }, [
+          [E('imagen', { src: IMG + 'ph-foto-1.svg', marco: 'redondeado', ratio: '3:4' }), E('imagen', { src: IMG + 'ph-foto-3.svg', marco: 'redondeado', ratio: '4:3' })],
+          [E('imagen', { src: IMG + 'ph-foto-2.svg', marco: 'redondeado', ratio: '4:3' }), E('imagen', { src: IMG + 'ph-hero.svg', marco: 'redondeado', ratio: '3:4' })],
+          [E('imagen', { src: IMG + 'ph-foto-3.svg', marco: 'redondeado', ratio: '3:4' }), E('imagen', { src: IMG + 'ph-foto-1.svg', marco: 'redondeado', ratio: '4:3' })],
+        ])];
+      },
+    },
+    {
+      id: 'video-texto', nombre: 'Video + texto', grupo: 'Contenido',
+      crear: function () {
+        return [S({ vertical: 'centro', separacion: 'l', ancla: 'video' }, [
+          [E('video', { url: '' })],
+          [E('insignia', { texto: 'EN ACCIÓN' }), E('titulo', { texto: 'Mira cómo lo hacemos', nivel: '2' }),
+           E('texto', { texto: 'Un video corto vale más que mil palabras. Pega el enlace de YouTube o Vimeo en el panel.' }),
+           E('boton', { texto: 'Hablemos', url: '#contacto' })],
+        ])];
+      },
+    },
+    {
+      id: 'app-features', nombre: 'Teléfono + beneficios', grupo: 'Contenido',
+      crear: function () {
+        return [S({ vertical: 'centro', separacion: 'l', fondoTipo: 'color', fondo: '#f4f4f8' }, [
+          [E('imagen', { src: IMG + 'ph-hero.svg', alt: 'App', marco: 'telefono', ratio: '3:4', ancho: 75, alinear: 'centro' })],
+          [E('titulo', { texto: 'Pensado para el día a día', nivel: '2' }),
+           E('tarjeta', { icono: '⚡', titulo: 'Respuesta inmediata', texto: 'Todo carga al instante, incluso con mala señal.', estilo: 'plana' }),
+           E('tarjeta', { icono: '🔔', titulo: 'Avisos útiles', texto: 'Solo las notificaciones que importan.', estilo: 'plana' }),
+           E('tarjeta', { icono: '🔁', titulo: 'Siempre sincronizado', texto: 'Celular, tableta y computadora al día.', estilo: 'plana' })],
+        ])];
+      },
+    },
+    // ---------------- Confianza ----------------
+    {
+      id: 'testimonios-3', nombre: 'Tres testimonios', grupo: 'Confianza',
+      crear: function () {
+        function t(txt, a, c) { return [E('cita', { texto: txt, autor: a, cargo: c, escala: 80 })]; }
+        return [
+          encabezado('Lo que dicen de nosotros', '', 'testimonios'),
+          S({ padding: 'm', cajas: true }, [
+            t('Nos ahorró horas todos los días.', 'María Gómez', 'Directora, Empresa A'),
+            t('Entendieron el negocio desde la primera reunión.', 'Pedro Salas', 'CEO, Empresa B'),
+            t('Cumplieron plazos y superaron lo esperado.', 'Lucía Ortiz', 'Gerente, Empresa C'),
+          ]),
+        ];
+      },
+    },
+    {
+      id: 'faq-2col', nombre: 'Preguntas en dos columnas', grupo: 'Confianza',
+      crear: function () {
+        function q(t, d) { return E('tarjeta', { icono: '', titulo: t, texto: d, estilo: 'plana' }); }
+        return [
+          encabezado('Preguntas frecuentes', 'Si no ves la tuya, escríbenos.', 'faq'),
+          S({ padding: 'm' }, [
+            [q('¿Cuánto cuesta?', 'Depende del alcance. Te damos un precio cerrado.'), q('¿Cuánto demora?', 'Entre 2 y 6 semanas según el proyecto.')],
+            [q('¿Incluye soporte?', 'Sí, acompañamiento durante el primer mes.'), q('¿Puedo cambiar cosas después?', 'Claro, ajustamos contigo cuando haga falta.')],
+          ]),
+        ];
+      },
+    },
+    // ---------------- Conversión ----------------
+    {
+      id: 'cta-tira', nombre: 'Banda de llamada a la acción', grupo: 'Conversión',
+      crear: function () {
+        return [S({ fondoTipo: 'acento', padding: 'm', vertical: 'centro', ancho: 'normal' }, [
+          [E('titulo', { texto: '¿Hablamos de tu proyecto?', nivel: '2' }), E('texto', { texto: 'Cuéntanos tu idea, sin compromiso.', tam: 'm' })],
+          [E('boton', { texto: 'Escríbenos por WhatsApp', url: 'wa.me/59162095357', tam: 'l', alinear: 'der', nueva: true })],
+        ])];
+      },
+    },
+    {
+      id: 'cta-aurora', nombre: 'Llamada a la acción aurora', grupo: 'Conversión',
+      crear: function () {
+        return [S({ fondoTipo: 'aurora', padding: 'xl', alinear: 'centro', ancho: 'angosto', ancla: 'contacto' }, [[
+          E('titulo', { texto: 'Empieza hoy, mejora mañana', nivel: '1' }),
+          E('texto', { texto: 'Sin letra chica. Sin compromisos. Con resultados.', tam: 'l' }),
+          E('boton', { texto: 'Quiero mi propuesta', url: '#contacto', tam: 'l', color: '#ffffff' }),
+        ]])];
+      },
+    },
+    {
+      id: 'contacto-tarjetas', nombre: 'Contacto en tarjetas', grupo: 'Conversión',
+      crear: function () {
+        return [
+          encabezado('Contáctanos', 'Elige la forma que prefieras.', 'contacto'),
+          S({ padding: 'm' }, [
+            [E('tarjeta', { icono: '✉️', titulo: 'Correo', texto: 'hola@tuempresa.com', estilo: 'plana', alinear: 'centro', url: 'hola@tuempresa.com' })],
+            [E('tarjeta', { icono: '💬', titulo: 'WhatsApp', texto: '+591 70000000', estilo: 'plana', alinear: 'centro', url: 'wa.me/59170000000' })],
+            [E('tarjeta', { icono: '📍', titulo: 'Oficina', texto: 'Santa Cruz, Bolivia', estilo: 'plana', alinear: 'centro' })],
+          ]),
+        ];
+      },
+    },
+    // ---------------- Estructura ----------------
+    {
+      id: 'cabecera-centrada', nombre: 'Cabecera centrada', grupo: 'Estructura',
+      crear: function () {
+        return [S({ padding: 's', alinear: 'centro' }, [[
+          E('titulo', { texto: 'Mi Marca', nivel: '2' }),
+          E('menu', { alinear: 'centro' }),
+        ]])];
+      },
+    },
+    {
+      id: 'pie-columnas', nombre: 'Pie con columnas', grupo: 'Estructura',
+      crear: function () {
+        return [S({ fondoTipo: 'color', fondo: '#0b1020', padding: 'l', separacion: 'l' }, [
+          [E('titulo', { texto: 'Mi Marca', nivel: '3' }), E('texto', { texto: 'Hacemos que las ideas funcionen. Santa Cruz, Bolivia.', tam: 's' })],
+          [E('titulo', { texto: 'Explorar', nivel: '3' }), E('menu', { items: [{ texto: 'Inicio', url: '#inicio' }, { texto: 'Servicios', url: '#servicios' }, { texto: 'Contacto', url: '#contacto' }] })],
+          [E('titulo', { texto: 'Contacto', nivel: '3' }), E('lista', { icono: '→', items: [{ texto: 'hola@tuempresa.com' }, { texto: '+591 70000000' }] }),
+           E('texto', { texto: '© ' + ANIO + ' Mi Marca', tam: 's' })],
         ])];
       },
     },

@@ -22,12 +22,15 @@
   var B = window.Bloques, C = window.LandingCfg;
   var datos = JSON.parse(document.getElementById('edDatos').textContent);
   var cfg = datos.config;
+  cfg.proyectos = { lista: clonarInicial(datos.lista) };
+  function clonarInicial(o) { return JSON.parse(JSON.stringify(o || [])); }
   var main = document.getElementById('landingMain');
   var estado = document.getElementById('edEstado');
   var btnGuardar = document.getElementById('edGuardar');
   var btnRestablecer = document.getElementById('edRestablecer');
 
   var sucio = false;
+  var sucios = {};              // campos de proyecto escritos encima y aun no pasados al modelo
   var originales = new Map(); // elemento de texto -> HTML con el que cargo la pagina
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -77,6 +80,14 @@
 
     el.addEventListener('input', function () {
       marcarSucio();
+      var pDueno = el.closest('[data-proyecto]');
+      if (pDueno && el.dataset.campo) sucios[pDueno.dataset.proyecto + '|' + el.dataset.campo] = true;
+      if (el.dataset.campo === 'nombre' || el.dataset.campo === 'tipo') {
+        var pn = el.closest('[data-proyecto]');
+        var tab = pn && document.getElementById('tab-' + pn.dataset.proyecto);
+        var dest = tab && tab.querySelector(el.dataset.campo === 'nombre' ? '.proj-tab-name' : '.proj-tab-type');
+        if (dest) dest.textContent = el.innerText;
+      }
       // Un mismo texto puede repetirse (ej. el CTA de cada proyecto): se sincronizan.
       var clave = el.dataset.edit;
       if (!clave) return;
@@ -96,19 +107,6 @@
     if (a && !barra.contains(a) && !e.target.closest('.ed-panel, .ed-modal')) e.preventDefault();
   });
   document.addEventListener('submit', function (e) { if (!e.target.closest('.ed-panel, .ed-modal')) e.preventDefault(); });
-
-  // ---------- Quitar / restaurar proyectos ----------
-  $$('.ed-toggle').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var id = btn.dataset.proyecto;
-      var panel = $('[data-proyecto="' + id + '"]');
-      var tab = document.getElementById('tab-' + id);
-      var oculto = panel.classList.toggle('esta-oculto');
-      if (tab) tab.classList.toggle('esta-oculto', oculto);
-      btn.textContent = oculto ? 'Restaurar' : 'Quitar de la web';
-      marcarSucio();
-    });
-  });
 
   // ------------------------------------------------------------------
   // Ayudas de secciones
@@ -146,10 +144,10 @@
   }
 
   function reconstruirMenu() {
-    var items = C.itemsMenu({ orden: ordenActual(), secciones: cfg.secciones });
+    var items = C.itemsMenu({ orden: ordenActual(), secciones: cfg.secciones, cabecera: cfg.cabecera });
     $$('[data-menu-box]').forEach(function (box) {
       box.innerHTML = '';
-      items.forEach(function (m) { box.appendChild(h('a', { href: '#' + m.ancla, text: m.texto })); });
+      items.forEach(function (m) { box.appendChild(h('a', { href: m.href || '#' + m.ancla, text: m.texto })); });
     });
   }
 
@@ -383,7 +381,12 @@
     if (panel.hidden) return;
     var tope = panel.scrollTop;
     panel.innerHTML = '';
+    datalistAnclas();
     if (panelModo === 'secciones') panelSecciones();
+    else if (panelModo === 'cabecera') panelMarco('Cabecera', C.CAMPOS_CABECERA, cfg.cabecera, aplicarCabecera);
+    else if (panelModo === 'pie') panelMarco('Pie de página', C.CAMPOS_PIE, cfg.pie, aplicarPie);
+    else if (panelModo === 'proyectos') panelProyectos();
+    else if (panelModo.indexOf('proyecto:') === 0) panelProyecto(panelModo.slice(9));
     else if (panelModo === 'diseno') panelDiseno();
     else if (panelModo.indexOf('ajustes:') === 0) panelAjustes(panelModo.slice(8));
     panel.scrollTop = tope;
@@ -402,6 +405,7 @@
     panel.appendChild(cabeceraPanel('Secciones'));
     panel.appendChild(h('p', { class: 'ed-ayuda', text: 'Arrastra para reordenar, o usa las flechas. El ojo oculta o muestra la sección en la web.' }));
     var lista = h('div', { class: 'ed-lista' });
+    lista.appendChild(filaMarco('cabecera', 'Cabecera (menú de arriba)'));
     var orden = ordenActual();
     orden.forEach(function (id, i) {
       var s = cfg.secciones[id];
@@ -429,8 +433,16 @@
     fin.addEventListener('dragleave', function () { fin.classList.remove('on'); });
     fin.addEventListener('drop', function (ev) { if (!arrastre) return; ev.preventDefault(); var mov = arrastre; terminarArrastre(); moverA(mov, orden.length); });
     lista.appendChild(fin);
+    lista.appendChild(filaMarco('pie', 'Pie de página'));
     panel.appendChild(lista);
     panel.appendChild(h('button', { type: 'button', class: 'ed-btn ed-btn-1 ed-ancho', text: '＋ Añadir sección', onclick: function () { abrirGaleria(seleccionado ? ordenActual().indexOf(seleccionado) + 1 : wraps().length); } }));
+  }
+
+  function filaMarco(id, nombre) {
+    return h('div', { class: 'ed-fila ed-fila-marco' },
+      h('span', { class: 'ed-asa', text: '▭' }),
+      h('button', { type: 'button', class: 'ed-fila-n', text: nombre, onclick: function () { var el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); abrirPanel(id); } }),
+      btn('⚙', 'Ajustes', function () { abrirPanel(id); }));
   }
 
   // ---------- Widgets de formulario ----------
@@ -441,10 +453,29 @@
     function set(v, reconstruir) { obj[c.k] = v; alCambiar(c.k, reconstruir); }
     var caja = h('div', { class: 'ed-f' });
     var lab = h('label', { class: 'ed-f-lab', for: id, text: c.label });
-    if (c.t === 'texto') {
-      var inp = h('input', { id: id, type: 'text', maxlength: String(c.max || 60), value: obj[c.k] || '' });
+    if (c.t === 'texto' || c.t === 'url') {
+      var inp = h('input', { id: id, type: 'text', maxlength: String(c.max || 60), value: obj[c.k] || '', autocomplete: 'off', list: c.t === 'url' ? 'edAnclas' : null });
       inp.addEventListener('input', function () { set(inp.value, false); });
       caja.append(lab, inp);
+    } else if (c.t === 'area') {
+      var ta = h('textarea', { id: id, rows: '5', maxlength: String(c.max || 1200) }); ta.value = obj[c.k] || '';
+      ta.addEventListener('input', function () { set(ta.value, false); });
+      caja.append(lab, ta);
+    } else if (c.t === 'num') {
+      var rango = h('input', { id: id, type: 'range', min: c.min, max: c.max, step: c.step || 1, value: obj[c.k] });
+      var num = h('output', { class: 'ed-num', text: String(obj[c.k]) });
+      rango.addEventListener('input', function () { num.textContent = rango.value; set(Number(rango.value), false); });
+      caja.append(lab, h('div', { class: 'ed-rango' }, rango, num));
+    } else if (c.t === 'imagen') {
+      var vista = h('div', { class: 'ed-img' });
+      if (obj[c.k]) vista.appendChild(h('img', { src: obj[c.k], alt: '' })); else vista.appendChild(h('span', { text: 'Sin imagen' }));
+      caja.append(lab, vista, h('div', { class: 'ed-img-b' },
+        h('button', { type: 'button', class: 'ed-btn ed-btn-1', text: obj[c.k] ? 'Cambiar imagen' : 'Elegir o subir imagen', onclick: function () { window.Biblioteca.abrir(function (url) { set(url, true); }); } }),
+        obj[c.k] ? h('button', { type: 'button', class: 'ed-btn ed-btn-2', text: 'Quitar', onclick: function () { set('', true); } }) : null));
+    } else if (c.t === 'lista') {
+      caja.append(lab, listaUI(c, obj, set));
+    } else if (c.t === 'items') {
+      caja.append(lab, itemsUI(c, obj, set));
     } else if (c.t === 'bool') {
       var cb = h('input', { id: id, type: 'checkbox', checked: !!obj[c.k] });
       cb.addEventListener('change', function () { set(cb.checked, true); });
@@ -478,6 +509,67 @@
     return caja;
   }
 
+  function visible(c, obj) { return !c.si || c.si[1].indexOf(obj[c.si[0]]) >= 0; }
+
+  function filaAcciones(arr, i, set, reconstruir) {
+    return h('div', { class: 'ed-fila-a' },
+      h('button', { type: 'button', class: 'ed-mini', text: '↑', title: 'Subir', disabled: i === 0 ? true : null, onclick: function () { arr.splice(i - 1, 0, arr.splice(i, 1)[0]); reconstruir(); } }),
+      h('button', { type: 'button', class: 'ed-mini', text: '↓', title: 'Bajar', disabled: i === arr.length - 1 ? true : null, onclick: function () { arr.splice(i + 1, 0, arr.splice(i, 1)[0]); reconstruir(); } }),
+      h('button', { type: 'button', class: 'ed-mini ed-mini-x', text: '✕', title: 'Quitar', onclick: function () { arr.splice(i, 1); reconstruir(); } }));
+  }
+
+  // Lista de textos simples (ej. "Que hace" de un proyecto)
+  function listaUI(c, obj, set) {
+    var arr = obj[c.k], caja = h('div', { class: 'ed-items' });
+    function cambio() { set(arr, true); }
+    arr.forEach(function (txt, i) {
+      var inp = h('input', { type: 'text', value: txt, maxlength: '200', 'aria-label': c.label + ' ' + (i + 1) });
+      inp.addEventListener('input', function () { arr[i] = inp.value; set(arr, false); });
+      caja.appendChild(h('div', { class: 'ed-item' }, h('div', { class: 'ed-item-c' }, inp), filaAcciones(arr, i, set, cambio)));
+    });
+    if (arr.length < (c.max || 12)) caja.appendChild(h('button', { type: 'button', class: 'ed-btn ed-btn-2 ed-ancho', text: '+ Añadir', onclick: function () { arr.push('Nueva característica'); cambio(); } }));
+    return caja;
+  }
+
+  // Lista de objetos con varios campos (enlaces, botones)
+  function itemsUI(c, obj, set) {
+    var arr = obj[c.k], caja = h('div', { class: 'ed-items' });
+    function cambio() { set(arr, true); }
+    arr.forEach(function (it, i) {
+      var campos = h('div', { class: 'ed-item-c' });
+      c.sub.forEach(function (sc) {
+        if (sc.t === 'bool') {
+          var cb = h('input', { type: 'checkbox', checked: !!it[sc.k] });
+          cb.addEventListener('change', function () { it[sc.k] = cb.checked; set(arr, false); });
+          campos.appendChild(h('label', { class: 'ed-f-bool ed-chico' }, cb, h('span', { text: ' ' + sc.label })));
+        } else {
+          var inp = h('input', { type: 'text', value: it[sc.k] || '', maxlength: String(sc.max || 200), placeholder: sc.label, 'aria-label': sc.label, list: sc.t === 'url' ? 'edAnclas' : null });
+          inp.addEventListener('input', function () { it[sc.k] = inp.value; set(arr, false); });
+          campos.appendChild(inp);
+        }
+      });
+      caja.appendChild(h('div', { class: 'ed-item' }, campos, filaAcciones(arr, i, set, cambio)));
+    });
+    if (arr.length < (c.max || 6)) caja.appendChild(h('button', {
+      type: 'button', class: 'ed-btn ed-btn-2 ed-ancho', text: '+ Añadir',
+      onclick: function () {
+        var nuevo = {};
+        c.sub.forEach(function (sc) { nuevo[sc.k] = sc.def; });
+        arr.push(nuevo); cambio();
+      },
+    }));
+    return caja;
+  }
+
+  // Sugerencias de enlace (secciones de la pagina) para los campos de URL
+  function datalistAnclas() {
+    var dl = document.getElementById('edAnclas');
+    if (!dl) { dl = h('datalist', { id: 'edAnclas' }); document.body.appendChild(dl); }
+    dl.innerHTML = '';
+    C.itemsMenu({ orden: ordenActual(), secciones: cfg.secciones }).forEach(function (m) { if (m.ancla) dl.appendChild(h('option', { value: '#' + m.ancla })); });
+    ['#inicio', '#contacto', '#proyectos'].forEach(function (v) { dl.appendChild(h('option', { value: v })); });
+  }
+
   // ---------- Ajustes de una seccion ----------
   function panelAjustes(id) {
     var sec = cfg.secciones[id];
@@ -488,7 +580,7 @@
     }
     C.CAMPOS_SECCION.forEach(function (c) {
       if (c.soloCustom && !esCustom(id)) return;
-      if (c.si && c.si[1].indexOf(sec[c.si[0]]) < 0) return;
+      if (!visible(c, sec)) return;
       panel.appendChild(campo(c, sec, function (k, reconstruir) {
         aplicarEstilo(id);
         marcarSucio();
@@ -532,12 +624,18 @@
       if (link.getAttribute('href') !== f.url) link.setAttribute('href', f.url);
     } else if (link) link.remove();
     document.body.classList.toggle('sin-anim', d.animaciones === 'ninguna');
+    var raiz = document.documentElement;
+    if (d.modo === 'auto') { raiz.removeAttribute('data-tema-fijo'); if (raiz.dataset.tema && !localStorage.getItem('tema')) raiz.removeAttribute('data-tema'); }
+    else { raiz.setAttribute('data-tema', d.modo); raiz.setAttribute('data-tema-fijo', ''); }
+    if (d.bordes === 'original') raiz.removeAttribute('data-bordes'); else raiz.setAttribute('data-bordes', d.bordes);
+    document.body.classList.toggle('sin-boton-tema', d.modo !== 'auto' || !d.botonTema);
   }
 
   function panelDiseno() {
     panel.appendChild(cabeceraPanel('Diseño de la página'));
     panel.appendChild(h('p', { class: 'ed-ayuda', text: 'Cambia los colores y la tipografía de toda la página. «Original» vuelve a lo de fábrica.' }));
     C.CAMPOS_DISENO.forEach(function (c) {
+      if (!visible(c, cfg.diseno)) return;
       panel.appendChild(campo(c, cfg.diseno, function (k, reconstruir) {
         aplicarDiseno(); marcarSucio();
         if (reconstruir) pintarPanel();
@@ -545,6 +643,212 @@
     });
     panel.appendChild(h('p', { class: 'ed-ayuda', text: 'Si cambias el fondo o el texto, esos colores se usan también en el modo oscuro.' }));
   }
+
+  // ------------------------------------------------------------------
+  // Cabecera y pie de pagina
+  // ------------------------------------------------------------------
+  function aplicarCabecera() {
+    var nav = document.getElementById('cabecera');
+    if (!nav) return;
+    var c = cfg.cabecera, est = C.estiloCabecera(c);
+    nav.style.cssText = est.style;
+    nav.className = 'nav ' + est.clase + (c.visible ? '' : ' nav-oculta');
+    var marca = nav.querySelector('.brand');
+    if (marca) {
+      marca.innerHTML = '';
+      if (c.logoTipo === 'texto') marca.appendChild(h('span', { class: 'brand-txt', text: c.logoTexto || 'ProShop' }));
+      else marca.appendChild(h('img', { class: 'brand-logo', src: c.logoSrc || '/img/logo-proshop.png', alt: 'Logo' }));
+    }
+    reconstruirMenu();
+  }
+  function aplicarPie() {
+    var f = document.getElementById('pie');
+    if (!f) return;
+    f.style.cssText = C.estiloPie(cfg.pie).style;
+    f.classList.toggle('nav-oculta', !cfg.pie.visible);
+  }
+
+  function panelMarco(titulo, campos, obj, aplicar) {
+    panel.appendChild(cabeceraPanel(titulo, true));
+    campos.forEach(function (c) {
+      if (!visible(c, obj)) return;
+      panel.appendChild(campo(c, obj, function (k, reconstruir) {
+        aplicar(); marcarSucio();
+        if (reconstruir) pintarPanel();
+      }));
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // Proyectos: añadir, editar, ordenar, duplicar y eliminar
+  // ------------------------------------------------------------------
+  var lista = function () { return cfg.proyectos.lista; };
+  function proyectoPorId(id) { for (var i = 0; i < lista().length; i++) if (lista()[i].id === id) return lista()[i]; return null; }
+  function idNuevoProyecto() {
+    var a = 'abcdefghijklmnopqrstuvwxyz0123456789', r = 'p_';
+    for (var i = 0; i < 8; i++) r += a[Math.floor(Math.random() * a.length)];
+    return r;
+  }
+
+  // Lo escrito encima de los paneles pasa al modelo antes de repintar.
+  function sincronizarTextos() {
+    $$('[data-proyecto]').forEach(function (pn) {
+      var p = proyectoPorId(pn.dataset.proyecto);
+      if (!p) return;
+      $$('[data-campo]', pn).forEach(function (el) {
+        var k = p.id + '|' + el.dataset.campo;
+        if (!sucios[k]) return; // solo lo que se escribio encima: lo demas lo manda el panel
+        p[el.dataset.campo] = el.innerText.replace(/\u00a0/g, ' ').trim();
+        delete sucios[k];
+      });
+    });
+  }
+
+  var refrescando = false, refrescoPendiente = null, tRefresco = null;
+  function programarRefresco(idActivo) {
+    clearTimeout(tRefresco);
+    tRefresco = setTimeout(function () { refrescarProyectos(idActivo); }, 400);
+  }
+  async function refrescarProyectos(idActivo) {
+    if (refrescando) { refrescoPendiente = idActivo; return; }
+    refrescando = true;
+    try {
+      sincronizarTextos();
+      var cont = document.getElementById('projLista');
+      if (!cont) return;
+      var activoAntes = (cont.querySelector('.proj-tab.is-active') || {}).dataset;
+      // Textos editados en esa zona y aun sin guardar (ej. el boton "Crear proyecto")
+      var guardados = {};
+      $$('[data-edit]', cont).forEach(function (el) { guardados[el.dataset.edit] = { ahora: el.innerHTML, original: originales.get(el) }; });
+      var res = await fetch('/api/landing/proyectos-html', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lista: lista(), enlaces: cfg.enlaces }) });
+      var data = await res.json();
+      if (res.status === 401) throw new Error('Tu sesión expiró. Vuelve a entrar en /admin.');
+      if (!data.ok) throw new Error(data.error || 'No se pudo actualizar.');
+      cont.innerHTML = data.html;
+      window.__montarProyectos(cont);
+      $$('[data-edit]', cont).forEach(function (el) {
+        preparar(el);
+        var g = guardados[el.dataset.edit];
+        if (g) { el.innerHTML = g.ahora; originales.set(el, g.original); }
+      });
+      $$('[data-proyecto] [data-campo]', cont).forEach(preparar);
+      var objetivo = idActivo || (activoAntes && activoAntes.target);
+      var tab = objetivo && document.getElementById('tab-' + objetivo);
+      if (tab) tab.click();
+      marcarSucio();
+    } catch (err) {
+      avisar(err.message, 'error');
+    } finally {
+      refrescando = false;
+      if (refrescoPendiente !== null) { var sig = refrescoPendiente; refrescoPendiente = null; refrescarProyectos(sig); }
+    }
+  }
+
+  function irAProyecto(id) {
+    var tab = document.getElementById('tab-' + id);
+    if (tab) tab.click();
+    var sec = wrapDe('proyectos');
+    if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function panelProyectos() {
+    panel.appendChild(cabeceraPanel('Proyectos'));
+    panel.appendChild(h('p', { class: 'ed-ayuda', text: 'Añade, ordena, edita o quita los proyectos que muestra la sección «Proyectos».' }));
+    var caja = h('div', { class: 'ed-lista' });
+    lista().forEach(function (p, i) {
+      caja.appendChild(h('div', { class: 'ed-fila' + (p.oculto ? ' oculta' : '') },
+        h('span', { class: 'ed-num-p', text: String(i + 1).padStart(2, '0') }),
+        h('button', { type: 'button', class: 'ed-fila-n', text: p.nombre || 'Sin nombre', title: 'Editar este proyecto', onclick: function () { abrirPanel('proyecto:' + p.id); irAProyecto(p.id); } }),
+        btn('↑', 'Subir', function () { moverProyecto(p.id, -1); }),
+        btn('↓', 'Bajar', function () { moverProyecto(p.id, 1); }),
+        btn(p.oculto ? '🚫' : '👁', p.oculto ? 'Mostrar en la web' : 'Ocultar de la web', function () { p.oculto = !p.oculto; refrescarProyectos(p.id); pintarPanel(); }),
+        btn('✎', 'Editar', function () { abrirPanel('proyecto:' + p.id); irAProyecto(p.id); })));
+    });
+    panel.appendChild(caja);
+    panel.appendChild(h('button', { type: 'button', class: 'ed-btn ed-btn-1 ed-ancho', text: '＋ Añadir proyecto', onclick: anadirProyecto }));
+  }
+
+  function moverProyecto(id, d) {
+    sincronizarTextos();
+    var l = lista(), i = l.findIndex(function (p) { return p.id === id; }), j = i + d;
+    if (i < 0 || j < 0 || j >= l.length) return;
+    l.splice(j, 0, l.splice(i, 1)[0]);
+    pintarPanel();
+    refrescarProyectos(id);
+  }
+
+  function anadirProyecto() {
+    sincronizarTextos();
+    var p = C.limpiarProyecto({ id: idNuevoProyecto() });
+    lista().push(p);
+    abrirPanel('proyecto:' + p.id);
+    refrescarProyectos(p.id).then(function () { irAProyecto(p.id); });
+  }
+
+  function duplicarProyecto(id) {
+    sincronizarTextos();
+    var orig = proyectoPorId(id); if (!orig) return;
+    var copia = clonar(orig);
+    copia.id = idNuevoProyecto(); copia.nombre = (orig.nombre + ' (copia)').slice(0, 120); copia.oculto = false;
+    lista().splice(lista().indexOf(orig) + 1, 0, copia);
+    abrirPanel('proyecto:' + copia.id);
+    refrescarProyectos(copia.id).then(function () { irAProyecto(copia.id); });
+  }
+
+  function eliminarProyecto(id) {
+    var p = proyectoPorId(id); if (!p) return;
+    if (!confirm('¿Eliminar el proyecto «' + p.nombre + '»? Se pierde al guardar. (Si solo quieres esconderlo, usa el ojo.)')) return;
+    sincronizarTextos();
+    lista().splice(lista().indexOf(p), 1);
+    abrirPanel('proyectos');
+    refrescarProyectos();
+  }
+
+  function panelProyecto(id) {
+    var p = proyectoPorId(id);
+    if (!p) { abrirPanel('proyectos'); return; }
+    sincronizarTextos();
+    panel.appendChild(h('div', { class: 'ed-panel-cab' },
+      h('button', { type: 'button', class: 'ed-fb', text: '←', title: 'Volver a la lista', onclick: function () { abrirPanel('proyectos'); } }),
+      h('strong', { text: p.nombre || 'Proyecto' }),
+      h('button', { type: 'button', class: 'ed-fb', text: '✕', title: 'Cerrar', onclick: cerrarPanel })));
+    panel.appendChild(h('p', { class: 'ed-ayuda', text: 'También puedes escribir el nombre, el tipo y el resumen directamente sobre el proyecto en la página.' }));
+    C.CAMPOS_PROYECTO.forEach(function (c) {
+      if (!visible(c, p)) return;
+      panel.appendChild(campo(c, p, function (k, reconstruir) {
+        delete sucios[p.id + '|' + k];
+        if (k === 'imagen') {
+          p.puntos = []; // las paradas del recorrido apuntaban a la imagen anterior
+          if (p.imagen) {
+            var im = new Image();
+            im.onload = function () { p.ancho = im.naturalWidth; p.alto = im.naturalHeight; programarRefresco(p.id); };
+            im.src = p.imagen;
+          } else { p.ancho = 0; p.alto = 0; }
+        }
+        marcarSucio();
+        programarRefresco(p.id);
+        if (reconstruir) pintarPanel();
+      }));
+    });
+    panel.appendChild(h('button', { type: 'button', class: 'ed-btn ed-btn-2 ed-ancho', text: p.oculto ? '🚫 Mostrar en la web' : '👁 Ocultar de la web', onclick: function () { p.oculto = !p.oculto; refrescarProyectos(p.id); pintarPanel(); } }));
+    panel.appendChild(h('button', { type: 'button', class: 'ed-btn ed-btn-2 ed-ancho', text: '⧉ Duplicar', onclick: function () { duplicarProyecto(p.id); } }));
+    panel.appendChild(h('button', { type: 'button', class: 'ed-btn ed-btn-peligro ed-ancho', text: '🗑 Eliminar proyecto', onclick: function () { eliminarProyecto(p.id); } }));
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-editar-proyecto]');
+    if (b) { abrirPanel('proyecto:' + b.dataset.editarProyecto); }
+  });
+
+  // Tocar la cabecera o el pie (fuera de textos y enlaces) abre sus ajustes
+  ['cabecera', 'pie'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('mousedown', function (e) {
+      if (e.target.closest('a, button, [contenteditable], input')) return;
+      abrirPanel(id);
+    });
+  });
 
   // ------------------------------------------------------------------
   // Galeria de secciones prediseñadas
@@ -691,20 +995,11 @@
     // Los textos ya guardados antes y que no se tocaron ahora tienen que conservarse.
     Object.keys(datos.textos || {}).forEach(function (k) { if (!(k in textos)) textos[k] = datos.textos[k]; });
 
-    var proyectos = clonar(datos.proyectos || {});
-    $$('[data-proyecto]').forEach(function (panelP) {
-      var campos = proyectos[panelP.dataset.proyecto] || {};
-      $$('[data-campo]', panelP).forEach(function (el) {
-        var ahora = el.innerHTML.trim();
-        if (ahora !== originales.get(el)) campos[el.dataset.campo] = ahora;
-      });
-      if (Object.keys(campos).length) proyectos[panelP.dataset.proyecto] = campos;
-    });
-    var ocultos = $$('[data-proyecto].esta-oculto').map(function (p) { return p.dataset.proyecto; });
-
+    sincronizarTextos();
     var config = clonar(cfg);
     config.orden = ordenActual();
-    return { textos: textos, proyectos: proyectos, ocultos: ocultos, config: config };
+    // Los proyectos ahora viven completos en config.proyectos.lista; lo antiguo se limpia.
+    return { textos: textos, proyectos: {}, ocultos: [], config: config };
   }
 
   btnGuardar.addEventListener('click', async function () {
@@ -755,10 +1050,13 @@
     abrirGaleria(seleccionado ? ordenActual().indexOf(seleccionado) + 1 : wraps().length);
   });
   document.getElementById('edSecciones').addEventListener('click', function () { alternarPanel('secciones'); });
+  document.getElementById('edProyectos').addEventListener('click', function () { alternarPanel('proyectos'); });
+  document.getElementById('edCabecera').addEventListener('click', function () { alternarPanel('cabecera'); });
   document.getElementById('edDiseno').addEventListener('click', function () { alternarPanel('diseno'); });
 
   // ---------- Arranque ----------
   aplicarDiseno();
+  datalistAnclas();
   wraps().forEach(function (w) { aplicarEstilo(w.dataset.seccion); });
   reconstruirBarras();
   avisar('Listo para editar');
