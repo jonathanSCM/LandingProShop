@@ -103,7 +103,7 @@
     { k: 'tipo', t: 'texto', def: 'Qué es, en una línea', max: 160, label: 'Qué es (una línea)' },
     { k: 'lugar', t: 'texto', def: '', max: 120, label: 'Lugar o cliente (opcional)' },
     { k: 'estado', t: 'enum', def: 'produccion', label: 'Estado real', op: [['produccion', 'En producción'], ['piloto', 'Piloto'], ['demo', 'Demo'], ['desarrollo', 'En desarrollo']] },
-    { k: 'origen', t: 'enum', def: 'cliente', label: 'Tipo', op: [['cliente', 'Proyecto para cliente'], ['propio', 'Producto propio']] },
+    { k: 'origen', t: 'enum', def: 'cliente', label: 'Tipo', op: [['', 'Sin indicar'], ['cliente', 'Proyecto para cliente'], ['propio', 'Producto propio']] },
     { k: 'resumen', t: 'area', def: 'Cuenta en dos o tres frases qué hace este proyecto y qué problema resuelve, con palabras de cliente.', max: 1200, label: 'Resumen' },
     { k: 'imagen', t: 'imagen', def: '', label: 'Captura o foto del proyecto' },
     { k: 'boceto', t: 'texto', def: '', max: 300, label: 'Pie de la imagen (opcional)' },

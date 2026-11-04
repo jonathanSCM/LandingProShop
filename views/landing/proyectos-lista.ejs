@@ -48,7 +48,7 @@
                   </p>
                 </div>
                 <span class="pp-badges">
-                  <span class="pp-origen"><%= p.origen === 'propio' ? 'Producto propio' : 'Proyecto para cliente' %></span>
+                  <% if (p.origen) { %><span class="pp-origen"><%= p.origen === 'propio' ? 'Producto propio' : 'Proyecto para cliente' %></span><% } %>
                   <span class="pp-state pp-state-<%= p.estado %>">
                     <%= ({ produccion: 'En producción', desarrollo: 'En desarrollo', piloto: 'Piloto', demo: 'Demo' })[p.estado] || 'En desarrollo' %>
                   </span>
