@@ -302,3 +302,7 @@ body.ed-arrastrando .ed-ins-b { pointer-events: none; }
 .nav-oculta { opacity: .35; position: relative; }
 .nav-oculta::after { content: 'Oculto: no se muestra en la web'; position: absolute; inset: auto 0 0 0; text-align: center; background: #14140f; color: #fff; font: 500 11px 'Inter', system-ui, sans-serif; padding: 3px; }
 body.modo-edicion #cabecera, body.modo-edicion #pie { cursor: pointer; }
+
+/* En el editor la conversacion de contacto se ve completa (si no, los textos se ocultan por la animacion) */
+body.modo-edicion .cc-body p, body.modo-edicion .ph-chat p { opacity: 1 !important; animation: none !important; transform: none !important; }
+body.modo-edicion .cc-body .typing, body.modo-edicion .ph-chat .typing { display: none; }

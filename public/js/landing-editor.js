@@ -96,7 +96,10 @@
     el.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) e.preventDefault();
       if (e.key === 'Escape') el.blur();
+      // Dentro de un <button> la barra espaciadora "pulsa" el boton en vez de escribir
+      if (e.key === ' ' && el.closest('button')) { e.preventDefault(); document.execCommand('insertText', false, ' '); }
     });
+    if (el.closest('button')) el.addEventListener('keyup', function (e) { if (e.key === ' ') e.preventDefault(); });
   }
   $$('[data-edit]').forEach(preparar);
   $$('[data-proyecto] [data-campo]').forEach(preparar);
@@ -105,6 +108,8 @@
   document.addEventListener('click', function (e) {
     var a = e.target.closest('a');
     if (a && !barra.contains(a) && !e.target.closest('.ed-panel, .ed-modal')) e.preventDefault();
+    // Tocar el texto de una etiqueta del formulario lo edita; no debe saltar al campo
+    if (e.target.closest('label') && e.target.closest('[data-edit]')) e.preventDefault();
   });
   document.addEventListener('submit', function (e) { if (!e.target.closest('.ed-panel, .ed-modal')) e.preventDefault(); });
 
