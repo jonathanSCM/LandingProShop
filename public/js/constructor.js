@@ -15,9 +15,19 @@
   'use strict';
 
   var B = window.Bloques;
-  var datos = JSON.parse(document.getElementById('datos').textContent);
-  var pag = datos.pagina;
-  var doc = datos.doc;
+  // Este editor siempre se abre dentro del modo edicion de la landing (en un iframe):
+  // pide el bloque a la ventana de arriba y le devuelve los cambios al instante.
+  var emb = null;
+  try { emb = window.parent !== window && window.parent.LandingEditor ? window.parent.LandingEditor : null; } catch (e) { emb = null; }
+  if (!emb) {
+    document.body.innerHTML = '<p style="padding:40px;font:16px system-ui">Este editor se abre desde la landing: entra en <a href="/admin">/admin</a>.</p>';
+    return;
+  }
+  var pag = { id: 0, slug: '', titulo: '', descripcion: '', publicada: false, inicio: false, actualizada: '' };
+  var doc = B.limpiarDoc(emb.obtenerBloque());
+  // El lienzo muestra los colores reales de la landing para que se parezca a lo publicado.
+  var tema = emb.tema();
+  Object.keys(tema).forEach(function (k) { if (tema[k]) doc.tema[k] = tema[k]; });
 
   // ------------------------------------------------------------------
   // Utilidades de DOM
@@ -106,6 +116,12 @@
   }
 
   function marcar() {
+    if (emb) { // se aplica a la landing casi al instante, sin pasar por el servidor
+      sucio = true; rev++; avisar('Aplicando…');
+      clearTimeout(tAuto);
+      tAuto = setTimeout(function () { guardar(); }, 250);
+      return;
+    }
     sucio = true; rev++;
     if (!bloqueado) avisar('Cambios sin guardar', 'aviso');
     clearTimeout(tAuto);
@@ -154,6 +170,13 @@
 
   function guardar(forzar) {
     clearTimeout(tAuto);
+    if (emb) {
+      commit();
+      emb.actualizarBloque(doc);
+      sucio = false;
+      avisar('Aplicado ✓', 'ok');
+      return Promise.resolve();
+    }
     if (guardando) { pendienteGuardar = true; return Promise.resolve(); }
     commit();
     guardando = true;
@@ -209,7 +232,7 @@
   }
 
   window.addEventListener('beforeunload', function (e) {
-    if (!sucio) return;
+    if (emb || !sucio) return;
     e.preventDefault(); e.returnValue = '';
   });
 
@@ -640,7 +663,7 @@
   // ------------------------------------------------------------------
   // Panel izquierdo
   // ------------------------------------------------------------------
-  var TABS = [['secciones', 'Secciones'], ['elementos', 'Elementos'], ['capas', 'Capas'], ['pagina', 'Página']];
+  var TABS = [['secciones', 'Secciones'], ['elementos', 'Elementos'], ['capas', 'Capas']];
 
   function pintarPanel() {
     el.panel.innerHTML = '';
@@ -657,14 +680,15 @@
     el.panel.appendChild(cuerpo);
     if (tab === 'secciones') panelSecciones(cuerpo);
     else if (tab === 'elementos') panelElementos(cuerpo);
-    else if (tab === 'capas') panelCapas(cuerpo);
-    else panelPagina(cuerpo);
+    else panelCapas(cuerpo);
   }
 
   function panelSecciones(c) {
     c.appendChild(h('p', { class: 'c-ayuda', text: 'Haz clic para añadir después de la sección elegida, o arrástrala al lienzo.' }));
-    var grupo = null;
-    B.PREFABS.forEach(function (pf) {
+    var grupos = [], ordenados = [], grupo = null;
+    B.PREFABS.forEach(function (pf) { if (grupos.indexOf(pf.grupo) < 0) grupos.push(pf.grupo); });
+    grupos.forEach(function (g) { B.PREFABS.forEach(function (pf) { if (pf.grupo === g) ordenados.push(pf); }); });
+    ordenados.forEach(function (pf) {
       if (pf.grupo !== grupo) { grupo = pf.grupo; c.appendChild(h('h4', { class: 'c-grupo', text: grupo })); }
       var mini = h('div', { class: 'pf-mini' }, h('div', { class: 'pf-esc' }));
       var esc = mini.firstChild;
@@ -719,30 +743,6 @@
     $$('.c-capa', el.panel).forEach(function (b) { b.classList.toggle('on', !!sel && b.dataset.capa === sel.id); });
   }
 
-  function panelPagina(c) {
-    c.appendChild(h('h4', { class: 'c-grupo', text: 'Datos de la página' }));
-    c.appendChild(campoSimple('Nombre', 'text', pag.titulo, 120, function (v) { pag.titulo = v; el.titulo.value = v; marcar(); }));
-    var slugIn = campoSimple('Dirección (URL)', 'text', pag.slug, 60, function (v) { pag.slug = slugificar(v) || pag.slug; marcar(); actualizarCabecera(); });
-    slugIn.querySelector('input').addEventListener('blur', function (e) { e.target.value = pag.slug; });
-    c.appendChild(slugIn);
-    c.appendChild(h('p', { class: 'c-ayuda c-url', id: 'cUrl', text: location.origin + '/p/' + pag.slug }));
-    var cbi = h('input', { id: 'f-inicio', type: 'checkbox', checked: !!pag.inicio });
-    cbi.addEventListener('change', function () { pag.inicio = cbi.checked; marcar(); });
-    c.appendChild(h('div', { class: 'f f-bool' }, cbi, h('label', { for: 'f-inicio', text: 'Usar como portada del sitio (/)' })));
-    c.appendChild(h('p', { class: 'c-ayuda', text: 'Solo se muestra en / si además está publicada.' }));
-    c.appendChild(campoSimple('Descripción (para buscadores y al compartir)', 'textarea', pag.descripcion, 300, function (v) { pag.descripcion = v; marcar(); }));
-
-    c.appendChild(h('h4', { class: 'c-grupo', text: 'Estilo general' }));
-    B.TEMA.forEach(function (spec) {
-      c.appendChild(campoUI(spec, doc.tema, {
-        alCambiar: function (rebuild, inmediato) {
-          marcar(); pintarLienzo();
-          if (inmediato) commit(); else programarCommit();
-          if (rebuild) pintarPanelSoft();
-        },
-      }));
-    });
-  }
   function pintarPanelSoft() { var t = el.panel.scrollTop; pintarPanel(); el.panel.scrollTop = t; }
 
   function campoSimple(etiqueta, tipo, valor, max, fn) {
@@ -1089,6 +1089,7 @@
   $('#cVista').addEventListener('click', function () { alternarVista(); });
 
   el.guardar.addEventListener('click', function () { guardar(); });
+  $('#cListo').addEventListener('click', function () { guardar().then(function () { emb.cerrarEditor(); }); });
   el.publicar.addEventListener('click', function () {
     var quiere = !pag.publicada;
     if (!quiere && !confirm('La página dejará de ser pública (quedará como borrador). ¿Continuar?')) return;

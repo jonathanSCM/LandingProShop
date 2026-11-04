@@ -525,6 +525,7 @@
       '--pg-ff': FUENTES[t.fuente] || FUENTES.inter,
       '--pg-rb': r.b, '--pg-rc': r.c, '--pg-ri': r.i,
     };
+    if (opt && opt.vars) for (var vk in opt.vars) vars[vk] = opt.vars[vk];
     var cuerpo = d.secciones.map(function (s) { return renderSeccion(s, ed); }).join('');
     if (ed && !cuerpo) cuerpo = '<div class="pg-vacio">Tu página está vacía. Elige una sección en el panel izquierdo.</div>';
     return '<div class="pg' + (ed ? ' pg-editor' : '') + '"' + estilo(vars) + '>' + cuerpo + '</div>';
@@ -777,27 +778,11 @@
     return null;
   }
 
-  var PLANTILLAS = {
-    blanca: { nombre: 'En blanco', prefabs: ['vacia-1'] },
-    portada: { nombre: 'Solo portada', prefabs: ['cabecera', 'hero-imagen', 'pie'] },
-    completa: {
-      nombre: 'Landing completa',
-      prefabs: ['cabecera', 'hero-imagen', 'caracteristicas', 'texto-imagen', 'estadisticas', 'testimonio', 'precios', 'cta', 'contacto', 'pie'],
-    },
-  };
-
-  function docDePlantilla(clave) {
-    var p = PLANTILLAS[clave] || PLANTILLAS.blanca;
-    var secs = [];
-    p.prefabs.forEach(function (id) { secs = secs.concat(prefab(id).crear()); });
-    return limpiarDoc({ tema: {}, secciones: secs });
-  }
-
   return {
-    ELEMENTOS: ELEMENTOS, SECCION: SECCION, TEMA: TEMA, PREFABS: PREFABS, PLANTILLAS: PLANTILLAS,
+    ELEMENTOS: ELEMENTOS, SECCION: SECCION, TEMA: TEMA, PREFABS: PREFABS,
     FUENTES_URL: FUENTES_URL,
     render: render, limpiarDoc: limpiarDoc, limpiarElemento: limpiarElemento,
-    nuevoId: nuevoId, prefab: prefab, docDePlantilla: docDePlantilla, crearElemento: E,
+    nuevoId: nuevoId, prefab: prefab, crearElemento: E, textoSobre: textoSobre,
     url: url, src: src, color: color, esc: esc, videoEmbed: videoEmbed,
   };
 });

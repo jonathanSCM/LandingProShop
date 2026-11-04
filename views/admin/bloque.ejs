@@ -12,13 +12,13 @@
   <link rel="stylesheet" href="/css/paginas.css" />
   <link rel="stylesheet" href="/css/constructor.css" />
 </head>
-<body class="cons">
+<body class="cons c-emb">
 
 <header class="c-top">
-  <a class="c-back" href="/admin/paginas" title="Volver a Páginas">← Páginas</a>
+  <span class="c-emb-t">Editando sección</span>
   <button type="button" class="c-btn c-solo-movil" id="cMenuIzq" aria-label="Abrir panel de bloques">＋</button>
-  <input id="cTitulo" class="c-titulo" type="text" maxlength="120" aria-label="Nombre de la página" />
-  <span id="cBadge" class="c-badge">Borrador</span>
+  <input id="cTitulo" class="c-titulo" type="text" hidden />
+  <span id="cBadge" hidden></span>
 
   <div class="c-disp" role="group" aria-label="Tamaño de pantalla">
     <button type="button" class="on" data-disp="desktop" title="Escritorio">🖥</button>
@@ -33,9 +33,10 @@
   <span id="cEstado" class="c-estado" role="status" aria-live="polite"></span>
 
   <button type="button" class="c-btn" id="cVista">👁 Vista previa</button>
-  <a class="c-btn" id="cVer" href="#" target="_blank" rel="noopener">Ver ↗</a>
-  <button type="button" class="c-btn" id="cGuardar" title="Ctrl+S">Guardar</button>
-  <button type="button" class="c-btn c-btn-1" id="cPublicar">Publicar</button>
+  <a id="cVer" href="#" hidden></a>
+  <button type="button" id="cPublicar" hidden></button>
+  <button type="button" id="cGuardar" hidden></button>
+  <button type="button" class="c-btn c-btn-1" id="cListo">Listo ✓</button>
   <button type="button" class="c-btn c-solo-movil" id="cMenuDer" aria-label="Abrir ajustes">⚙</button>
 </header>
 
@@ -60,7 +61,6 @@
   </div>
 </div>
 
-<script id="datos" type="application/json"><%- datos %></script>
 <script src="/js/bloques.js"></script>
 <script src="/js/constructor.js"></script>
 </body>

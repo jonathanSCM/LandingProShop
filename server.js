@@ -1,5 +1,5 @@
 // Proshop - servidor web (Express)
-// Sirve la landing, el formulario de contacto y un admin minimo (constructor de paginas).
+// Sirve la landing, el formulario de contacto y un admin minimo (editor de la landing).
 require('dotenv').config();
 
 const path = require('path');
@@ -9,7 +9,8 @@ const session = require('express-session');
 
 const proyectos = require('./lib/proyectos');
 const contenido = require('./lib/contenido');
-const { prisma } = require('./lib/db');
+const Bloques = require('./public/js/bloques.js');
+const LandingCfg = require('./public/js/landing-cfg.js');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -81,7 +82,7 @@ if (process.env.NODE_ENV === 'production' && ADMIN_PASSWORD === 'proshop123') {
   console.warn('\n  ATENCION: ADMIN_PASSWORD usa el valor por defecto. Defínela en las variables de entorno.\n');
 }
 
-const paginas = require('./lib/paginas');
+const editorBloques = require('./lib/editor-bloques');
 
 // Igual que requireAuth pero para la API: responde 401 en JSON en vez de redirigir.
 function requireAuthApi(req, res, next) {
@@ -90,9 +91,8 @@ function requireAuthApi(req, res, next) {
 }
 
 // ============================ SITIO PUBLICO ============================
-// Portada: si hay una pagina del constructor marcada como "portada" y publicada,
-// se muestra esa. Si no, la landing de siempre. Con ?editar=1 (solo admin) se abre
-// el modo edicion de textos de la landing clasica.
+// Landing. Con ?editar=1 (solo admin) se abre el modo edicion: textos, enlaces,
+// orden y estilo de las secciones, secciones nuevas y diseno general.
 app.get('/', async (req, res, next) => {
   try {
     const quiereEditar = req.query.editar === '1';
@@ -102,19 +102,45 @@ app.get('/', async (req, res, next) => {
       return res.redirect('/admin/login?volver=' + encodeURIComponent('/?editar=1'));
     }
 
-    if (!quiereEditar) {
-      const inicio = await paginas.portada();
-      if (inicio) return paginas.mostrar(req, res, inicio);
-    }
-
     const editando = quiereEditar && esAdmin;
     const cont = await contenido.leer();
+    const cfg = cont.config;
 
+    // Secciones en el orden elegido. Las ocultas solo se ven al editar, para poder recuperarlas.
+    const secciones = [];
+    cfg.orden.forEach((id) => {
+      const sec = cfg.secciones[id];
+      if (sec.oculto && !editando) return;
+      const est = LandingCfg.estiloSeccion(sec);
+      const custom = !!cfg.custom[id];
+      secciones.push({
+        id, custom, anim: editando ? '' : est.anim, style: est.style,
+        clase: [est.clase, sec.oculto ? 'esta-oculta' : '', custom ? 'es-custom' : ''].filter(Boolean).join(' '),
+        ancla: sec.ancla,
+        html: custom ? Bloques.render(cfg.custom[id], { vars: LandingCfg.VARS_BLOQUES }) : '',
+      });
+    });
+
+    // enlace('hero.cta1', '#contacto', abrirEnPestanaNueva): atributos del <a> segun lo editado.
+    const enlace = (clave, porDefecto, nuevaPorDefecto) => {
+      const e = cfg.enlaces[clave];
+      const url = Bloques.url(e ? e.url : porDefecto) || '#';
+      const nueva = e ? e.nueva : !!nuevaPorDefecto;
+      return ` href="${Bloques.esc(url)}"${nueva ? ' target="_blank" rel="noopener"' : ''} data-link="${Bloques.esc(clave)}"`;
+    };
+
+    const fuente = LandingCfg.FUENTES[cfg.diseno.fuente];
     res.render('landing', {
       title: `${site.name} — Software a medida en Bolivia`,
-      // En modo edicion se ven tambien los ocultos, para poder recuperarlos.
       proyectos: contenido.aplicarAProyectos(proyectos, cont, editando),
-      editando,
+      editando, esAdmin, secciones, enlace,
+      menu: LandingCfg.itemsMenu(cfg),
+      hayCustom: secciones.some((s) => s.custom),
+      disenoCss: LandingCfg.cssDiseno(cfg.diseno),
+      fuenteUrl: fuente ? fuente.url : '',
+      sinAnim: cfg.diseno.animaciones === 'ninguna',
+      // Datos que necesita el editor del navegador (el JSON no puede cerrar el <script>).
+      edDatos: editando ? JSON.stringify({ config: cfg, textos: cont.textos, proyectos: cont.proyectos }).replace(/</g, '\\u003c') : '',
       // t('clave', 'texto por defecto') -> devuelve el texto editado si existe.
       t: (clave, porDefecto) => {
         const v = cont.textos[clave];
@@ -219,10 +245,10 @@ app.use('/admin', (req, res, next) => {
   next();
 });
 
-app.get('/admin', requireAuth, (req, res) => res.redirect('/admin/paginas'));
+// El admin ES la landing en modo edicion: no hay otro panel.
+app.get('/admin', requireAuth, (req, res) => res.redirect('/?editar=1'));
 
-// Constructor de paginas (/admin/paginas, /p/:slug, /api/paginas, /api/imagenes)
-paginas.montar(app, { requireAuth, requireAuthApi, site });
+editorBloques.montar(app, { requireAuth, requireAuthApi });
 
 // 404
 app.use((req, res) => {

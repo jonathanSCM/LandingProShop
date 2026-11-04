@@ -1765,3 +1765,20 @@ img { max-width: 100%; display: block; }
     transition-duration: .01ms !important;
   }
 }
+
+/* =============================================================
+   Secciones editables: contenedor, fondos propios y animaciones de entrada
+   ============================================================= */
+.seccion { position: relative; scroll-margin-top: 72px; }
+.seccion.con-fondo > .section, .seccion.con-fondo > .hero { background: transparent; }
+
+.js-anim [data-anim] { opacity: 0; transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
+.js-anim [data-anim="subir"] { transform: translateY(44px); }
+.js-anim [data-anim="zoom"]  { transform: scale(.93); }
+.js-anim [data-anim="izq"]   { transform: translateX(-56px); }
+.js-anim [data-anim="der"]   { transform: translateX(56px); }
+.js-anim [data-anim].visto   { opacity: 1; transform: none; }
+
+/* "Sin animaciones" en el diseno general */
+.sin-anim *, .sin-anim *::before, .sin-anim *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+.sin-anim [data-anim] { opacity: 1 !important; transform: none !important; }

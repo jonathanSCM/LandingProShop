@@ -310,4 +310,24 @@
       btn.textContent = textoOriginal;
     }
   });
+
+  // ---------- Animacion de entrada de las secciones (elegida en el editor) ----------
+  (function () {
+    var els = document.querySelectorAll('[data-anim]');
+    if (!els.length) return;
+    var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (quieto || !('IntersectionObserver' in window) || document.body.classList.contains('sin-anim')) {
+      Array.prototype.forEach.call(els, function (e) { e.classList.add('visto'); });
+      return;
+    }
+    document.documentElement.classList.add('js-anim');
+    var io = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        en.target.classList.add('visto');
+        io.unobserve(en.target);
+      });
+    }, { threshold: 0.1 });
+    Array.prototype.forEach.call(els, function (e) { io.observe(e); });
+  })();
 })();

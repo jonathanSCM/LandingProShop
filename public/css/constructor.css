@@ -198,3 +198,7 @@
   .c-titulo { flex: 1; width: auto; }
   .c-marco[data-disp="tablet"], .c-marco[data-disp="movil"] { width: 100%; margin: 0; }
 }
+
+/* ---------- Modo embebido (dentro del editor de la landing) ---------- */
+.c-emb .c-emb-t { font-weight: 600; font-size: 15px; padding-right: 8px; }
+.c-emb .c-estado { margin-left: 12px; }

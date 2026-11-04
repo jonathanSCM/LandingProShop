@@ -404,31 +404,17 @@ model ContenidoLanding {
   textos      Json     @default("{}") // { "hero.titulo": "...", "sec1.titulo": "..." }
   ocultos     Json     @default("[]") // ids de proyectos que no se muestran
   proyectos   Json     @default("{}") // { "protaxi": { nombre, resumen, ... } }
+  config      Json     @default("{}") // orden de secciones, estilos, enlaces, diseño y secciones agregadas
   actualizado DateTime @updatedAt
 
   @@map("contenido_landing")
 }
 
 // ---------------------------------------------------------------------------
-// Constructor de paginas (/admin/paginas).
-// Cada pagina guarda su documento (secciones y elementos) como JSON. Las
-// imagenes subidas viven en la base de datos por la misma razon que el
-// contenido de la landing: el disco del contenedor se pierde en cada despliegue.
+// Imagenes subidas desde el editor de la landing. Viven en la base de datos por
+// la misma razon que el contenido: el disco del contenedor se pierde en cada
+// despliegue.
 // ---------------------------------------------------------------------------
-model Pagina {
-  id          Int      @id @default(autoincrement())
-  slug        String   @unique
-  titulo      String
-  descripcion String   @default("")
-  publicada   Boolean  @default(false)
-  inicio      Boolean  @default(false) // se muestra en la portada (/)
-  doc         Json     @default("{}")
-  creada      DateTime @default(now())
-  actualizada DateTime @updatedAt
-
-  @@map("paginas")
-}
-
 model ImagenSubida {
   id     Int      @id @default(autoincrement())
   nombre String

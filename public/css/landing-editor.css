@@ -134,3 +134,148 @@ body.modo-edicion .nav { top: 52px; }
   text-transform: uppercase;
   color: var(--accent);
 }
+
+/* =============================================================
+   Editor de la landing: secciones, paneles, ventanas
+   Los colores del editor son fijos (no siguen el tema de la pagina)
+   para que se vea igual en claro y en oscuro.
+   ============================================================= */
+.ed-barra { overflow-x: auto; scrollbar-width: none; }
+.ed-barra::-webkit-scrollbar { display: none; }
+.ed-barra .ed-btn { flex: 0 0 auto; }
+body.modo-edicion.ed-con-panel { padding-right: 340px; }
+body.ed-bloqueando { overflow: hidden; }
+
+.ed-pildora {
+  position: fixed; z-index: 120; right: 16px; bottom: 16px;
+  padding: 10px 16px; border-radius: 999px; background: #14140f; color: #fff;
+  font: 500 13px 'Inter', system-ui, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+.ed-pildora:hover { background: #6d28d9; }
+
+/* ---------- Seccion: resaltado ---------- */
+#landingMain > .seccion.ed-hov { outline: 1px dashed rgba(109, 40, 217, .6); outline-offset: -1px; }
+#landingMain > .seccion.ed-sel { outline: 2px solid #6d28d9; outline-offset: -2px; }
+#landingMain > .seccion.esta-oculta { opacity: .38; }
+#landingMain > .seccion.esta-oculta::before {
+  content: 'Sección oculta: no se muestra en la web';
+  display: block; padding: 8px 16px; text-align: center; background: #14140f; color: #fff;
+  font: 500 12px 'Inter', system-ui, sans-serif; letter-spacing: .04em;
+}
+
+/* ---------- Barra flotante de la seccion ---------- */
+.ed-flot {
+  position: fixed; z-index: 150; display: flex; align-items: center; gap: 2px; padding: 3px;
+  background: #14140f; color: #fff; border-radius: 10px; box-shadow: 0 8px 24px -6px rgba(0,0,0,.55);
+  font: 500 12px/1 'Inter', system-ui, sans-serif; white-space: nowrap;
+}
+.ed-flot[hidden], .ed-panel[hidden], .ed-pop[hidden] { display: none; }
+.ed-asa { cursor: grab; padding: 6px 7px; font-size: 14px; color: #b8b8c6; user-select: none; }
+.ed-fl { padding: 0 8px 0 2px; font-weight: 600; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+.ed-fb {
+  border: 0; background: transparent; color: inherit; min-width: 28px; height: 28px; padding: 0 6px;
+  border-radius: 7px; cursor: pointer; font: 500 13px/1 'Inter', system-ui, sans-serif;
+}
+.ed-fb:hover { background: rgba(255,255,255,.18); }
+.ed-fb.peligro:hover { background: #dc2626; }
+.ed-fb-txt { background: #6d28d9; padding: 0 10px; }
+.ed-fb-txt:hover { background: #7c3aed; }
+.ed-fb-txt::after { content: ' Editar'; font-size: 12px; }
+
+/* ---------- Barras "+" entre secciones ---------- */
+.ed-ins { position: relative; height: 34px; display: flex; align-items: center; justify-content: center; z-index: 5; }
+.ed-ins::before { content: ''; position: absolute; left: 4%; right: 4%; top: 50%; border-top: 2px dashed transparent; transition: border-color .15s; }
+.ed-ins:hover::before, .ed-ins.on::before { border-top-color: #6d28d9; }
+.ed-ins-b {
+  position: relative; padding: 4px 12px; border-radius: 999px; border: 1px solid transparent; background: transparent;
+  color: transparent; font: 600 12px 'Inter', system-ui, sans-serif; cursor: pointer; transition: all .15s;
+}
+.ed-ins:hover .ed-ins-b { background: #6d28d9; color: #fff; }
+body.ed-arrastrando .ed-ins { background: rgba(109, 40, 217, .08); }
+body.ed-arrastrando .ed-ins::before { border-top-color: rgba(109, 40, 217, .45); }
+body.ed-arrastrando .ed-ins.on { background: rgba(109, 40, 217, .2); }
+body.ed-arrastrando .ed-ins-b { pointer-events: none; }
+
+/* ---------- Panel lateral ---------- */
+.ed-panel {
+  position: fixed; z-index: 160; top: 52px; right: 0; bottom: 0; width: 340px; padding: 0 16px 24px; overflow-y: auto;
+  background: #fff; color: #1a1a24; border-left: 1px solid #e3e3ea; box-shadow: -10px 0 30px -18px rgba(0,0,0,.35);
+  font: 14px/1.4 'Inter', system-ui, sans-serif;
+}
+.ed-panel *, .ed-modal *, .ed-pop * { font-family: 'Inter', system-ui, sans-serif; }
+.ed-panel-cab { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 8px; padding: 14px 0 12px; margin-bottom: 8px; background: #fff; border-bottom: 1px solid #e3e3ea; }
+.ed-panel-cab strong { flex: 1; font-size: 15px; }
+.ed-panel .ed-fb, .ed-modal .ed-fb { color: #1a1a24; background: #f1f1f5; }
+.ed-panel .ed-fb:hover, .ed-modal .ed-fb:hover { background: #e4e4ec; }
+.ed-panel .ed-fb.peligro:hover { background: #dc2626; color: #fff; }
+.ed-ayuda { font-size: 12.5px; color: #6b6b7b; margin: 8px 0 12px; }
+.ed-ancho { display: flex; width: 100%; justify-content: center; margin-top: 10px; }
+.ed-panel .ed-btn-2, .ed-modal .ed-btn-2 { color: #1a1a24; border-color: #d4d4de; }
+.ed-panel .ed-btn-2:hover { border-color: #6d28d9; color: #6d28d9; }
+.ed-panel .ed-btn-1 { background: #6d28d9; color: #fff; }
+.ed-panel .ed-btn-1:hover { background: #5b21b6; }
+.ed-btn-peligro { background: #fff; color: #dc2626; border: 1px solid #f3c1c1; }
+.ed-btn-peligro:hover { background: #dc2626; color: #fff; }
+
+.ed-lista { display: grid; gap: 4px; margin-bottom: 4px; }
+.ed-fila { display: flex; align-items: center; gap: 2px; padding: 4px 4px 4px 2px; border: 1px solid #e3e3ea; border-radius: 10px; background: #fff; }
+.ed-fila.sel { border-color: #6d28d9; background: #f5f0ff; }
+.ed-fila.oculta .ed-fila-n { text-decoration: line-through; opacity: .55; }
+.ed-fila.on { border-color: #6d28d9; box-shadow: 0 -3px 0 #6d28d9; }
+.ed-fila .ed-asa { color: #9a9aab; }
+.ed-fila-n { flex: 1; min-width: 0; text-align: left; border: 0; background: none; cursor: pointer; padding: 6px 4px; font-size: 13.5px; font-weight: 500; color: inherit; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-etq { font-size: 10.5px; padding: 2px 7px; border-radius: 999px; background: #ede9fe; color: #6d28d9; font-weight: 600; }
+.ed-fila-fin { justify-content: center; border-style: dashed; color: #9a9aab; font-size: 12px; padding: 8px; }
+
+/* ---------- Campos ---------- */
+.ed-f { margin: 0 0 14px; }
+.ed-f-lab { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; color: #6b6b7b; }
+.ed-f input[type="text"], .ed-f select, .ed-pop input[type="text"] {
+  width: 100%; padding: 8px 10px; border: 1px solid #d4d4de; border-radius: 8px; background: #fff; color: #1a1a24; font-size: 13.5px;
+}
+.ed-f input:focus, .ed-f select:focus, .ed-pop input:focus { outline: 2px solid #6d28d9; outline-offset: -1px; border-color: transparent; }
+.ed-f-bool { display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer; }
+.ed-f-bool input { width: 16px; height: 16px; accent-color: #6d28d9; }
+.ed-seg { display: flex; padding: 3px; gap: 2px; background: #f1f1f5; border-radius: 9px; flex-wrap: wrap; }
+.ed-seg button { flex: 1; border: 0; background: none; padding: 6px 4px; border-radius: 7px; cursor: pointer; font-size: 12.5px; color: #6b6b7b; white-space: nowrap; }
+.ed-seg button:hover { color: #1a1a24; }
+.ed-seg button.on { background: #fff; color: #6d28d9; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+.ed-colores { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.ed-colores input[type="color"] { width: 34px; height: 30px; padding: 0; border: 1px solid #d4d4de; border-radius: 8px; background: none; cursor: pointer; }
+.ed-sw { width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(0,0,0,.2); cursor: pointer; padding: 0; }
+.ed-sw.on { outline: 2px solid #6d28d9; outline-offset: 2px; }
+.ed-mini { height: 26px; padding: 0 9px; border: 1px solid #d4d4de; background: #fff; border-radius: 7px; cursor: pointer; font-size: 12px; color: #1a1a24; }
+.ed-mini:hover { background: #f1f1f5; }
+.ed-mini.on { background: #ede9fe; border-color: #6d28d9; color: #6d28d9; }
+
+/* ---------- Ventanita de enlace ---------- */
+.ed-pop {
+  position: fixed; z-index: 170; display: grid; gap: 8px; padding: 14px; background: #fff; color: #1a1a24;
+  border: 1px solid #e3e3ea; border-radius: 12px; box-shadow: 0 18px 50px -12px rgba(0,0,0,.45);
+}
+.ed-pop .ed-f-bool { font-size: 13px; }
+.ed-pop-aviso { margin: 0; min-height: 0; font-size: 12px; color: #dc2626; }
+.ed-pop-aviso:empty { display: none; }
+.ed-pop .ed-btn { justify-content: center; }
+.ed-pop .ed-btn-1 { background: #6d28d9; color: #fff; }
+
+/* ---------- Galeria de secciones ---------- */
+.ed-modal { position: fixed; z-index: 180; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(20,20,30,.55); }
+.ed-modal-caja { width: min(900px, 100%); max-height: min(90vh, 820px); display: flex; flex-direction: column; background: #fff; color: #1a1a24; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 80px -20px rgba(0,0,0,.5); }
+.ed-modal-cab { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #e3e3ea; font-size: 16px; }
+.ed-modal-cuerpo { flex: 1 1 auto; min-height: 0; padding: 12px 18px 22px; overflow-y: auto; display: grid; grid-auto-rows: min-content; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; align-content: start; }
+.ed-grupo { grid-column: 1 / -1; margin: 10px 0 0; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: #6b6b7b; }
+.ed-pf { display: block; height: auto; align-self: start; padding: 0; text-align: left; cursor: pointer; border: 1px solid #e3e3ea; border-radius: 12px; overflow: hidden; background: #fff; }
+.ed-pf:hover { border-color: #6d28d9; box-shadow: 0 6px 18px -8px rgba(109, 40, 217, .5); }
+.ed-pf-mini { height: 130px; overflow: hidden; position: relative; pointer-events: none; background: var(--paper, #fff); color: var(--ink, #14140f); border-bottom: 1px solid #e3e3ea; }
+.ed-pf-esc { width: 1100px; transform-origin: 0 0; transform: scale(.254); }
+.ed-pf-n { display: block; padding: 8px 12px; font-size: 13px; font-weight: 500; color: #1a1a24; }
+
+/* ---------- Editor de bloque (iframe a pantalla completa) ---------- */
+.ed-bloque { position: fixed; z-index: 300; inset: 0; background: #14140f; }
+.ed-bloque-marco { width: 100%; height: 100%; border: 0; display: block; background: #fff; }
+
+@media (max-width: 720px) {
+  body.modo-edicion.ed-con-panel { padding-right: 0; }
+  .ed-panel { width: min(340px, 92vw); }
+}
