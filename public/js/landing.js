@@ -133,7 +133,9 @@
     if (!shot || !paradas.length || !barra || !nota || !pos) return;
 
     var actual = -1;   // -1 es la vista completa
-    var ACERCAR = 2.2; // cuanto se amplia la captura en cada parada
+    var ACERCAR = 1.8; // cuanto se amplia la captura en cada parada.
+                       // Mas que esto empasta: las capturas miden 800px de
+                       // ancho y el visor ya las muestra a casi ese tamano.
 
     /* Deja la parada en el centro del visor sin que la imagen descubra un
        hueco. Con transform-origin en la esquina, un punto que esta en la
