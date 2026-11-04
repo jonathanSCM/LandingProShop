@@ -21,7 +21,7 @@ const site = {
   tagline: 'Software a medida que impulsa tu negocio',
   // Numero de WhatsApp en formato internacional SIN el signo + (591 = Bolivia).
   whatsapp: process.env.WHATSAPP_NUMBER || '59162095357',
-  email: process.env.CONTACT_EMAIL || 'contacto@proshop.lat',
+  email: process.env.CONTACT_EMAIL || 'soporte@proshop.lat',
   phone: process.env.CONTACT_PHONE || '+591 62095357',
   location: process.env.CONTACT_LOCATION || 'Santa Cruz · Bolivia',
   // Donde vive la plataforma de agentes publicada. Si algun dia esta landing se
