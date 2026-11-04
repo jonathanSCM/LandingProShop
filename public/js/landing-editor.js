@@ -73,7 +73,11 @@
   // Textos editables (igual que antes)
   // ------------------------------------------------------------------
   function preparar(el) {
-    originales.set(el, el.innerHTML.trim());
+    // Al editar, los saltos de linea e indentacion del codigo se verian como espacios raros: se colapsan.
+    var limpio = el.innerHTML.replace(/\s*\n\s*/g, ' ').trim();
+    if (limpio !== el.innerHTML) el.innerHTML = limpio;
+    el.setAttribute('spellcheck', 'false'); // sin subrayados rojos: los textos llevan nombres propios y sin tildes a proposito
+    originales.set(el, limpio);
     el.setAttribute('contenteditable', 'plaintext-only');
     el.classList.add('ed-campo');
     if (el.contentEditable !== 'plaintext-only') el.setAttribute('contenteditable', 'true');
