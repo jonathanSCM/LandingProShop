@@ -1,0 +1,62 @@
+<%- include('partials/inicio') %>
+
+<div class="page-head">
+  <h2>Páginas</h2>
+  <p>Crea páginas web con el constructor: secciones prediseñadas, imágenes con marcos, botones y enlaces. Se publican en <code>/p/nombre</code>.</p>
+</div>
+
+<% if (error) { %><div class="alert-err"><%= error %></div><% } %>
+
+<form method="POST" action="/admin/paginas" class="form-card" style="max-width:none;margin-bottom:1.6rem">
+  <div class="field-row">
+    <div class="field">
+      <label for="titulo">Nombre de la nueva página *</label>
+      <input id="titulo" name="titulo" type="text" required maxlength="120" placeholder="Ej: Promo de verano" />
+    </div>
+    <div class="field">
+      <label for="plantilla">Empezar con</label>
+      <select id="plantilla" name="plantilla">
+        <% Object.keys(plantillas).forEach(function (k) { %>
+          <option value="<%= k %>" <%= k === 'completa' ? 'selected' : '' %>><%= plantillas[k].nombre %></option>
+        <% }); %>
+      </select>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit">+ Crear y abrir el editor</button>
+</form>
+
+<% if (paginas.length === 0) { %>
+  <div class="empty-state">
+    <div class="empty-icon">🧩</div>
+    <h3>Aún no hay páginas</h3>
+    <p>Crea la primera arriba: puedes partir de una landing completa y cambiarlo todo.</p>
+  </div>
+<% } else { %>
+  <div class="table-wrap">
+    <table class="leads-table">
+      <thead><tr><th>Página</th><th>Estado</th><th>Modificada</th><th>Acciones</th></tr></thead>
+      <tbody>
+        <% paginas.forEach(function (p) { %>
+          <tr>
+            <td><strong><%= p.titulo %></strong><br /><a class="muted" href="/p/<%= p.slug %>" target="_blank" rel="noopener">/p/<%= p.slug %></a></td>
+            <td><span class="badge <%= p.publicada ? 'badge-new' : 'badge-off' %>"><%= p.publicada ? 'Publicada' : 'Borrador' %></span></td>
+            <td class="nowrap muted"><%= new Date(p.actualizada).toLocaleString('es-BO') %></td>
+            <td class="actions-cell">
+              <a class="icon-btn" title="Editar" href="/admin/paginas/<%= p.id %>/editor">✎</a>
+              <a class="icon-btn" title="Ver" href="/p/<%= p.slug %>" target="_blank" rel="noopener">↗</a>
+              <form method="POST" action="/admin/paginas/<%= p.id %>/duplicar" class="inline-form">
+                <button class="icon-btn" type="submit" title="Duplicar">⧉</button>
+              </form>
+              <form method="POST" action="/admin/paginas/<%= p.id %>/eliminar" class="inline-form"
+                    onsubmit="return confirm('¿Eliminar esta página? No se puede deshacer.');">
+                <button class="icon-btn del" type="submit" title="Eliminar">🗑</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+
+<%- include('partials/fin') %>

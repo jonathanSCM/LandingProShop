@@ -51,7 +51,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 // Guarda el body crudo para verificar la firma de los webhooks de Meta.
-app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf; } }));
+app.use(express.json({ limit: '1mb', verify: (req, res, buf) => { req.rawBody = buf; } }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(
@@ -81,6 +81,12 @@ function safeEqual(a, b) {
 function requireAuth(req, res, next) {
   if (req.session && req.session.authed) return next();
   return res.redirect('/admin/login');
+}
+
+// Igual que requireAuth pero para la API: responde 401 en JSON en vez de redirigir.
+function requireAuthApi(req, res, next) {
+  if (req.session && req.session.authed) return next();
+  return res.status(401).json({ ok: false, error: 'Tu sesión expiró. Vuelve a ingresar al panel.' });
 }
 
 // ============================ SITIO PUBLICO ============================
@@ -1617,6 +1623,10 @@ app.post('/admin/leads/:id/eliminar', requireAuth, (req, res) => {
   leads.deleteLead(req.params.id);
   res.redirect('/admin/mensajes');
 });
+
+// Constructor de paginas (/admin/paginas, /p/:slug, /api/paginas, /api/imagenes).
+// Va despues del middleware de /admin para que sus vistas reciban usuario y contadores.
+require('./lib/paginas').montar(app, { requireAuth, requireAuthApi, site });
 
 // 404
 app.use((req, res) => {

@@ -408,3 +408,33 @@ model ContenidoLanding {
 
   @@map("contenido_landing")
 }
+
+// ---------------------------------------------------------------------------
+// Constructor de paginas (/admin/paginas).
+// Cada pagina guarda su documento (secciones y elementos) como JSON. Las
+// imagenes subidas viven en la base de datos por la misma razon que el
+// contenido de la landing: el disco del contenedor se pierde en cada despliegue.
+// ---------------------------------------------------------------------------
+model Pagina {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  titulo      String
+  descripcion String   @default("")
+  publicada   Boolean  @default(false)
+  doc         Json     @default("{}")
+  creada      DateTime @default(now())
+  actualizada DateTime @updatedAt
+
+  @@map("paginas")
+}
+
+model ImagenSubida {
+  id     Int      @id @default(autoincrement())
+  nombre String
+  mime   String
+  tamano Int
+  datos  Bytes
+  creada DateTime @default(now())
+
+  @@map("imagenes_subidas")
+}

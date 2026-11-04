@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title><%= title %></title>
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="<%= fuentesUrl %>" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/paginas.css" />
+  <link rel="stylesheet" href="/css/constructor.css" />
+</head>
+<body class="cons">
+
+<header class="c-top">
+  <a class="c-back" href="/admin/paginas" title="Volver a Páginas">← Páginas</a>
+  <button type="button" class="c-btn c-solo-movil" id="cMenuIzq" aria-label="Abrir panel de bloques">＋</button>
+  <input id="cTitulo" class="c-titulo" type="text" maxlength="120" aria-label="Nombre de la página" />
+  <span id="cBadge" class="c-badge">Borrador</span>
+
+  <div class="c-disp" role="group" aria-label="Tamaño de pantalla">
+    <button type="button" class="on" data-disp="desktop" title="Escritorio">🖥</button>
+    <button type="button" data-disp="tablet" title="Tableta">▭</button>
+    <button type="button" data-disp="movil" title="Móvil">📱</button>
+  </div>
+  <div class="c-hist">
+    <button type="button" id="cDeshacer" class="c-ib" title="Deshacer (Ctrl+Z)" aria-label="Deshacer" disabled>↶</button>
+    <button type="button" id="cRehacer" class="c-ib" title="Rehacer (Ctrl+Y)" aria-label="Rehacer" disabled>↷</button>
+  </div>
+
+  <span id="cEstado" class="c-estado" role="status" aria-live="polite"></span>
+
+  <button type="button" class="c-btn" id="cVista">👁 Vista previa</button>
+  <a class="c-btn" id="cVer" href="#" target="_blank" rel="noopener">Ver ↗</a>
+  <button type="button" class="c-btn" id="cGuardar" title="Ctrl+S">Guardar</button>
+  <button type="button" class="c-btn c-btn-1" id="cPublicar">Publicar</button>
+  <button type="button" class="c-btn c-solo-movil" id="cMenuDer" aria-label="Abrir ajustes">⚙</button>
+</header>
+
+<div class="c-body">
+  <aside class="c-izq" id="cPanel" aria-label="Bloques"></aside>
+
+  <main class="c-lienzo" id="cLienzo">
+    <div class="c-marco" id="cMarco" data-disp="desktop">
+      <div id="cPagina"></div>
+      <div class="c-flot" id="cFlot" hidden></div>
+      <div class="c-indic" id="cIndic" hidden></div>
+    </div>
+  </main>
+
+  <aside class="c-der" id="cInspector" aria-label="Ajustes"></aside>
+</div>
+
+<div class="c-modal" id="cModal" hidden>
+  <div class="c-modal-caja" role="dialog" aria-modal="true" aria-label="Imágenes">
+    <div class="c-modal-cab"><strong>Imágenes</strong><button type="button" class="c-ib" id="cModalCerrar" aria-label="Cerrar">✕</button></div>
+    <div class="c-modal-cuerpo" id="cModalCuerpo"></div>
+  </div>
+</div>
+
+<script id="datos" type="application/json"><%- datos %></script>
+<script src="/js/bloques.js"></script>
+<script src="/js/constructor.js"></script>
+</body>
+</html>

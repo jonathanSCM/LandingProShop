@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <% if (descripcion) { %><meta name="description" content="<%= descripcion %>" /><% } %>
+  <meta property="og:title" content="<%= title %>" />
+  <% if (descripcion) { %><meta property="og:description" content="<%= descripcion %>" /><% } %>
+  <meta property="og:type" content="website" />
+  <% if (borrador) { %><meta name="robots" content="noindex" /><% } %>
+  <link rel="icon" type="image/svg+xml" href="/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="<%= fuentesUrl %>" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/paginas.css" />
+  <style>
+    body { margin: 0; background: <%= fondo %>; }
+    .pg-aviso { position: fixed; z-index: 99; left: 50%; bottom: 14px; transform: translateX(-50%);
+      display: flex; gap: 12px; align-items: center; padding: 8px 8px 8px 16px; border-radius: 999px;
+      background: #14140f; color: #fff; font: 500 13px system-ui, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+    .pg-aviso a { background: #6d28d9; color: #fff; text-decoration: none; padding: 7px 14px; border-radius: 999px; }
+  </style>
+</head>
+<body>
+<%- html %>
+<% if (borrador || editarUrl) { %>
+  <div class="pg-aviso">
+    <span><%= borrador ? 'Borrador: solo tú puedes ver esta página' : 'Vista de administrador' %></span>
+    <% if (editarUrl) { %><a href="<%= editarUrl %>">Volver al editor</a><% } %>
+  </div>
+<% } %>
+<script src="/js/paginas-publico.js" data-origen="<%= origen %>" defer></script>
+</body>
+</html>
