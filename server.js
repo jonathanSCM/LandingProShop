@@ -142,6 +142,9 @@ app.get('/', async (req, res, next) => {
       ].filter(Boolean).join(' '),
       sinBotonTema: d.modo !== 'auto' || !d.botonTema,
       cab: cfg.cabecera, cabEstilo: cab, pie: cfg.pie, pieEstilo: pie,
+      pieSoluciones: cfg.pie.solEnlaces
+        .map((e) => ({ texto: e.texto, href: Bloques.url(e.url) }))
+        .filter((e) => e.href && e.texto),
       // Datos que necesita el editor del navegador (el JSON no puede cerrar el <script>).
       edDatos: editando ? JSON.stringify({ config: cfg, textos: cont.textos, lista }).replace(/</g, '\\u003c') : '',
     });

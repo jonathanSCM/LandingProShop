@@ -666,6 +666,18 @@
     if (!f) return;
     f.style.cssText = C.estiloPie(cfg.pie).style;
     f.classList.toggle('nav-oculta', !cfg.pie.visible);
+    var col = document.getElementById('pieSoluciones');
+    if (col) {
+      col.innerHTML = '';
+      col.appendChild(h('span', { class: 'foot-lbl', text: cfg.pie.solTitulo }));
+      cfg.pie.solEnlaces.forEach(function (e) {
+        var href = B.url(e.url);
+        if (!href || !e.texto) return;
+        var a = h('a', { href: href, text: e.texto });
+        if (/^https?:/i.test(href)) { a.setAttribute('target', '_blank'); a.setAttribute('rel', 'noopener'); }
+        col.appendChild(a);
+      });
+    }
   }
 
   function panelMarco(titulo, campos, obj, aplicar) {

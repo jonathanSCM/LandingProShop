@@ -118,10 +118,10 @@
       <span style="display:contents" data-menu-box><% menu.forEach(function (m) { %><a href="<%= m.href || '#' + m.ancla %>"><%= m.texto %></a><% }); %></span>
     </nav>
 
-    <% if (site.plataforma) { %>
-    <nav class="foot-nav">
-      <span class="foot-lbl">Soluciones</span>
-      <a href="<%= site.plataforma %>" target="_blank" rel="noopener">Agentes de IA</a>
+    <% if (pieSoluciones.length || editando) { %>
+    <nav class="foot-nav" id="pieSoluciones">
+      <span class="foot-lbl"><%= pie.solTitulo %></span>
+      <% pieSoluciones.forEach(function (e) { %><a href="<%= e.href %>"<% if (/^https?:/i.test(e.href)) { %> target="_blank" rel="noopener"<% } %>><%= e.texto %></a><% }); %>
     </nav>
     <% } %>
 

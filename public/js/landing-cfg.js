@@ -89,6 +89,12 @@
     { k: 'visible', t: 'bool', def: true, label: 'Mostrar el pie de página' },
     { k: 'fondo', t: 'color', def: '', label: 'Color de fondo' },
     { k: 'texto', t: 'color', def: '', label: 'Color del texto' },
+    { k: 'solTitulo', t: 'texto', def: 'Soluciones', max: 30, label: 'Título de la columna de enlaces' },
+    { k: 'solEnlaces', t: 'items', def: [
+      { texto: 'Agentes de IA', url: 'https://agentes.proshop.lat' },
+      { texto: 'CRM ProShop', url: 'https://crm.proshop.lat' },
+      { texto: 'AgendaBot', url: 'https://agendabot.proshop.lat' },
+    ], max: 8, sub: [{ k: 'texto', t: 'texto', def: 'Enlace', max: 40, label: 'Texto' }, { k: 'url', t: 'url', def: 'https://', max: 500, label: 'Enlace' }], label: 'Enlaces de esa columna' },
   ];
 
   var CAMPOS_PROYECTO = [
