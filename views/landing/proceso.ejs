@@ -2,6 +2,15 @@
        03 — COMO TRABAJAMOS
   ============================================================= -->
   <section id="proceso" class="section section-tint">
+  <svg class="net-bg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path class="nb-l" d="M-20 120C200 120 260 40 520 60S820 160 1220 90" />
+    <path class="nb-l" d="M-20 300C240 300 300 220 600 250S900 380 1220 320" />
+    <path class="nb-l" d="M-20 500C180 500 340 430 640 450S960 540 1220 480" />
+    <circle class="nb-p" r="4"><animateMotion dur="14s" repeatCount="indefinite" path="M-20 120C200 120 260 40 520 60S820 160 1220 90" /></circle>
+    <circle class="nb-p" r="4"><animateMotion dur="18s" begin="-6s" repeatCount="indefinite" path="M-20 300C240 300 300 220 600 250S900 380 1220 320" /></circle>
+    <circle class="nb-p" r="4"><animateMotion dur="16s" begin="-3s" repeatCount="indefinite" path="M-20 500C180 500 340 430 640 450S960 540 1220 480" /></circle>
+    <circle class="nb-p" r="3"><animateMotion dur="20s" begin="-11s" repeatCount="indefinite" path="M-20 120C200 120 260 40 520 60S820 160 1220 90" /></circle>
+  </svg>
     <div class="shell">
       <header class="head">
         <span class="idx">03</span>
@@ -10,22 +19,26 @@
       </header>
 
       <ol class="steps">
-        <li class="step">
+        <li class="step" style="--i: 0">
+          <span class="step-ico" aria-hidden="true"><%- include('arte/paso1') %></span>
           <span class="step-n">01</span>
           <h3 data-edit="paso1.titulo"><%- t('paso1.titulo', 'Entendemos tu negocio') %></h3>
           <p data-edit="paso1.texto"><%- t('paso1.texto', 'Conocemos como trabajas, que limita tu operacion y que resultado necesitas alcanzar.') %></p>
         </li>
-        <li class="step">
+        <li class="step" style="--i: 1">
+          <span class="step-ico" aria-hidden="true"><%- include('arte/paso2') %></span>
           <span class="step-n">02</span>
           <h3 data-edit="paso2.titulo"><%- t('paso2.titulo', 'Definimos la solucion') %></h3>
           <p data-edit="paso2.texto"><%- t('paso2.texto', 'Presentamos objetivos, alcance, etapas, inversion y beneficios esperados. Todo por escrito.') %></p>
         </li>
-        <li class="step">
+        <li class="step" style="--i: 2">
+          <span class="step-ico" aria-hidden="true"><%- include('arte/paso3') %></span>
           <span class="step-n">03</span>
           <h3 data-edit="paso3.titulo"><%- t('paso3.titulo', 'Implementamos por etapas') %></h3>
           <p data-edit="paso3.texto"><%- t('paso3.texto', 'Recibes avances funcionales, los pruebas con tu equipo y ajustamos antes de continuar.') %></p>
         </li>
-        <li class="step">
+        <li class="step" style="--i: 3">
+          <span class="step-ico" aria-hidden="true"><%- include('arte/paso4') %></span>
           <span class="step-n">04</span>
           <h3 data-edit="paso4.titulo"><%- t('paso4.titulo', 'Entregamos y acompanamos') %></h3>
           <p data-edit="paso4.texto"><%- t('paso4.texto', 'Implementamos, capacitamos a tu equipo y seguimos mejorando la solucion contigo.') %></p>

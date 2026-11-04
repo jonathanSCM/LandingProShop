@@ -57,6 +57,7 @@
               <% if (p.imagen || p.boceto) { %>
                 <% var paradas = p.puntos || []; %>
                 <figure class="pp-boceto">
+                  <% if (p.imagen) { %><div class="pp-chrome" aria-hidden="true"><i></i><i></i><i></i><span><%= p.nombre %></span></div><% } %>
                   <div class="visor"<% if (paradas.length) { %> data-recorrido<% } %>>
                     <% if (p.imagen) { %>
                       <img class="pp-shot"

@@ -14,6 +14,16 @@
             <%- t('hero.titulo', 'Entendemos tu negocio.<br />\n<em>Construimos lo que necesita</em>.') %>
           </h1>
 
+          <% var rotCrudo = t('hero.rot', 'plataformas web|aplicaciones moviles|paneles de datos|agentes de IA|integraciones'); %>
+          <p class="hero-rot">
+            <span class="rot-lbl">Desarrollamos</span>
+            <% if (editando) { %>
+              <span class="rot-words" data-edit="hero.rot"><%- rotCrudo %></span>
+            <% } else { %>
+              <span class="rot-words" data-words="<%= rotCrudo %>"><span class="rot-w"><%= rotCrudo.split('|')[0] %></span></span>
+            <% } %>
+          </p>
+
           <p class="hero-lead" data-edit="hero.lead">
             <%- t('hero.lead', 'Primero entendemos como funciona tu empresa. Despues disenamos y desarrollamos <strong>plataformas web, aplicaciones moviles, paneles de control y agentes de inteligencia artificial</strong> adaptados a tus procesos.') %>
           </p>
@@ -25,28 +35,32 @@
           </div>
         </div>
 
-        <dl class="specs">
-          <div class="spec">
-            <dt data-edit="spec1.et"><%- t('spec1.et', 'Como trabajamos') %></dt>
-            <dd data-edit="spec1.valor"><%- t('spec1.valor', 'A medida') %></dd>
-            <p data-edit="spec1.nota"><%- t('spec1.nota', 'Cada solucion se disena para tu negocio, no para cualquiera.') %></p>
-          </div>
-          <div class="spec">
-            <dt data-edit="spec2.et"><%- t('spec2.et', 'Que construimos') %></dt>
-            <dd data-edit="spec2.valor"><%- t('spec2.valor', 'Web · Movil · IA') %></dd>
-            <p data-edit="spec2.nota"><%- t('spec2.nota', 'Desarrollamos lo que tu empresa necesita, no soluciones prefabricadas.') %></p>
-          </div>
-          <div class="spec">
-            <dt data-edit="spec3.et"><%- t('spec3.et', 'Donde estamos') %></dt>
-            <dd data-edit="spec3.valor"><%- t('spec3.valor', 'Latinoamerica') %></dd>
-            <p data-edit="spec3.nota"><%- t('spec3.nota', 'Desarrollamos proyectos para empresas en toda Latinoamerica.') %></p>
-          </div>
-          <div class="spec">
-            <dt data-edit="spec4.et"><%- t('spec4.et', 'Nuestro trabajo') %></dt>
-            <dd data-edit="spec4.valor"><%- t('spec4.valor', 'En produccion') %></dd>
-            <p data-edit="spec4.nota"><%- t('spec4.nota', 'Soluciones que generan resultados todos los dias.') %></p>
-          </div>
-        </dl>
+        <%- include('escena') %>
       </div>
+
+      <dl class="specs">
+        <div class="spec">
+          <dt data-edit="spec1.et"><%- t('spec1.et', 'Como trabajamos') %></dt>
+          <dd data-edit="spec1.valor"><%- t('spec1.valor', 'A medida') %></dd>
+          <p data-edit="spec1.nota"><%- t('spec1.nota', 'Cada solucion se disena para tu negocio, no para cualquiera.') %></p>
+        </div>
+        <div class="spec">
+          <dt data-edit="spec2.et"><%- t('spec2.et', 'Que construimos') %></dt>
+          <dd data-edit="spec2.valor"><%- t('spec2.valor', 'Web · Movil · IA') %></dd>
+          <p data-edit="spec2.nota"><%- t('spec2.nota', 'Desarrollamos lo que tu empresa necesita, no soluciones prefabricadas.') %></p>
+        </div>
+        <div class="spec">
+          <dt data-edit="spec3.et"><%- t('spec3.et', 'Donde estamos') %></dt>
+          <dd data-edit="spec3.valor"><%- t('spec3.valor', 'Latinoamerica') %></dd>
+          <p data-edit="spec3.nota"><%- t('spec3.nota', 'Desarrollamos proyectos para empresas en toda Latinoamerica.') %></p>
+        </div>
+        <div class="spec">
+          <dt data-edit="spec4.et"><%- t('spec4.et', 'Nuestro trabajo') %></dt>
+          <dd data-edit="spec4.valor"><%- t('spec4.valor', 'En produccion') %></dd>
+          <p data-edit="spec4.nota"><%- t('spec4.nota', 'Soluciones que generan resultados todos los dias.') %></p>
+        </div>
+      </dl>
     </div>
+
+    <%- include('integraciones') %>
   </section>

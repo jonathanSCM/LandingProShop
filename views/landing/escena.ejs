@@ -1,0 +1,81 @@
+<%# Ilustracion decorativa del hero: un panel de datos conectado a una base de datos,
+    un celular con un agente por WhatsApp y un nodo de IA. Todo se anima con CSS y SMIL. %>
+<div class="scene" aria-hidden="true">
+  <div class="scene-in">
+
+    <svg class="sc-links" viewBox="0 0 560 500">
+      <path class="flujo" d="M372 132C392 132 384 92 402 92" />
+      <path class="flujo" d="M372 300C392 300 388 336 408 336" />
+      <path class="flujo" d="M160 400V424" />
+      <circle class="pk" r="4.5"><animateMotion dur="3.2s" repeatCount="indefinite" path="M372 132C392 132 384 92 402 92" /></circle>
+      <circle class="pk pk2" r="4.5"><animateMotion dur="3.2s" begin="-1.6s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear" path="M372 132C392 132 384 92 402 92" /></circle>
+      <circle class="pk" r="4.5"><animateMotion dur="3.6s" begin="-.8s" repeatCount="indefinite" path="M372 300C392 300 388 336 408 336" /></circle>
+      <circle class="pk pk2" r="4.5"><animateMotion dur="3.6s" begin="-2.6s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear" path="M372 300C392 300 388 336 408 336" /></circle>
+      <circle class="pk" r="4"><animateMotion dur="2s" begin="-.4s" repeatCount="indefinite" path="M160 400V424" /></circle>
+    </svg>
+
+    <!-- Panel -->
+    <div class="win sc-par" style="--pd: 6">
+      <div class="win-head"><i></i><i></i><i></i><span>panel.tuempresa.com</span></div>
+      <div class="win-body">
+        <div class="win-side"><b class="on"></b><b></b><b></b><b></b></div>
+        <div class="win-main">
+          <div class="win-title"><strong>Resumen del día</strong><em>En vivo</em></div>
+          <div class="kpis">
+            <div class="kpi"><small>Ventas</small><strong><span data-count="1250" data-prefix="Bs " data-live="40">0</span></strong></div>
+            <div class="kpi"><small>Pedidos</small><strong><span data-count="48" data-live="2">0</span></strong></div>
+            <div class="kpi"><small>Clientes</small><strong><span data-count="312" data-live="3">0</span></strong></div>
+          </div>
+          <div class="win-chart">
+            <svg viewBox="0 0 300 100" preserveAspectRatio="none">
+              <path class="gr" d="M0 25H300M0 50H300M0 75H300" />
+              <path class="area" d="M0 78C30 70 54 42 90 50S150 74 188 36S256 14 300 20V100H0Z" />
+              <path class="line" d="M0 78C30 70 54 42 90 50S150 74 188 36S256 14 300 20" />
+            </svg>
+            <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="rows">
+            <div class="row"><i></i><b></b><span class="st s1">Nuevo</span></div>
+            <div class="row"><i></i><b></b><span class="st s2">En curso</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Base de datos -->
+    <div class="dbn sc-par" style="--pd: 10">
+      <svg viewBox="0 0 64 70" class="db-ico">
+        <ellipse class="e" cx="32" cy="12" rx="22" ry="8" />
+        <path class="e" d="M10 12v14c0 4.4 9.8 8 22 8s22-3.6 22-8V12" />
+        <path class="e" d="M10 26v14c0 4.4 9.8 8 22 8s22-3.6 22-8V26" />
+        <path class="e" d="M10 40v14c0 4.4 9.8 8 22 8s22-3.6 22-8V40" />
+        <circle class="led l1" cx="46" cy="21" r="2" /><circle class="led l2" cx="46" cy="35" r="2" /><circle class="led l3" cx="46" cy="49" r="2" />
+      </svg>
+      <div class="db-txt"><small>Base de datos</small><strong><span data-count="1284560" data-live="37">0</span></strong><em>registros</em></div>
+    </div>
+
+    <!-- Celular con agente -->
+    <div class="ph sc-par" style="--pd: 14">
+      <div class="ph-screen">
+        <div class="ph-h"><i></i><b></b></div>
+        <div class="ph-chat">
+          <p class="c1">Hola, quiero agendar una cita</p>
+          <p class="c2">¡Claro! Tengo hoy 16:00 o 17:30</p>
+          <p class="c3">Las 17:30, por favor</p>
+          <p class="c4">Listo, quedó confirmada ✓</p>
+          <span class="typing"><i></i><i></i><i></i></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agente de IA -->
+    <div class="aig sc-par" style="--pd: 8">
+      <span class="ai-core"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" /></svg><i class="orb"></i></span>
+      <span class="ai-txt"><strong>Agente IA</strong><small>atendiendo 24/7</small></span>
+    </div>
+
+    <!-- Notas flotantes -->
+    <div class="note nt1 sc-par" style="--pd: 18"><i>✓</i><span><small>Nueva venta</small><strong>+Bs 1.250</strong></span></div>
+    <div class="note nt2 sc-par" style="--pd: 12"><i>◔</i><span><small>Cita confirmada</small><strong>Hoy · 17:30</strong></span></div>
+  </div>
+</div>
