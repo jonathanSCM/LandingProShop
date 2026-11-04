@@ -258,16 +258,47 @@
               <p class="pp-resumen" data-campo="resumen"><%= p.resumen %></p>
 
               <% if (p.imagen || p.boceto) { %>
+                <% var paradas = p.puntos || []; %>
                 <figure class="pp-boceto">
-                  <% if (p.imagen) { %>
-                    <img class="pp-shot"
-                         src="<%= p.imagen %>"
-                         alt="Captura de <%= p.nombre %>"
-                         <% if (p.ancho && p.alto) { %>width="<%= p.ancho %>" height="<%= p.alto %>"<% } %>
-                         loading="lazy" decoding="async" />
-                  <% } else { %>
-                    <%- include('partials/boceto', { id: p.id }) %>
+                  <div class="visor"<% if (paradas.length) { %> data-recorrido<% } %>>
+                    <% if (p.imagen) { %>
+                      <img class="pp-shot"
+                           src="<%= p.imagen %>"
+                           alt="Captura de <%= p.nombre %>"
+                           <% if (p.ancho && p.alto) { %>width="<%= p.ancho %>" height="<%= p.alto %>"<% } %>
+                           loading="lazy" decoding="async" />
+                    <% } else { %>
+                      <%- include('partials/boceto', { id: p.id }) %>
+                    <% } %>
+
+                    <%# Las paradas se dibujan encima de la captura. Sin JS siguen
+                        siendo botones inertes y la imagen se ve completa igual. %>
+                    <% paradas.forEach(function (pt, k) { %>
+                      <button type="button"
+                              class="visor-punto"
+                              style="--px: <%= pt.x %>%; --py: <%= pt.y %>%"
+                              data-parada="<%= k %>"
+                              data-texto="<%= pt.texto %>"
+                              aria-label="Parada <%= k + 1 %> de <%= paradas.length %>: <%= pt.texto %>">
+                        <span aria-hidden="true"><%= k + 1 %></span>
+                      </button>
+                    <% }); %>
+                  </div>
+
+                  <% if (paradas.length) { %>
+                    <div class="visor-barra" hidden>
+                      <button type="button" class="visor-nav" data-paso="-1" aria-label="Parada anterior">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+                      </button>
+                      <span class="visor-pos" aria-hidden="true"></span>
+                      <button type="button" class="visor-nav" data-paso="1" aria-label="Siguiente parada">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+                      </button>
+                      <button type="button" class="visor-salir" hidden>Ver completa</button>
+                    </div>
+                    <p class="visor-nota" role="status" aria-live="polite" hidden></p>
                   <% } %>
+
                   <% if (p.boceto) { %>
                     <figcaption data-campo="boceto"><%= p.boceto %></figcaption>
                   <% } %>

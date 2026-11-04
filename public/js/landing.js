@@ -111,6 +111,98 @@
     });
   }
 
+  /* ---------- Recorrido guiado sobre la captura de cada proyecto ----------
+     Cada parada acerca la imagen a una zona concreta y explica que se esta
+     mirando. La captura es real, asi que el recorrido muestra el sistema de
+     verdad en vez de describirlo.
+
+     Si este JS no corre, los numeros quedan como botones inertes, la barra
+     sigue oculta y la captura se ve entera: la pagina no depende de esto
+     para entenderse. */
+  function montarRecorrido(figura) {
+    var visor = figura.querySelector('.visor[data-recorrido]');
+    if (!visor) return;
+
+    var shot = visor.querySelector('.pp-shot');
+    var paradas = Array.prototype.slice.call(visor.querySelectorAll('.visor-punto'));
+    var barra = figura.querySelector('.visor-barra');
+    var nota = figura.querySelector('.visor-nota');
+    var pos = figura.querySelector('.visor-pos');
+    var salir = figura.querySelector('.visor-salir');
+    var pie = figura.querySelector('figcaption');
+    if (!shot || !paradas.length || !barra || !nota || !pos) return;
+
+    var actual = -1;   // -1 es la vista completa
+    var ACERCAR = 2.2; // cuanto se amplia la captura en cada parada
+
+    /* Deja la parada en el centro del visor sin que la imagen descubra un
+       hueco. Con transform-origin en la esquina, un punto que esta en la
+       fraccion f de la imagen cae en f*z una vez ampliada; para llevarlo al
+       centro hay que correr la imagen 0.5 - f*z. Ese corrimiento se limita
+       al rango [1-z, 0], que es donde la imagen sigue tapando el visor: por
+       eso las paradas muy al borde quedan cerca del borde y no al medio. */
+    function corrimiento(fraccion) {
+      var ideal = 0.5 - fraccion * ACERCAR;
+      return Math.min(0, Math.max(1 - ACERCAR, ideal)) * 100;
+    }
+
+    function mostrar(i) {
+      actual = i < 0 || i >= paradas.length ? -1 : i;
+
+      if (actual === -1) {
+        visor.removeAttribute('data-activo');
+        shot.style.removeProperty('--tx');
+        shot.style.removeProperty('--ty');
+        shot.style.removeProperty('--z');
+        nota.hidden = true;
+        if (pie) pie.hidden = false;
+        if (salir) salir.hidden = true;
+        pos.textContent = paradas.length + ' paradas';
+        return;
+      }
+
+      var punto = paradas[actual];
+      var fx = parseFloat(punto.style.getPropertyValue('--px')) / 100;
+      var fy = parseFloat(punto.style.getPropertyValue('--py')) / 100;
+      shot.style.setProperty('--z', ACERCAR);
+      shot.style.setProperty('--tx', corrimiento(fx) + '%');
+      shot.style.setProperty('--ty', corrimiento(fy) + '%');
+      visor.setAttribute('data-activo', String(actual));
+      nota.textContent = punto.dataset.texto || '';
+      nota.hidden = false;
+      if (pie) pie.hidden = true;
+      if (salir) salir.hidden = false;
+      pos.textContent = actual + 1 + ' / ' + paradas.length;
+    }
+
+    paradas.forEach(function (punto, i) {
+      punto.addEventListener('click', function () { mostrar(i); });
+    });
+
+    Array.prototype.forEach.call(barra.querySelectorAll('.visor-nav'), function (boton) {
+      boton.addEventListener('click', function () {
+        var paso = Number(boton.dataset.paso);
+        // Desde la vista completa, "siguiente" entra por la primera parada y
+        // "anterior" por la ultima. Despues el recorrido da la vuelta.
+        var destino = actual < 0
+          ? (paso > 0 ? 0 : paradas.length - 1)
+          : (actual + paso + paradas.length) % paradas.length;
+        mostrar(destino);
+      });
+    });
+
+    if (salir) salir.addEventListener('click', function () { mostrar(-1); });
+
+    figura.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && actual !== -1) { mostrar(-1); }
+    });
+
+    barra.hidden = false;
+    mostrar(-1);
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.pp-boceto'), montarRecorrido);
+
   /* ---------- Pestanas accesibles (patron tablist del WAI-ARIA) ----------
      Sirve para cualquier grupo: el tablist lleva data-tabs="<prefijo>", cada
      boton data-target="<id>" y su panel el id "<prefijo>-<id>". */

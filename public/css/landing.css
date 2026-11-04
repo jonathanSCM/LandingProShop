@@ -571,6 +571,144 @@ img { max-width: 100%; display: block; }
   border-radius: 4px;
 }
 
+/* ---------- Visor: recorrido guiado sobre la captura ----------
+   El marco pasa del <img> al contenedor, porque la imagen se amplia por
+   dentro y tiene que quedar recortada por el borde. */
+.visor {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--paper-2);
+}
+.visor .pp-shot {
+  border: 0;
+  border-radius: 0;
+  /* El encuadre lo calcula el JS y lo deja en estas tres variables: cuanto
+     acercar y cuanto desplazar para que la parada quede centrada. Con el
+     origen en la esquina las cuentas son directas. En reposo vale la
+     identidad, asi que la captura se ve entera. */
+  transform-origin: 0 0;
+  transform: translate(var(--tx, 0%), var(--ty, 0%)) scale(var(--z, 1));
+  transition: transform .65s cubic-bezier(.22, .68, .24, 1);
+}
+
+/* Las paradas, encima de la captura. Sin JS son botones inertes y la imagen
+   se sigue viendo completa, asi que nada queda roto. */
+.visor-punto {
+  position: absolute;
+  left: var(--px);
+  top: var(--py);
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, background .18s ease,
+              border-color .18s ease, scale .18s ease, opacity .3s ease;
+}
+.visor-punto:hover,
+.visor-punto:focus-visible {
+  color: var(--on-accent);
+  background: var(--accent);
+  border-color: var(--accent);
+  scale: 1.12;
+}
+/* Con una parada abierta los numeros estorban: la captura ya esta ampliada. */
+.visor[data-activo] .visor-punto { opacity: 0; pointer-events: none; }
+
+/* El circulo mide 28px para no tapar la captura, pero el area que responde
+   al dedo se estira a 44px, que es el minimo comodo en una pantalla tactil. */
+.visor-punto::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+
+/* Anillo que late cada tanto, para que se note que son tocables. */
+.visor-punto::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--accent);
+  border-radius: inherit;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .visor-punto::after { animation: latido 3.4s ease-out infinite; }
+  .visor-punto:nth-of-type(2)::after { animation-delay: .45s; }
+  .visor-punto:nth-of-type(3)::after { animation-delay: .9s; }
+  .visor-punto:nth-of-type(4)::after { animation-delay: 1.35s; }
+}
+@keyframes latido {
+  0%        { opacity: .5; scale: 1; }
+  24%, 100% { opacity: 0;  scale: 1.9; }
+}
+
+/* ---------- Barra del recorrido ---------- */
+.visor-barra {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.visor-nav {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease;
+}
+.visor-nav:hover { color: var(--ink); border-color: var(--ink); }
+.visor-nav svg {
+  width: 15px; height: 15px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+.visor-pos {
+  min-width: 46px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: var(--ink-3);
+  text-align: center;
+}
+.visor-salir {
+  margin-left: auto;
+  padding: 0;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink-2);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease;
+}
+.visor-salir:hover { color: var(--ink); border-color: var(--ink); }
+
+.visor-nota {
+  margin: 12px 0 0;
+  max-width: 62ch;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
 .pp-boceto figcaption {
   margin-top: 11px;
   font-size: 13px;
