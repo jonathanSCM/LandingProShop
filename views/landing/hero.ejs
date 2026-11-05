@@ -1,31 +1,26 @@
   <!-- ============================================================
        HERO
   ============================================================= -->
+  <%# Datos que salen de los proyectos reales: si cambias un proyecto, cambia el conteo. %>
+  <% var vivos = proyectos.filter(function (p) { return !p.oculto; }); %>
+  <% var enProd = vivos.filter(function (p) { return p.estado === 'produccion'; }); %>
+  <% var propios = vivos.filter(function (p) { return p.origen === 'propio'; }); %>
+  <% function unir(a) { var n = a.map(function (p) { return p.nombre; }); return n.length < 2 ? n.join('') : n.slice(0, -1).join(', ') + ' y ' + n[n.length - 1]; } %>
   <section class="hero" id="inicio">
     <div class="shell">
       <div class="hero-main">
         <div class="hero-copy">
           <p class="tag">
             <span class="tag-dot" aria-hidden="true"></span>
-            <span data-edit="hero.tag"><%- t('hero.tag', 'Estrategia · Tecnología · Competitividad') %></span>
+            <span data-edit="hero.tag"><%- t('hero.tag', 'Software a medida para empresas que ya operan') %></span>
           </p>
 
           <h1 class="hero-title" data-edit="hero.titulo">
-            <%- t('hero.titulo', 'Entendemos tu negocio.<br />\n<em>Construimos lo que necesita</em>.') %>
+            <%- t('hero.titulo', 'Ordenamos lo que hoy<br />\n<em>frena a tu empresa</em>.') %>
           </h1>
 
-          <% var rotCrudo = t('hero.rot', 'plataformas web|aplicaciones móviles|paneles de datos|agentes de IA|integraciones'); %>
-          <p class="hero-rot">
-            <span class="rot-lbl">Desarrollamos</span>
-            <% if (editando) { %>
-              <span class="rot-words" data-edit="hero.rot"><%- rotCrudo %></span>
-            <% } else { %>
-              <span class="rot-words" data-words="<%= rotCrudo %>"><span class="rot-w"><%= rotCrudo.split('|')[0] %></span></span>
-            <% } %>
-          </p>
-
           <p class="hero-lead" data-edit="hero.lead">
-            <%- t('hero.lead', 'Trabajamos con empresas que ya operan y necesitan mejorar procesos concretos. Primero entendemos cómo funciona tu empresa; después diseñamos y desarrollamos <strong>plataformas web, aplicaciones móviles, paneles de control y agentes de inteligencia artificial</strong> a la medida de tus procesos.') %>
+            <%- t('hero.lead', 'Pedidos por WhatsApp, citas dispersas, cotizaciones que se pierden, producción sin control. Diseñamos y desarrollamos <strong>el sistema que lo resuelve</strong>, empezando por el proceso que más necesitas mejorar.') %>
           </p>
 
           <div class="hero-cta">
@@ -35,32 +30,32 @@
           </div>
         </div>
 
-        <%- include('escena') %>
+        <%- include('vitrina') %>
       </div>
 
       <dl class="specs">
         <div class="spec">
-          <dt data-edit="spec1.et"><%- t('spec1.et', 'Cómo trabajamos') %></dt>
-          <dd data-edit="spec1.valor"><%- t('spec1.valor', 'A medida') %></dd>
-          <p data-edit="spec1.nota"><%- t('spec1.nota', 'Cada solución se diseña para tu negocio, partiendo de cómo opera hoy.') %></p>
+          <dt data-edit="spec1.et"><%- t('spec1.et', 'En producción') %></dt>
+          <dd data-edit="spec1.valor"><%- t('spec1.valor', enProd.length + (enProd.length === 1 ? ' sistema' : ' sistemas')) %></dd>
+          <p data-edit="spec1.nota"><%- t('spec1.nota', unir(enProd.slice(0, 5)) || 'Sistemas funcionando con su estado real.') %></p>
         </div>
         <div class="spec">
-          <dt data-edit="spec2.et"><%- t('spec2.et', 'Qué construimos') %></dt>
-          <dd data-edit="spec2.valor"><%- t('spec2.valor', 'Web · Móvil · IA') %></dd>
-          <p data-edit="spec2.nota"><%- t('spec2.nota', 'Desarrollo a medida. Adaptamos e integramos las herramientas que ya usas para acelerar la implementación.') %></p>
+          <dt data-edit="spec2.et"><%- t('spec2.et', 'Productos propios') %></dt>
+          <dd data-edit="spec2.valor"><%- t('spec2.valor', propios.length ? String(propios.length) : 'A medida') %></dd>
+          <p data-edit="spec2.nota"><%- t('spec2.nota', propios.length ? unir(propios) + ', además de los desarrollos a medida.' : 'Desarrollo a medida, adaptando e integrando lo que ya usas.') %></p>
         </div>
         <div class="spec">
-          <dt data-edit="spec3.et"><%- t('spec3.et', 'Dónde estamos') %></dt>
-          <dd data-edit="spec3.valor"><%- t('spec3.valor', 'Lima, Perú') %></dd>
-          <p data-edit="spec3.nota"><%- t('spec3.nota', 'Lima Metropolitana. Trabajamos con empresas que ya operan y quieren mejorar procesos.') %></p>
+          <dt data-edit="spec3.et"><%- t('spec3.et', 'Credencial') %></dt>
+          <dd data-edit="spec3.valor"><%- t('spec3.valor', 'Meta Tech Provider') %></dd>
+          <p data-edit="spec3.nota"><%- t('spec3.nota', 'Integramos WhatsApp Business Platform con los procesos de tu empresa.') %></p>
         </div>
         <div class="spec">
-          <dt data-edit="spec4.et"><%- t('spec4.et', 'Nuestro trabajo') %></dt>
-          <dd data-edit="spec4.valor"><%- t('spec4.valor', 'En producción') %></dd>
-          <p data-edit="spec4.nota"><%- t('spec4.nota', 'Sistemas y productos propios, con su estado real a la vista.') %></p>
+          <dt data-edit="spec4.et"><%- t('spec4.et', 'Cómo empezamos') %></dt>
+          <dd data-edit="spec4.valor"><%- t('spec4.valor', 'Diagnóstico sin costo') %></dd>
+          <p data-edit="spec4.nota"><%- t('spec4.nota', 'Reunión de 20 minutos y, después, una demo en 48 horas.') %></p>
         </div>
       </dl>
     </div>
 
-    <%- include('integraciones') %>
+    <%- include('sistemas') %>
   </section>

@@ -1,0 +1,32 @@
+<%# Vitrina del hero: capturas reales de los proyectos, una a una. Sale de la lista de proyectos (se edita en "Proyectos"). %>
+<% var vit = proyectos.filter(function (p) { return p.imagen && !p.oculto; }).slice(0, 7); %>
+<% var estadoTxt = { produccion: 'En producción', desarrollo: 'En desarrollo', piloto: 'Piloto', demo: 'Demo' }; %>
+<% function sitio(p) { var e = p.enlaces && p.enlaces[0]; return e ? e.href.replace(/^https?:\/\/(www\.)?/, '').replace(/\/.*$/, '') : p.nombre; } %>
+<% if (vit.length) { %>
+<div class="vit" data-vit>
+  <div class="vit-win">
+    <div class="vit-bar"><i></i><i></i><i></i><span class="vit-url"><%= sitio(vit[0]) %></span></div>
+    <div class="vit-stage">
+      <% vit.forEach(function (p, i) { %>
+        <figure class="vit-slide<%= i === 0 ? ' on' : '' %>" data-url="<%= sitio(p) %>">
+          <img src="<%= p.imagen %>" alt="Captura de <%= p.nombre %>"<% if (p.ancho && p.alto) { %> width="<%= p.ancho %>" height="<%= p.alto %>"<% } %><%= i === 0 ? '' : ' loading=lazy' %> />
+        </figure>
+      <% }); %>
+    </div>
+    <div class="vit-prog" aria-hidden="true"><i></i></div>
+  </div>
+  <div class="vit-info">
+    <% vit.forEach(function (p, i) { %>
+      <div class="vit-cap<%= i === 0 ? ' on' : '' %>">
+        <span class="vit-estado vit-estado-<%= p.estado %>"><%= estadoTxt[p.estado] || 'En desarrollo' %></span>
+        <strong><%= p.nombre %></strong>
+        <span class="vit-tipo"><%= p.tipo %></span>
+        <a class="vit-ver" href="#proyectos" data-ver-proyecto="<%= p.id %>">Ver el proyecto →</a>
+      </div>
+    <% }); %>
+    <div class="vit-dots" role="tablist" aria-label="Proyectos">
+      <% vit.forEach(function (p, i) { %><button type="button" role="tab" class="vit-dot<%= i === 0 ? ' on' : '' %>" aria-label="<%= p.nombre %>" aria-selected="<%= i === 0 ? 'true' : 'false' %>"></button><% }); %>
+    </div>
+  </div>
+</div>
+<% } %>

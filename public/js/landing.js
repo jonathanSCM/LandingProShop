@@ -370,61 +370,31 @@
     }
   })();
 
-  // ---------- Escena animada, contadores, palabras que rotan y pausas ----------
+  // ---------- Vitrina del hero, palabras que rotan, pasos y pausas ----------
   (function () {
     var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var sinAnim = document.body.classList.contains('sin-anim');
-    var hover = window.matchMedia && window.matchMedia('(hover: hover)').matches;
 
-    // La escena se dibuja en una caja de 560px y se escala al ancho disponible
-    var escena = document.querySelector('.scene');
-    if (escena) {
-      var ajustar = function () { escena.style.setProperty('--k', String(escena.clientWidth / 560)); };
-      ajustar();
-      if ('ResizeObserver' in window) new ResizeObserver(ajustar).observe(escena);
-      else window.addEventListener('resize', ajustar);
-    }
-
-    // Contadores: cuentan hasta su valor al entrar en pantalla y algunos siguen "en vivo"
-    var formato = function (el, n) {
-      el.textContent = (el.dataset.prefix || '') + Math.round(n).toLocaleString('es-BO') + (el.dataset.suffix || '');
-    };
-    var contar = function (el, hasta, ms) {
-      var desde = Number(el.dataset.actual || 0), t0 = null;
-      if (quieto || sinAnim) { el.dataset.actual = hasta; formato(el, hasta); return; }
-      var paso = function (t) {
-        if (t0 === null) t0 = t;
-        var f = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - f, 3);
-        formato(el, desde + (hasta - desde) * e);
-        if (f < 1) requestAnimationFrame(paso); else el.dataset.actual = hasta;
+    // Vitrina: pasa las capturas reales de los proyectos, una a una
+    var vit = document.querySelector('[data-vit]');
+    if (vit) {
+      var slides = Array.prototype.slice.call(vit.querySelectorAll('.vit-slide'));
+      var caps = Array.prototype.slice.call(vit.querySelectorAll('.vit-cap'));
+      var dots = Array.prototype.slice.call(vit.querySelectorAll('.vit-dot'));
+      var prog = vit.querySelector('.vit-prog i');
+      var url = vit.querySelector('.vit-url');
+      var actual = 0;
+      var mostrar = function (n) {
+        actual = (n + slides.length) % slides.length;
+        slides.forEach(function (s, i) { s.classList.toggle('on', i === actual); });
+        caps.forEach(function (c, i) { c.classList.toggle('on', i === actual); });
+        dots.forEach(function (d, i) { d.classList.toggle('on', i === actual); d.setAttribute('aria-selected', String(i === actual)); });
+        if (url) url.textContent = slides[actual].dataset.url || '';
+        if (prog) { prog.classList.remove('go'); void prog.offsetWidth; if (!quieto && !sinAnim && slides.length > 1) prog.classList.add('go'); }
       };
-      requestAnimationFrame(paso);
-    };
-    var contadores = document.querySelectorAll('[data-count]');
-    var vivos = [];
-    var ioCont = 'IntersectionObserver' in window ? new IntersectionObserver(function (en) {
-      en.forEach(function (x) {
-        if (!x.isIntersecting) return;
-        var el = x.target;
-        ioCont.unobserve(el);
-        el.dataset.valor = el.dataset.count;
-        contar(el, Number(el.dataset.count), 1700);
-        if (el.dataset.live) vivos.push(el);
-      });
-    }, { threshold: 0.4 }) : null;
-    Array.prototype.forEach.call(contadores, function (el) {
-      if (ioCont) ioCont.observe(el); else { el.dataset.actual = el.dataset.count; formato(el, Number(el.dataset.count)); }
-    });
-    if (!quieto && !sinAnim) {
-      setInterval(function () {
-        if (document.hidden) return;
-        vivos.forEach(function (el) {
-          if (el.closest('.fuera')) return;
-          var v = Number(el.dataset.valor || el.dataset.count) + Math.round(Math.random() * Number(el.dataset.live));
-          el.dataset.valor = v;
-          contar(el, v, 900);
-        });
-      }, 2600);
+      dots.forEach(function (d, i) { d.addEventListener('click', function () { mostrar(i); }); });
+      if (prog) prog.addEventListener('animationend', function () { mostrar(actual + 1); });
+      mostrar(0);
     }
 
     // Palabras que rotan bajo el titular
@@ -444,17 +414,6 @@
       }
     }
 
-    // Parallax suave de la escena con el mouse
-    var hero = document.querySelector('.hero');
-    if (hero && escena && hover && !quieto && !sinAnim) {
-      hero.addEventListener('pointermove', function (e) {
-        var r = hero.getBoundingClientRect();
-        escena.style.setProperty('--px', ((e.clientX - r.left) / r.width - 0.5) * -2);
-        escena.style.setProperty('--py', ((e.clientY - r.top) / r.height - 0.5) * -2);
-      }, { passive: true });
-      hero.addEventListener('pointerleave', function () { escena.style.setProperty('--px', 0); escena.style.setProperty('--py', 0); });
-    }
-
     // Los pasos arrancan sus iconos y su linea al entrar en pantalla
     var pasos = document.querySelector('.steps');
     if (pasos) {
@@ -466,17 +425,11 @@
       } else pasos.classList.add('go');
     }
 
-    // Todo lo animado se pausa cuando no se ve (ahorra bateria y CPU)
-    var animados = document.querySelectorAll('.scene, .feat-art, .chat-card, .marquee, .steps');
+    // Lo animado se pausa cuando no se ve (ahorra bateria y CPU)
+    var animados = document.querySelectorAll('.chat-card, .sys, .steps');
     if ('IntersectionObserver' in window) {
       var ioPausa = new IntersectionObserver(function (en) {
-        en.forEach(function (x) {
-          var dentro = x.isIntersecting;
-          x.target.classList.toggle('fuera', !dentro);
-          Array.prototype.forEach.call(x.target.querySelectorAll('svg'), function (svg) {
-            try { if (dentro) svg.unpauseAnimations(); else svg.pauseAnimations(); } catch (e) { /* sin SMIL */ }
-          });
-        });
+        en.forEach(function (x) { x.target.classList.toggle('fuera', !x.isIntersecting); });
       }, { rootMargin: '120px 0px' });
       Array.prototype.forEach.call(animados, function (el) { el.classList.add('fuera'); ioPausa.observe(el); });
     }

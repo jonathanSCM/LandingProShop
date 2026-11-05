@@ -1,0 +1,16 @@
+<%# Franja con los sistemas reales (sale de la lista de proyectos). %>
+<% var sis = proyectos.filter(function (p) { return !p.oculto; }); %>
+<% if (sis.length) { %>
+<div class="shell">
+  <div class="sys">
+    <span class="sys-lbl" data-edit="sys.titulo"><%- t('sys.titulo', 'Sistemas que ya construimos') %></span>
+    <div class="sys-view">
+      <ul class="sys-track">
+        <% [0, 1].forEach(function (copia) { sis.forEach(function (p) { %>
+          <li<%- copia ? ' aria-hidden="true"' : '' %>><a href="#proyectos" data-ver-proyecto="<%= p.id %>"<%- copia ? ' tabindex="-1"' : '' %>><strong><%= p.nombre %></strong><span><%= p.tipo %></span></a></li>
+        <% }); }); %>
+      </ul>
+    </div>
+  </div>
+</div>
+<% } %>

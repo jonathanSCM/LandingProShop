@@ -36,41 +36,47 @@
 
       <div class="feats">
         <article class="feat">
-          <div class="feat-art" aria-hidden="true"><%- include('arte/web') %></div>
+          <% var ej = proyectos.find(function (p) { return p.id === 'fortaleza' && !p.oculto && p.imagen; }); %>
+          <% if (ej) { %><a class="feat-ej" href="#proyectos" data-ver-proyecto="fortaleza"><span class="feat-ej-img"><img src="<%= ej.imagen %>" alt="Captura de <%= ej.nombre %>" loading="lazy" /></span><span class="feat-ej-t">Ejemplo real: <b><%= ej.nombre %></b> →</span></a><% } %>
           <span class="feat-n" aria-hidden="true">A</span>
           <h3 data-edit="feat1.titulo"><%- t('feat1.titulo', 'Plataformas web') %></h3>
           <p data-edit="feat1.texto"><%- t('feat1.texto', 'Sistemas web que organizan procesos, conectan equipos y se adaptan a la forma real de operar de tu empresa.') %></p>
         </article>
         <article class="feat">
-          <div class="feat-art" aria-hidden="true"><%- include('arte/movil') %></div>
+          <% var ej = proyectos.find(function (p) { return p.id === 'gobot' && !p.oculto && p.imagen; }); %>
+          <% if (ej) { %><a class="feat-ej" href="#proyectos" data-ver-proyecto="gobot"><span class="feat-ej-img"><img src="<%= ej.imagen %>" alt="Captura de <%= ej.nombre %>" loading="lazy" /></span><span class="feat-ej-t">Ejemplo real: <b><%= ej.nombre %></b> →</span></a><% } %>
           <span class="feat-n" aria-hidden="true">B</span>
           <h3 data-edit="feat2.titulo"><%- t('feat2.titulo', 'Aplicaciones móviles') %></h3>
           <p data-edit="feat2.texto"><%- t('feat2.texto', 'Aplicaciones para Android y iOS conectadas con tus procesos, usuarios y objetivos de negocio.') %></p>
         </article>
         <article class="feat">
-          <div class="feat-art" aria-hidden="true"><%- include('arte/datos') %></div>
+          <% var ej = proyectos.find(function (p) { return p.id === 'santa-isabel' && !p.oculto && p.imagen; }); %>
+          <% if (ej) { %><a class="feat-ej" href="#proyectos" data-ver-proyecto="santa-isabel"><span class="feat-ej-img"><img src="<%= ej.imagen %>" alt="Captura de <%= ej.nombre %>" loading="lazy" /></span><span class="feat-ej-t">Ejemplo real: <b><%= ej.nombre %></b> →</span></a><% } %>
           <span class="feat-n" aria-hidden="true">C</span>
           <h3 data-edit="feat3.titulo"><%- t('feat3.titulo', 'Control y decisiones') %></h3>
           <p data-edit="feat3.texto"><%- t('feat3.texto', 'Controla usuarios, ventas, inventario y reportes con información clara para decidir mejor.') %></p>
         </article>
         <article class="feat feat-hi">
-          <div class="feat-art" aria-hidden="true"><%- include('arte/ia') %></div>
+          <% var ej = proyectos.find(function (p) { return p.id === 'agendabot' && !p.oculto && p.imagen; }); %>
+          <% if (ej) { %><a class="feat-ej" href="#proyectos" data-ver-proyecto="agendabot"><span class="feat-ej-img"><img src="<%= ej.imagen %>" alt="Captura de <%= ej.nombre %>" loading="lazy" /></span><span class="feat-ej-t">Ejemplo real: <b><%= ej.nombre %></b> →</span></a><% } %>
           <span class="feat-n" aria-hidden="true">D</span>
           <h3 data-edit="feat4.titulo"><%- t('feat4.titulo', 'Agentes con IA') %></h3>
           <p data-edit="feat4.texto"><%- t('feat4.texto', 'Agentes entrenados con tu negocio para atender, vender y automatizar procesos con propósito.') %></p>
           <span class="feat-tag" data-edit="feat4.tag"><%- t('feat4.tag', 'Meta Tech Provider · WhatsApp Business Platform') %></span>
         </article>
         <article class="feat">
-          <div class="feat-art" aria-hidden="true"><%- include('arte/conexion') %></div>
+          <% var ej = proyectos.find(function (p) { return p.id === 'crm' && !p.oculto && p.imagen; }); %>
+          <% if (ej) { %><a class="feat-ej" href="#proyectos" data-ver-proyecto="crm"><span class="feat-ej-img"><img src="<%= ej.imagen %>" alt="Captura de <%= ej.nombre %>" loading="lazy" /></span><span class="feat-ej-t">Ejemplo real: <b><%= ej.nombre %></b> →</span></a><% } %>
           <span class="feat-n" aria-hidden="true">E</span>
           <h3 data-edit="feat5.titulo"><%- t('feat5.titulo', 'Procesos conectados') %></h3>
           <p data-edit="feat5.texto"><%- t('feat5.texto', 'Conectamos tus sistemas para reducir tareas manuales y mantener la información sincronizada.') %></p>
         </article>
         <article class="feat">
-          <div class="feat-art" aria-hidden="true"><%- include('arte/avance') %></div>
+          <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c0-4 2-7 7-12 5 5 7 8 7 12M9.5 16h5M12 11v.01M9 21l3-3 3 3" /></svg></span>
           <span class="feat-n" aria-hidden="true">F</span>
           <h3 data-edit="feat6.titulo"><%- t('feat6.titulo', 'Proyectos en marcha') %></h3>
           <p data-edit="feat6.texto"><%- t('feat6.texto', '¿Tienes un proyecto detenido o difícil de mantener? Lo recuperamos, mejoramos y llevamos a producción.') %></p>
+          <a class="feat-ej feat-ej-cta" href="#contacto"><span class="feat-ej-t"><b data-edit="feat6.cta"><%- t('feat6.cta', 'Cuéntanos tu caso →') %></b></span></a>
         </article>
       </div>
     </div>
