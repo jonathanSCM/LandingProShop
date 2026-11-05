@@ -126,8 +126,8 @@
     <% } %>
 
     <div class="foot-end">
-      <span>&copy; <%= new Date().getFullYear() %> <%= site.name %></span>
-      <span><%= site.location %></span>
+      <span data-edit="foot.copy"><%- t('foot.copy', '&copy; ' + new Date().getFullYear() + ' ' + site.name) %></span>
+      <span data-edit="foot.lugar"><%- t('foot.lugar', site.location) %></span>
     </div>
   </div>
 </footer>
