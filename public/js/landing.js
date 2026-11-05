@@ -119,128 +119,36 @@
      Si este JS no corre, los numeros quedan como botones inertes, la barra
      sigue oculta y la captura se ve entera: la pagina no depende de esto
      para entenderse. */
-  function montarRecorrido(figura) {
+  /* ---------- Proyectos con varias capturas ----------
+     Las pestanas cambian que imagen se ve y el pie que la acompana. Sin este
+     JS la primera vista ya viene visible y las pestanas quedan inertes, asi
+     que la captura se sigue viendo igual. */
+  function montarVistas(figura) {
     var visores = Array.prototype.slice.call(figura.querySelectorAll('.visor'));
-    if (!visores.length) return;
-
-    var barra = figura.querySelector('.visor-barra');
-    var nota = figura.querySelector('.visor-nota');
-    var pos = figura.querySelector('.visor-pos');
-    var salir = figura.querySelector('.visor-salir');
-    var pie = figura.querySelector('figcaption');
     var pestanas = Array.prototype.slice.call(figura.querySelectorAll('[data-ir-vista]'));
-    // Con una sola vista el pie lo escribe la plantilla y puede estar editado
-    // desde /?editar=1: no hay que pisarlo. Solo manda el JS si hay galeria.
-    var pieEsNuestro = figura.classList.contains('con-galeria');
-    if (!barra || !nota || !pos) return;
+    if (visores.length < 2 || !pestanas.length) return;
 
-    var ACERCAR = 2.4; // las capturas rondan los 1500px de ancho y el visor las
-                       // muestra a menos de la mitad, asi que aguantan este
-                       // acercamiento sin empastarse.
+    // El pie solo lo escribe el JS cuando hay galeria. Con una sola captura lo
+    // pone la plantilla y puede estar editado desde /?editar=1: no se toca.
+    var pie = figura.classList.contains('con-galeria') ? figura.querySelector('figcaption') : null;
 
-    var visor = null, shot = null, paradas = [], actual = -1;
-
-    /* Deja la parada en el centro del visor sin que la imagen descubra un
-       hueco. Con transform-origin en la esquina, un punto que esta en la
-       fraccion f de la imagen cae en f*z una vez ampliada; para llevarlo al
-       centro hay que correr la imagen 0.5 - f*z. Ese corrimiento se limita
-       al rango [1-z, 0], que es donde la imagen sigue tapando el visor: por
-       eso las paradas muy al borde quedan cerca del borde y no al medio. */
-    function corrimiento(fraccion) {
-      var ideal = 0.5 - fraccion * ACERCAR;
-      return Math.min(0, Math.max(1 - ACERCAR, ideal)) * 100;
-    }
-
-    function mostrar(i) {
-      if (!visor || !shot) return;
-      actual = i < 0 || i >= paradas.length ? -1 : i;
-
-      if (actual === -1) {
-        visor.removeAttribute('data-activo');
-        shot.style.removeProperty('--tx');
-        shot.style.removeProperty('--ty');
-        shot.style.removeProperty('--z');
-        nota.hidden = true;
-        if (pie) pie.hidden = false;
-        if (salir) salir.hidden = true;
-        pos.textContent = paradas.length + ' paradas';
-        return;
-      }
-
-      var punto = paradas[actual];
-      var fx = parseFloat(punto.style.getPropertyValue('--px')) / 100;
-      var fy = parseFloat(punto.style.getPropertyValue('--py')) / 100;
-      shot.style.setProperty('--z', ACERCAR);
-      shot.style.setProperty('--tx', corrimiento(fx) + '%');
-      shot.style.setProperty('--ty', corrimiento(fy) + '%');
-      visor.setAttribute('data-activo', String(actual));
-      nota.textContent = punto.dataset.texto || '';
-      nota.hidden = false;
-      if (pie) pie.hidden = true;
-      if (salir) salir.hidden = false;
-      pos.textContent = actual + 1 + ' / ' + paradas.length;
-    }
-
-    // Cambiar de vista deja siempre la captura entera: arrastrar la lupa de una
-    // imagen a otra mostraria un trozo que no tiene nada que ver.
     function irAVista(k) {
       if (k < 0 || k >= visores.length) return;
-      mostrar(-1);
-
       visores.forEach(function (v, j) { v.hidden = j !== k; });
       pestanas.forEach(function (b, j) {
         b.classList.toggle('is-active', j === k);
         b.setAttribute('aria-selected', j === k ? 'true' : 'false');
       });
-
-      visor = visores[k];
-      shot = visor.querySelector('.pp-shot');
-      paradas = Array.prototype.slice.call(visor.querySelectorAll('.visor-punto'));
-      actual = -1;
-
-      if (pie && pieEsNuestro) {
-        var texto = visor.dataset.pie || '';
+      if (pie) {
+        var texto = visores[k].dataset.pie || '';
         pie.textContent = texto;
         pie.hidden = !texto;
       }
-      barra.hidden = !paradas.length;
-      if (paradas.length) pos.textContent = paradas.length + ' paradas';
-      nota.hidden = true;
-      if (salir) salir.hidden = true;
     }
-
-    // Las paradas se enganchan de una vez en todas las vistas. Solo la vista
-    // visible puede recibir clics, asi que no hace falta rehacerlo al cambiar.
-    visores.forEach(function (v) {
-      Array.prototype.forEach.call(v.querySelectorAll('.visor-punto'), function (punto, i) {
-        punto.addEventListener('click', function () { mostrar(i); });
-      });
-    });
 
     pestanas.forEach(function (boton, k) {
       boton.addEventListener('click', function () { irAVista(k); });
     });
-
-    Array.prototype.forEach.call(barra.querySelectorAll('.visor-nav'), function (boton) {
-      boton.addEventListener('click', function () {
-        if (!paradas.length) return;
-        var paso = Number(boton.dataset.paso);
-        // Desde la vista completa, "siguiente" entra por la primera parada y
-        // "anterior" por la ultima. Despues el recorrido da la vuelta.
-        var destino = actual < 0
-          ? (paso > 0 ? 0 : paradas.length - 1)
-          : (actual + paso + paradas.length) % paradas.length;
-        mostrar(destino);
-      });
-    });
-
-    if (salir) salir.addEventListener('click', function () { mostrar(-1); });
-
-    figura.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && actual !== -1) { mostrar(-1); }
-    });
-
-    irAVista(0);
   }
 
 
@@ -290,7 +198,7 @@
   // Se llama al cargar y, en el editor, cada vez que se repinta la lista de proyectos.
   window.__montarProyectos = function (raiz) {
     raiz = raiz || document;
-    Array.prototype.forEach.call(raiz.querySelectorAll('.pp-boceto'), montarRecorrido);
+    Array.prototype.forEach.call(raiz.querySelectorAll('.pp-boceto'), montarVistas);
     Array.prototype.forEach.call(raiz.querySelectorAll('[data-tabs]'), montarTabs);
   };
   window.__montarProyectos(document);

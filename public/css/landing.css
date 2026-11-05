@@ -416,32 +416,7 @@ img { max-width: 100%; display: block; }
 
 /* Visor: recorrido guiado sobre la captura */
 .visor { position: relative; overflow: hidden; border: 1px solid var(--rule); border-radius: var(--r-md); background: var(--paper-2); }
-.visor .pp-shot {
-  border: 0;
-  border-radius: 0;
-  transform-origin: 0 0;
-  transform: translate(var(--tx, 0%), var(--ty, 0%)) scale(var(--z, 1));
-  transition: transform .7s cubic-bezier(.22, .68, .24, 1);
-}
-.visor-punto {
-  position: absolute;
-  left: var(--px);
-  top: var(--py);
-  translate: -50% -50%;
-  display: grid; place-items: center;
-  width: 28px; height: 28px; padding: 0;
-  font-size: 12px; font-weight: 800;
-  color: #fff;
-  background: #1e0b36;
-  border: 2px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(30, 11, 54, 0.4);
-  cursor: pointer;
-  transition: background .2s ease, color .2s ease, scale .2s ease, opacity .3s ease;
-}
-.visor-punto:hover, .visor-punto:focus-visible { color: var(--on-accent); background: var(--accent); scale: 1.12; }
-.visor[data-activo] .visor-punto { opacity: 0; pointer-events: none; }
-.visor-punto::before { content: ""; position: absolute; inset: -8px; }
+.visor .pp-shot { border: 0; border-radius: 0; }
 /* Pestanas de vista, para los proyectos con varias capturas. Van encima de
    la barra del recorrido: primero se elige QUE se mira y luego se recorre. */
 .vistas-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
@@ -460,22 +435,6 @@ img { max-width: 100%; display: block; }
 .vista-tab:hover { color: var(--ink); border-color: var(--ink); }
 .vista-tab.is-active { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
 
-.visor-barra { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
-.visor-nav {
-  display: grid; place-items: center;
-  width: 34px; height: 34px; padding: 0;
-  color: var(--ink-2);
-  background: transparent;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  cursor: pointer;
-  transition: color .2s ease, border-color .2s ease, background .2s ease;
-}
-.visor-nav:hover { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
-.visor-nav svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.visor-pos { min-width: 50px; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--ink-3); text-align: center; }
-.visor-salir { margin-left: auto; padding: 0; font: inherit; font-size: 13.5px; font-weight: 700; color: var(--accent-ink); background: none; border: 0; border-bottom: 1px solid currentColor; cursor: pointer; }
-.visor-nota { margin: 14px 0 0; max-width: 62ch; padding: 14px 18px; font-size: 14.5px; line-height: 1.6; color: var(--ink); background: color-mix(in srgb, var(--accent-ink) 7%, transparent); border-left: 3px solid var(--accent-ink); border-radius: 2px var(--r-md) var(--r-md) 2px; }
 .pp-boceto figcaption { margin-top: 12px; max-width: 58ch; font-size: 13.5px; line-height: 1.55; color: var(--ink-3); }
 
 /* Trazos del dibujo alternativo (cuando un proyecto no tiene captura) */

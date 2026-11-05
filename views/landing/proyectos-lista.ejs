@@ -72,20 +72,15 @@
 
               <% if (p.imagen || p.boceto) { %>
                 <%# Un proyecto puede traer varias vistas del mismo sistema. Si no
-                    las trae, se arma una sola con los campos sueltos de siempre, y
-                    entonces todo se dibuja igual que antes. %>
+                    las trae, se arma una sola con los campos sueltos de siempre. %>
                 <% var vistas = (p.vistas && p.vistas.length) ? p.vistas
-                     : [{ imagen: p.imagen, ancho: p.ancho, alto: p.alto, pie: p.boceto, puntos: p.puntos }]; %>
+                     : [{ imagen: p.imagen, ancho: p.ancho, alto: p.alto, pie: p.boceto }]; %>
                 <% var hayGaleria = vistas.length > 1; %>
-                <% var totalParadas = vistas.reduce(function (a, v) { return a + ((v.puntos || []).length); }, 0); %>
                 <figure class="pp-boceto<%= hayGaleria ? ' con-galeria' : '' %>">
                   <% if (p.imagen) { %><div class="pp-chrome" aria-hidden="true"><i></i><i></i><i></i><span><%= p.nombre %></span></div><% } %>
 
                   <% vistas.forEach(function (v, iv) { %>
-                    <% var paradas = v.puntos || []; %>
-                    <div class="visor"<% if (paradas.length) { %> data-recorrido<% } %>
-                         data-vista="<%= iv %>"
-                         data-pie="<%= v.pie || '' %>"<%= iv ? ' hidden' : '' %>>
+                    <div class="visor" data-vista="<%= iv %>" data-pie="<%= v.pie || '' %>"<%= iv ? ' hidden' : '' %>>
                       <% if (v.imagen) { %>
                         <img class="pp-shot"
                              src="<%= v.imagen %>"
@@ -95,22 +90,11 @@
                       <% } else { %>
                         <%- include('partials/boceto', { id: p.id }) %>
                       <% } %>
-
-                      <%# Las paradas se dibujan encima de la captura. Sin JS siguen
-                          siendo botones inertes y la imagen se ve completa igual. %>
-                      <% paradas.forEach(function (pt, k) { %>
-                        <button type="button"
-                                class="visor-punto"
-                                style="--px: <%= pt.x %>%; --py: <%= pt.y %>%"
-                                data-parada="<%= k %>"
-                                data-texto="<%= pt.texto %>"
-                                aria-label="Parada <%= k + 1 %> de <%= paradas.length %>: <%= pt.texto %>">
-                          <span aria-hidden="true"><%= k + 1 %></span>
-                        </button>
-                      <% }); %>
                     </div>
                   <% }); %>
 
+                  <%# Sin JS las pestanas no hacen nada, pero la primera vista ya
+                      esta visible: la captura se ve igual. %>
                   <% if (hayGaleria) { %>
                     <div class="vistas-nav" role="tablist" aria-label="Vistas de <%= p.nombre %>">
                       <% vistas.forEach(function (v, iv) { %>
@@ -120,20 +104,6 @@
                                 aria-selected="<%= iv ? 'false' : 'true' %>"><%= v.titulo || ('Vista ' + (iv + 1)) %></button>
                       <% }); %>
                     </div>
-                  <% } %>
-
-                  <% if (totalParadas) { %>
-                    <div class="visor-barra" hidden>
-                      <button type="button" class="visor-nav" data-paso="-1" aria-label="Parada anterior">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
-                      </button>
-                      <span class="visor-pos" aria-hidden="true"></span>
-                      <button type="button" class="visor-nav" data-paso="1" aria-label="Siguiente parada">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
-                      </button>
-                      <button type="button" class="visor-salir" hidden>Ver completa</button>
-                    </div>
-                    <p class="visor-nota" role="status" aria-live="polite" hidden></p>
                   <% } %>
 
                   <% var pieInicial = vistas[0].pie || p.boceto; %>
