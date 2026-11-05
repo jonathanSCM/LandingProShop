@@ -267,6 +267,15 @@
     note.textContent = text;
   }
 
+  // Si el envío falla, la pestaña con el aviso no puede quedarse ahí colgada.
+  var pestana = null;
+  function cerrarPestana() {
+    try {
+      if (pestana && !pestana.closed) pestana.close();
+    } catch (err) { /* ya no se puede tocar */ }
+    pestana = null;
+  }
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -277,6 +286,24 @@
     }
 
     var datos = Object.fromEntries(new FormData(form).entries());
+
+    /* La pestaña se abre AQUI, no al recibir la respuesta. Abrirla después del
+       await la convierte en una emergente sin gesto detras, y el navegador la
+       bloquea. Abierta en el mismo clic, luego solo se le cambia el destino.
+       Mientras tanto no queda en blanco: se le escribe un aviso. */
+    try {
+      pestana = window.open('', '_blank');
+      if (pestana) {
+        pestana.document.write(
+          '<!doctype html><meta charset="utf-8"><title>Abriendo WhatsApp…</title>' +
+            '<body style="margin:0;display:grid;place-items:center;height:100vh;' +
+            'font:16px/1.5 system-ui,sans-serif;color:#56554e">Abriendo WhatsApp…</body>'
+        );
+        pestana.document.close();
+      }
+    } catch (err) {
+      pestana = null;
+    }
 
     btn.disabled = true;
     var textoOriginal = btn.textContent;
@@ -296,10 +323,19 @@
       }
 
       form.reset();
-      setNote('Listo, recibimos tu mensaje. Te escribimos pronto.', 'ok');
 
-      // Si el servidor devuelve un enlace de WhatsApp, lo ofrecemos.
-      if (data.whatsappUrl) {
+      if (!data.whatsappUrl) {
+        cerrarPestana();
+        setNote('Listo, recibimos tu mensaje. Te escribimos pronto.', 'ok');
+      } else if (pestana && !pestana.closed) {
+        // replace() y no href: así el aviso no queda en el historial y el botón
+        // "atrás" de WhatsApp devuelve al visitante a la landing.
+        pestana.location.replace(data.whatsappUrl);
+        try { pestana.opener = null; } catch (err) { /* ya es de otro dominio */ }
+        setNote('Abrimos WhatsApp con tu mensaje listo. Revísalo y presiona enviar.', 'ok');
+      } else {
+        // El navegador bloqueó la pestaña: se ofrece el enlace, como antes.
+        setNote('Listo, recibimos tu mensaje.', 'ok');
         var a = document.createElement('a');
         a.href = data.whatsappUrl;
         a.target = '_blank';
@@ -309,6 +345,7 @@
         note.appendChild(a);
       }
     } catch (err) {
+      cerrarPestana();
       setNote(err.message || 'Hubo un problema. Intenta de nuevo.', 'err');
     } finally {
       btn.disabled = false;
