@@ -387,7 +387,7 @@
 
     // Contadores: cuentan hasta su valor al entrar en pantalla y algunos siguen "en vivo"
     var formato = function (el, n) {
-      el.textContent = (el.dataset.prefix || '') + Math.round(n).toLocaleString('es-BO') + (el.dataset.suffix || '');
+      el.textContent = (el.dataset.prefix || '') + Math.round(n).toLocaleString('en-US') + (el.dataset.suffix || '');
     };
     var contar = function (el, hasta, ms) {
       var desde = Number(el.dataset.actual || 0), t0 = null;

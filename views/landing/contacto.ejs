@@ -35,7 +35,7 @@
             <li>
               <span class="cl-ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
               <div><span class="cl-lbl" data-edit="contacto.lugar.et"><%- t('contacto.lugar.et', 'Dónde estamos') %></span>
-              <span data-edit="contacto.lugar.valor"><%- t('contacto.lugar.valor', site.location) %></span></div>
+              <span data-edit="contacto.lugar.valor"><%- t('contacto.lugar.valor', site.ubicaciones.join('<br />')) %></span></div>
             </li>
           </ul>
           <p class="contact-note" data-edit="contacto.nota">
@@ -56,7 +56,7 @@
             </div>
             <div class="field">
               <label for="telefono"><span data-edit="form.telefono"><%- t('form.telefono', 'WhatsApp') %></span></label>
-              <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+591 7xx xxx" />
+              <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="Con código de país, ej. +51 987 654 321" />
             </div>
           </div>
 

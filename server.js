@@ -23,7 +23,9 @@ const site = {
   whatsapp: process.env.WHATSAPP_NUMBER || '59162095357',
   email: process.env.CONTACT_EMAIL || 'soporte@proshop.lat',
   phone: process.env.CONTACT_PHONE || '+591 62095357',
-  location: process.env.CONTACT_LOCATION || 'Lima Metropolitana, Perú',
+  // Sedes publicas. En CONTACT_LOCATION se separan con "|".
+  ubicaciones: (process.env.CONTACT_LOCATION || 'Santa Cruz de la Sierra, Bolivia | Lima Metropolitana, Perú')
+    .split('|').map((x) => x.trim()).filter(Boolean),
   // Donde vive la plataforma de agentes publicada. Si algun dia esta landing se
   // sirve desde ese mismo dominio, pon PLATFORM_URL vacia y el boton desaparece.
   // Ojo: hay que distinguir "vacia a proposito" de "no definida", por eso no se
@@ -34,6 +36,7 @@ const site = {
       : process.env.PLATFORM_URL.trim(),
   year: new Date().getFullYear(),
 };
+site.location = site.ubicaciones.join(' · ');
 
 // ---- Credenciales del panel admin (cambiar en .env) ----
 const ADMIN_USER = process.env.ADMIN_USER || 'admin';
