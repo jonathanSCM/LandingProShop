@@ -120,22 +120,25 @@
      sigue oculta y la captura se ve entera: la pagina no depende de esto
      para entenderse. */
   function montarRecorrido(figura) {
-    var visor = figura.querySelector('.visor[data-recorrido]');
-    if (!visor) return;
+    var visores = Array.prototype.slice.call(figura.querySelectorAll('.visor'));
+    if (!visores.length) return;
 
-    var shot = visor.querySelector('.pp-shot');
-    var paradas = Array.prototype.slice.call(visor.querySelectorAll('.visor-punto'));
     var barra = figura.querySelector('.visor-barra');
     var nota = figura.querySelector('.visor-nota');
     var pos = figura.querySelector('.visor-pos');
     var salir = figura.querySelector('.visor-salir');
     var pie = figura.querySelector('figcaption');
-    if (!shot || !paradas.length || !barra || !nota || !pos) return;
+    var pestanas = Array.prototype.slice.call(figura.querySelectorAll('[data-ir-vista]'));
+    // Con una sola vista el pie lo escribe la plantilla y puede estar editado
+    // desde /?editar=1: no hay que pisarlo. Solo manda el JS si hay galeria.
+    var pieEsNuestro = figura.classList.contains('con-galeria');
+    if (!barra || !nota || !pos) return;
 
-    var actual = -1;   // -1 es la vista completa
-    var ACERCAR = 1.8; // cuanto se amplia la captura en cada parada.
-                       // Mas que esto empasta: las capturas miden 800px de
-                       // ancho y el visor ya las muestra a casi ese tamano.
+    var ACERCAR = 2.4; // las capturas rondan los 1500px de ancho y el visor las
+                       // muestra a menos de la mitad, asi que aguantan este
+                       // acercamiento sin empastarse.
+
+    var visor = null, shot = null, paradas = [], actual = -1;
 
     /* Deja la parada en el centro del visor sin que la imagen descubra un
        hueco. Con transform-origin en la esquina, un punto que esta en la
@@ -149,6 +152,7 @@
     }
 
     function mostrar(i) {
+      if (!visor || !shot) return;
       actual = i < 0 || i >= paradas.length ? -1 : i;
 
       if (actual === -1) {
@@ -177,12 +181,49 @@
       pos.textContent = actual + 1 + ' / ' + paradas.length;
     }
 
-    paradas.forEach(function (punto, i) {
-      punto.addEventListener('click', function () { mostrar(i); });
+    // Cambiar de vista deja siempre la captura entera: arrastrar la lupa de una
+    // imagen a otra mostraria un trozo que no tiene nada que ver.
+    function irAVista(k) {
+      if (k < 0 || k >= visores.length) return;
+      mostrar(-1);
+
+      visores.forEach(function (v, j) { v.hidden = j !== k; });
+      pestanas.forEach(function (b, j) {
+        b.classList.toggle('is-active', j === k);
+        b.setAttribute('aria-selected', j === k ? 'true' : 'false');
+      });
+
+      visor = visores[k];
+      shot = visor.querySelector('.pp-shot');
+      paradas = Array.prototype.slice.call(visor.querySelectorAll('.visor-punto'));
+      actual = -1;
+
+      if (pie && pieEsNuestro) {
+        var texto = visor.dataset.pie || '';
+        pie.textContent = texto;
+        pie.hidden = !texto;
+      }
+      barra.hidden = !paradas.length;
+      if (paradas.length) pos.textContent = paradas.length + ' paradas';
+      nota.hidden = true;
+      if (salir) salir.hidden = true;
+    }
+
+    // Las paradas se enganchan de una vez en todas las vistas. Solo la vista
+    // visible puede recibir clics, asi que no hace falta rehacerlo al cambiar.
+    visores.forEach(function (v) {
+      Array.prototype.forEach.call(v.querySelectorAll('.visor-punto'), function (punto, i) {
+        punto.addEventListener('click', function () { mostrar(i); });
+      });
+    });
+
+    pestanas.forEach(function (boton, k) {
+      boton.addEventListener('click', function () { irAVista(k); });
     });
 
     Array.prototype.forEach.call(barra.querySelectorAll('.visor-nav'), function (boton) {
       boton.addEventListener('click', function () {
+        if (!paradas.length) return;
         var paso = Number(boton.dataset.paso);
         // Desde la vista completa, "siguiente" entra por la primera parada y
         // "anterior" por la ultima. Despues el recorrido da la vuelta.
@@ -199,8 +240,7 @@
       if (e.key === 'Escape' && actual !== -1) { mostrar(-1); }
     });
 
-    barra.hidden = false;
-    mostrar(-1);
+    irAVista(0);
   }
 
 

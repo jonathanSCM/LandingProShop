@@ -442,6 +442,24 @@ img { max-width: 100%; display: block; }
 .visor-punto:hover, .visor-punto:focus-visible { color: var(--on-accent); background: var(--accent); scale: 1.12; }
 .visor[data-activo] .visor-punto { opacity: 0; pointer-events: none; }
 .visor-punto::before { content: ""; position: absolute; inset: -8px; }
+/* Pestanas de vista, para los proyectos con varias capturas. Van encima de
+   la barra del recorrido: primero se elige QUE se mira y luego se recorre. */
+.vistas-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.vista-tab {
+  padding: 6px 13px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .18s ease, border-color .18s ease, background .18s ease;
+}
+.vista-tab:hover { color: var(--ink); border-color: var(--ink); }
+.vista-tab.is-active { color: var(--on-accent); background: var(--accent); border-color: var(--accent); }
+
 .visor-barra { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
 .visor-nav {
   display: grid; place-items: center;
